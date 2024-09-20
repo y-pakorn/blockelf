@@ -1,29 +1,17 @@
 "use client"
 
-import { Fragment, ReactNode, useCallback, useState } from "react"
+import { Fragment, useCallback, useState } from "react"
 import { Message, submitMessage } from "@/services/ai"
 import { readStreamableValue } from "ai/rsc"
-import {
-  AlignCenter,
-  ArrowRight,
-  Bot,
-  Check,
-  ChevronRight,
-  Cuboid,
-  MessageCircleMore,
-  MessageCircleQuestion,
-  Send,
-} from "lucide-react"
+import { ArrowRight, Bot, Check, Cuboid, MessageCircleMore } from "lucide-react"
 
 import { AVAILABLE_MODELS, DEFAULT_MODEL, ModelId } from "@/config/model"
-import { cn } from "@/lib/utils"
-import { Button, buttonVariants } from "@/components/ui/button"
+import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import {
   NavigationMenu,
   NavigationMenuContent,
   NavigationMenuItem,
-  NavigationMenuLink,
   NavigationMenuList,
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu"
@@ -40,6 +28,7 @@ const Chat = () => {
 
   const continueConversation = useCallback(async () => {
     const text = input.trim()
+    if (!text) return
     setInput("")
 
     const { messages, newMessage } = await submitMessage(
@@ -72,13 +61,23 @@ const Chat = () => {
             }}
           >
             <div className="flex w-[36rem] flex-col items-center gap-2">
-              <h1 className="mb-4 text-4xl font-semibold">
+              <h1 className="mb-4 text-4xl font-bold">
                 On-chain Data Made Easy
               </h1>
               <div className="w-full space-y-2 rounded-md border p-2">
                 <Textarea
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (
+                      e.key === "Enter" &&
+                      !e.shiftKey &&
+                      "form" in e.target
+                    ) {
+                      e.preventDefault()
+                      ;(e.target.form as HTMLFormElement).requestSubmit()
+                    }
+                  }}
                   placeholder="Ask anything about blockchain or ethereum!"
                   className="min-h-16 resize-none border-none bg-transparent p-2 text-base focus-visible:outline-none focus-visible:ring-transparent"
                 />
@@ -134,7 +133,7 @@ const Chat = () => {
                       "What is the latest block?, display essential details.",
                     ],
                   ] as const
-                ).map(([Icon, text], index) => (
+                ).map(([Icon, text]) => (
                   <div
                     className="inline-flex cursor-pointer items-center rounded-md border p-2 text-sm transition-colors hover:bg-secondary"
                     onClick={() => setInput(text)}
@@ -150,7 +149,7 @@ const Chat = () => {
         </div>
       ) : (
         <>
-          <div className="flex max-w-[48rem] flex-1 flex-col gap-4 self-center">
+          <div className="flex w-full max-w-[48rem] flex-1 flex-col gap-4 self-center">
             <h1 className="mb-4 text-3xl font-semibold">
               {conversation[0].content}
             </h1>

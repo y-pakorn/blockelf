@@ -9,9 +9,8 @@ import { getChainId } from "@/tools/getChainId"
 import { getLatestBlock } from "@/tools/getLatestBlock"
 import { timestampToReadable } from "@/tools/timestampToReadable"
 import { createOpenAI as createGroq } from "@ai-sdk/openai"
-import { generateText, streamText, tool } from "ai"
-import { createStreamableValue, streamUI } from "ai/rsc"
-import { z } from "zod"
+import { streamText } from "ai"
+import { createStreamableValue } from "ai/rsc"
 
 import { env } from "@/env.mjs"
 import { DEFAULT_MODEL } from "@/config/model"
@@ -35,7 +34,7 @@ export const submitMessage = async (
   const stream = createStreamableValue()
 
   ;(async () => {
-    const { textStream, toolCalls, toolResults } = await streamText({
+    const { textStream } = await streamText({
       //model: openrouter("google/gemini-pro-1.5-exp"),
       model: openrouter(model),
       system:

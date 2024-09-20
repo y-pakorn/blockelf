@@ -11,6 +11,9 @@ importers:
       '@ai-sdk/openai':
         specifier: ^0.0.61
         version: 0.0.61(zod@3.23.4)
+      '@fontsource/nunito':
+        specifier: ^5.1.0
+        version: 5.1.0
       '@radix-ui/react-dropdown-menu':
         specifier: ^2.0.6
         version: 2.0.6(@types/react-dom@18.3.0)(@types/react@18.3.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -341,6 +344,9 @@ packages:
 
   '@floating-ui/utils@0.2.2':
     resolution: {integrity: sha512-J4yDIIthosAsRZ5CPYP/jQvUAQtlZTTD/4suA08/FEnlxqW3sKS9iAhgsa9VYLZ6vDHn/ixJgIqRQPotoBjxIw==}
+
+  '@fontsource/nunito@5.1.0':
+    resolution: {integrity: sha512-+FuA/uyHXZPHAgNOmLq0GtsCAqx9IQjNnUyuGJYDl6xe+B2UIQO2pUFbWiWPfpYM7UfiPU9DBIT7s7Z9iGFoRw==}
 
   '@humanwhocodes/config-array@0.11.14':
     resolution: {integrity: sha512-3T8LkOmg45BV5FICb15QQMsyUSWrQ8AygVfC7ZG32zOalnqrilm018ZVCw0eapXux8FtA33q8PSRSstjee3jSg==}
@@ -3342,6 +3348,8 @@ snapshots:
       react-dom: 18.3.1(react@18.3.1)
 
   '@floating-ui/utils@0.2.2': {}
+
+  '@fontsource/nunito@5.1.0': {}
 
   '@humanwhocodes/config-array@0.11.14':
     dependencies:
