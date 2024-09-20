@@ -1,7 +1,7 @@
 import { z } from "zod"
 
 export const timestampToReadable = {
-  description: "Convert timestamp to readable date",
+  description: "Convert timestamp to readable date text",
   parameters: z.object({
     timestamp: z.number().describe("The timestamp in seconds since epoch"),
   }),

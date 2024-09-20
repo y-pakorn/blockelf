@@ -77,7 +77,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
         >
           <div className="flex min-h-screen">
             <Navbar />
-            <div className="m-2 flex flex-1 rounded-md bg-background">
+            <div className="m-4 ml-0 flex flex-1 rounded-md bg-background">
               {children}
             </div>
           </div>

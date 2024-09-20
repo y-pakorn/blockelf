@@ -12,3 +12,8 @@ export type SiteConfig = {
   }
   ogImage: string
 }
+
+export type Message = {
+  role: "user" | "assistant"
+  content: string
+}

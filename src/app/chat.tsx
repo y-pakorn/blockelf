@@ -1,11 +1,12 @@
 "use client"
 
 import { Fragment, useCallback, useState } from "react"
-import { Message, submitMessage } from "@/services/ai"
+import { submitMessage } from "@/services/ai"
+import { useAppStore } from "@/stores/app-store"
 import { readStreamableValue } from "ai/rsc"
 import { ArrowRight, Bot, Check, Cuboid, MessageCircleMore } from "lucide-react"
 
-import { AVAILABLE_MODELS, DEFAULT_MODEL, ModelId } from "@/config/model"
+import { AVAILABLE_MODELS } from "@/config/model"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import {
@@ -22,8 +23,13 @@ import { Toggle } from "@/components/ui/toggle"
 import { Markdown } from "@/components/markdown"
 
 const Chat = () => {
-  const [conversation, setConversation] = useState<Message[]>([])
-  const [model, setModel] = useState<ModelId>(DEFAULT_MODEL)
+  const {
+    messages: conversation,
+    model,
+    setMessages: setConversation,
+    setModel,
+  } = useAppStore()
+
   const [input, setInput] = useState("")
   const [isTyping, setIsTyping] = useState(false)
 

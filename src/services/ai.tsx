@@ -8,17 +8,13 @@ import { getAddressFromName } from "@/tools/getAddressFromName"
 import { getChainId } from "@/tools/getChainId"
 import { getLatestBlock } from "@/tools/getLatestBlock"
 import { timestampToReadable } from "@/tools/timestampToReadable"
+import { Message } from "@/types"
 import { createOpenAI as createGroq } from "@ai-sdk/openai"
 import { streamText } from "ai"
 import { createStreamableValue } from "ai/rsc"
 
 import { env } from "@/env.mjs"
 import { DEFAULT_MODEL } from "@/config/model"
-
-export interface Message {
-  role: "user" | "assistant"
-  content: string
-}
 
 const openrouter = createGroq({
   baseURL: "https://openrouter.ai/api/v1",
