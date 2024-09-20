@@ -3,7 +3,7 @@ import { z } from "zod"
 
 import { env } from "@/env.mjs"
 
-export const getWalletHistory1Inch = {
+export const getWalletHistory = {
   description:
     "Get the transaction history from the wallet, and return important readable formatted data",
   parameters: z.object({

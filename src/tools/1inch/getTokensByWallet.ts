@@ -3,9 +3,9 @@ import { z } from "zod"
 
 import { env } from "@/env.mjs"
 
-export const getProtocolDetailByAddress1Inch = {
+export const getTokensByWallet = {
   description:
-    "Get protocol details by address.  Supported Chain names are Ethereum, BNB Chain, Polygon, Arbitrum, Gnosis, Optimism, Base",
+    "Get token details by address. Supported Chain names are Ethereum, BNB Chain, Polygon, Arbitrum, Gnosis, Optimism, Base",
   parameters: z.object({
     addresses: z
       .array(z.string())
@@ -13,6 +13,7 @@ export const getProtocolDetailByAddress1Inch = {
         "Array of wallet addresses, e.g. ['0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045']"
       ),
     chainId: z.number().describe("Chain ID, e.g. '1' for Ethereum mainnet"),
+    timerange: z.string().optional().describe("Timerange, e.g. '1year'"),
     closed: z
       .boolean()
       .optional()
@@ -21,21 +22,29 @@ export const getProtocolDetailByAddress1Inch = {
       .number()
       .optional()
       .describe("Threshold for closed positions, default is 1"),
+    useCache: z
+      .boolean()
+      .optional()
+      .describe("Get response from cache, default is false"),
   }),
   execute: async ({
     addresses,
     chainId,
+    timerange = "1year",
     closed = true,
     closedThreshold = 1,
+    useCache = false,
   }: {
     addresses: string[]
     chainId: number
+    timerange?: string
     closed?: boolean
     closedThreshold?: number
+    useCache?: boolean
   }) => {
     const start = Date.now() // Start timing
 
-    const url = `https://api.1inch.dev/portfolio/portfolio/v4/overview/protocols/details`
+    const url = `https://api.1inch.dev/portfolio/portfolio/v4/overview/erc20/details`
 
     const config = {
       headers: {
@@ -44,8 +53,10 @@ export const getProtocolDetailByAddress1Inch = {
       params: {
         addresses: addresses.join(","),
         chain_id: chainId,
+        timerange,
         closed,
         closed_threshold: closedThreshold,
+        use_cache: useCache,
       },
       paramsSerializer: {
         indexes: null,
@@ -55,11 +66,11 @@ export const getProtocolDetailByAddress1Inch = {
     try {
       const response = await axios.get(url, config)
       const end = Date.now() // End timing
-      console.log(`getProtocolDetailByAddress1Inch took ${end - start} ms`) // Log the time taken
+      console.log(`getTokenDetailByAddress1Inch took ${end - start} ms`) // Log the time taken
       return response.data
     } catch (error) {
       console.error(error)
-      throw new Error("Failed to fetch protocol details from 1inch API")
+      throw new Error("Failed to fetch token details from 1inch API")
     }
   },
 }

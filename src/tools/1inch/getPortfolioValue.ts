@@ -13,7 +13,7 @@ import { env } from "@/env.mjs"
 //   Base: { chainId: 8453, iconName: "base" },
 // }
 
-export const getPortfolioValue1Inch = {
+export const getPortfolioValue = {
   description:
     "Get just only the current value of the portfolio, grouped by chains and addresses. Supported Chain names are Ethereum, BNB Chain, Polygon, Arbitrum, Gnosis, Optimism, Base",
   parameters: z.object({

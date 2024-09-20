@@ -16,6 +16,8 @@ import {
 } from "viem/chains"
 import { z } from "zod"
 
+import { convertBigIntToString } from "@/lib/utils"
+
 const chainConfigs = {
   Arbitrum: arbitrum,
   Aurora: aurora,
@@ -29,27 +31,6 @@ const chainConfigs = {
   Klaytn: klaytn,
   Optimism: optimism,
   Polygon: polygon,
-}
-
-const convertBigIntToString = (obj: any): any => {
-  if (typeof obj === "bigint") {
-    return obj.toString()
-  }
-
-  if (Array.isArray(obj)) {
-    return obj.map(convertBigIntToString)
-  }
-
-  if (typeof obj === "object" && obj !== null) {
-    return Object.fromEntries(
-      Object.entries(obj).map(([key, value]) => [
-        key,
-        convertBigIntToString(value),
-      ])
-    )
-  }
-
-  return obj
 }
 
 export const getLatestBlock = {
