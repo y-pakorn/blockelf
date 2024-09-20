@@ -138,6 +138,7 @@ const Chat = () => {
                   <div
                     className="inline-flex cursor-pointer items-center rounded-md border p-2 text-sm transition-colors hover:bg-secondary"
                     onClick={() => setInput(text)}
+                    key={`model-${text}`}
                   >
                     <Icon className="mr-2 size-6" />
                     {text}
