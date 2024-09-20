@@ -4,7 +4,14 @@ import { Fragment, useCallback, useState } from "react"
 import { submitMessage } from "@/services/ai"
 import { useAppStore } from "@/stores/app-store"
 import { readStreamableValue } from "ai/rsc"
-import { ArrowRight, Bot, Check, Cuboid, MessageCircleMore } from "lucide-react"
+import {
+  ArrowRight,
+  Bot,
+  Check,
+  Cuboid,
+  MessageCircleMore,
+  UserRound,
+} from "lucide-react"
 
 import { AVAILABLE_MODELS } from "@/config/model"
 import { Button } from "@/components/ui/button"
@@ -138,13 +145,14 @@ const Chat = () => {
                   </Button>
                 </div>
               </div>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-2 gap-2">
                 {(
                   [
                     [
                       Cuboid,
                       "What is the latest block?, display essential details.",
                     ],
+                    [UserRound, "Analyze 10 latest activity of vitalik.eth"],
                   ] as const
                 ).map(([Icon, text]) => (
                   <div
