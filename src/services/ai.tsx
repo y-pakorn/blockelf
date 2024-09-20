@@ -12,6 +12,7 @@ import { createStreamableValue, streamUI } from "ai/rsc"
 import { z } from "zod"
 
 import { env } from "@/env.mjs"
+import { DEFAULT_MODEL } from "@/config/model"
 
 export interface Message {
   role: "user" | "assistant"
@@ -23,7 +24,10 @@ const openrouter = createGroq({
   apiKey: env.OPENROUTER_API_KEY,
 })
 
-export const submitMessage = async (messages: Message[]) => {
+export const submitMessage = async (
+  messages: Message[],
+  model: string = DEFAULT_MODEL
+) => {
   "use server"
 
   const stream = createStreamableValue()
@@ -31,7 +35,7 @@ export const submitMessage = async (messages: Message[]) => {
   ;(async () => {
     const { textStream, toolCalls, toolResults } = await streamText({
       //model: openrouter("google/gemini-pro-1.5-exp"),
-      model: openrouter("google/gemini-flash-1.5"),
+      model: openrouter(model),
       system:
         "You are a ethereum blockchain on-chain analyser, return response to user's query as assistant role. Use must markdown to format the response. Display object in markdown's table format.",
       messages,
