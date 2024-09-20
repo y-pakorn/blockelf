@@ -25,28 +25,34 @@ const Chat = () => {
   const [conversation, setConversation] = useState<Message[]>([])
   const [model, setModel] = useState<ModelId>(DEFAULT_MODEL)
   const [input, setInput] = useState("")
+  const [isTyping, setIsTyping] = useState(false)
 
   const continueConversation = useCallback(async () => {
     const text = input.trim()
     if (!text) return
     setInput("")
+    setIsTyping(true)
 
-    const { messages, newMessage } = await submitMessage(
-      [...conversation, { role: "user", content: input }],
-      model
-    )
+    try {
+      const { messages, newMessage } = await submitMessage(
+        [...conversation, { role: "user", content: input }],
+        model
+      )
 
-    setConversation([...messages, { role: "assistant", content: "" }])
+      setConversation([...messages, { role: "assistant", content: "" }])
 
-    let textContent = ""
+      let textContent = ""
 
-    for await (const delta of readStreamableValue(newMessage)) {
-      textContent = `${textContent}${delta}`
+      for await (const delta of readStreamableValue(newMessage)) {
+        textContent = `${textContent}${delta}`
 
-      setConversation([
-        ...messages,
-        { role: "assistant", content: textContent },
-      ])
+        setConversation([
+          ...messages,
+          { role: "assistant", content: textContent },
+        ])
+      }
+    } finally {
+      setIsTyping(false)
     }
   }, [conversation, model, input])
 
@@ -78,6 +84,7 @@ const Chat = () => {
                       ;(e.target.form as HTMLFormElement).requestSubmit()
                     }
                   }}
+                  disabled={isTyping}
                   placeholder="Ask anything about blockchain or ethereum!"
                   className="min-h-16 resize-none border-none bg-transparent p-2 text-base focus-visible:outline-none focus-visible:ring-transparent"
                 />
@@ -150,7 +157,7 @@ const Chat = () => {
       ) : (
         <>
           <div className="flex w-full max-w-[48rem] flex-1 flex-col gap-4 self-center">
-            <h1 className="mb-4 text-3xl font-semibold">
+            <h1 className="mb-4 text-3xl font-bold">
               {conversation[0].content}
             </h1>
             <div className="flex w-full flex-col gap-4">
@@ -159,14 +166,14 @@ const Chat = () => {
                   {message.role === "user" ? (
                     <>
                       <Separator />
-                      <h1 className="mb-2 text-2xl font-semibold">
+                      <h1 className="mb-2 text-2xl font-bold">
                         {message.content}
                       </h1>
                     </>
                   ) : (
                     <div className="flex items-center gap-2">
                       <MessageCircleMore className="size-6" />
-                      <h2 className="text-xl font-medium">Answer</h2>
+                      <h2 className="text-xl font-semibold">Answer</h2>
                     </div>
                   )}
                   {message.role === "assistant" && (
@@ -202,6 +209,7 @@ const Chat = () => {
                     className="rounded-full"
                   />
                   <Button
+                    disabled={isTyping}
                     type="submit"
                     className="ml-auto size-8 rounded-full"
                     size="icon"

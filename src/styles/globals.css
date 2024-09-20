@@ -16,6 +16,8 @@
     --primary: 0 0% 9%;
     --primary-foreground: 0 0% 98%;
 
+    --secondary-background: 0 0% 98%;
+
     --secondary: 0 0% 96.1%;
     --secondary-foreground: 0 0% 9%;
 
@@ -48,6 +50,8 @@
     --primary: 0 0% 98%;
     --primary-foreground: 0 0% 9%;
 
+    --secondary-background: 0 0% 7%;
+
     --secondary: 0 0% 14.9%;
     --secondary-foreground: 0 0% 98%;
 
@@ -71,6 +75,6 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply text-foreground;
   }
 }

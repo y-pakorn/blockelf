@@ -11,8 +11,7 @@ import { Chat } from "./chat"
 
 export default function Home() {
   return (
-    <main className="container flex min-h-screen flex-col gap-4 py-4">
-      <Navbar />
+    <main className="container flex flex-1 flex-col gap-4 py-4">
       <Chat />
     </main>
   )

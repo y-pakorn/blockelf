@@ -8,6 +8,7 @@ import type { Metadata, Viewport } from "next"
 
 import { siteConfig } from "@/config/site"
 import { cn } from "@/lib/utils"
+import { Navbar } from "@/components/navbar"
 import { ThemeProvider } from "@/components/theme-provider"
 
 interface RootLayoutProps {
@@ -67,14 +68,19 @@ export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="en" suppressHydrationWarning>
       <head />
-      <body className="min-h-screen bg-background antialiased">
+      <body className="min-h-screen bg-secondary-background antialiased">
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
           enableSystem
           disableTransitionOnChange
         >
-          {children}
+          <div className="flex min-h-screen">
+            <Navbar />
+            <div className="m-2 flex flex-1 rounded-md bg-background">
+              {children}
+            </div>
+          </div>
         </ThemeProvider>
       </body>
     </html>
