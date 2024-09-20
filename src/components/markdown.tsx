@@ -28,13 +28,13 @@ const Markdown = ({
       {...props}
       remarkPlugins={[remarkGfm]}
       className={cn(
-        "prose-ul:text-dark prose prose-h1:text-3xl prose-h1:leading-none prose-h2:m-0 prose-h2:text-xl prose-h2:font-semibold prose-h2:leading-none prose-p:m-0 prose-p:text-base prose-ul:m-0 prose-ul:list-decimal prose-li:m-0 m-0 whitespace-pre-wrap leading-normal",
+        "prose-ul:text-dark prose prose-h1:text-3xl prose-h1:leading-none prose-h2:m-0 prose-h2:text-xl prose-h2:font-semibold prose-h2:leading-none prose-p:m-0 prose-p:text-base prose-ul:m-0 prose-ul:list-decimal prose-li:m-0 m-0 whitespace-pre-wrap leading-normal text-primary",
         theme === "dark" ? "prose-invert" : "prose",
         className
       )}
       components={{
         table: (props) => (
-          <div className="my-4 rounded-md border">
+          <div className="my-0 rounded-md border">
             <Table {...props} className="my-0" />
           </div>
         ),
