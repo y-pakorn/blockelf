@@ -1,11 +1,14 @@
 "use server"
 
+import { getAddressFromName } from "@/tools/getAddressFromName"
+import { getChainId } from "@/tools/getChainId"
+import { getLatestBlock } from "@/tools/getLatestBlock"
+import { getPortfolioValue1Inch } from "@/tools/getPortfolioValue1Inch"
+import { getWalletHistory1Inch } from "@/tools/getWalletHistory1Inch"
+import { timestampToReadable } from "@/tools/timestampToReadable"
 import { createOpenAI as createGroq } from "@ai-sdk/openai"
 import { generateText, streamText, tool } from "ai"
 import { createStreamableValue, streamUI } from "ai/rsc"
-import _ from "lodash"
-import { createPublicClient, http } from "viem"
-import { mainnet } from "viem/chains"
 import { z } from "zod"
 
 import { env } from "@/env.mjs"
@@ -15,35 +18,9 @@ export interface Message {
   content: string
 }
 
-const convertBigIntToString = (obj: any): any => {
-  if (typeof obj === "bigint") {
-    return obj.toString()
-  }
-
-  if (Array.isArray(obj)) {
-    return obj.map(convertBigIntToString)
-  }
-
-  if (typeof obj === "object" && obj !== null) {
-    return Object.fromEntries(
-      Object.entries(obj).map(([key, value]) => [
-        key,
-        convertBigIntToString(value),
-      ])
-    )
-  }
-
-  return obj
-}
-
 const openrouter = createGroq({
   baseURL: "https://openrouter.ai/api/v1",
   apiKey: env.OPENROUTER_API_KEY,
-})
-
-const ethereum = createPublicClient({
-  chain: mainnet,
-  transport: http("https://eth-pokt.nodies.app"),
 })
 
 export const submitMessage = async (messages: Message[]) => {
@@ -60,50 +37,12 @@ export const submitMessage = async (messages: Message[]) => {
       messages,
       toolChoice: "required",
       tools: {
-        timestampToReadable: {
-          description: "Convert timestamp to readable date",
-          parameters: z.object({
-            timestamp: z
-              .number()
-              .describe("The timestamp in seconds since epoch"),
-          }),
-          execute: async ({ timestamp }) => {
-            return new Date(timestamp * 1000).toUTCString()
-          },
-        },
-        getLatestBlock: {
-          description: "Get the latest block from the blockchain",
-          parameters: z.object({
-            blockNumber: z
-              .number()
-              .optional()
-              .describe(
-                "The block number, e.g. 123456, if not provided, will get the latest block"
-              ),
-          }),
-          execute: async ({ blockNumber }) => {
-            const now = _.now()
-            const block = await ethereum.getBlock({
-              blockNumber: blockNumber ? BigInt(blockNumber) : undefined,
-            })
-            console.log("getBlock took", _.now() - now, "ms")
-            return convertBigIntToString(block)
-          },
-        },
-        getAddressFromName: {
-          description: "Get the address from the name",
-          parameters: z.object({
-            name: z.string().describe("The ens name, e.g. 'vitalik.eth'"),
-          }),
-          execute: async ({ name }) => {
-            const now = _.now()
-            const address = await ethereum.getEnsAddress({
-              name,
-            })
-            console.log("getEnsAddress took", _.now() - now, "ms")
-            return address
-          },
-        },
+        timestampToReadable,
+        getLatestBlock,
+        getAddressFromName,
+        getWalletHistory1Inch,
+        getChainId,
+        getPortfolioValue1Inch,
       },
       maxSteps: 1000,
       maxToolRoundtrips: 1000,
