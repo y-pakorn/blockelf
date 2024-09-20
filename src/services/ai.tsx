@@ -1,10 +1,12 @@
 "use server"
 
+import { getPortfolioValue1Inch } from "@/tools/1inch/getPortfolioValue1Inch"
+import { getProtocolDetailByAddress1Inch } from "@/tools/1inch/getProtocolDetailByAddress1Inch"
+import { getTokenDetailByAddress1Inch } from "@/tools/1inch/getTokenDetailByAddress1Inch"
+import { getWalletHistory1Inch } from "@/tools/1inch/getWalletHistory1Inch"
 import { getAddressFromName } from "@/tools/getAddressFromName"
 import { getChainId } from "@/tools/getChainId"
 import { getLatestBlock } from "@/tools/getLatestBlock"
-import { getPortfolioValue1Inch } from "@/tools/getPortfolioValue1Inch"
-import { getWalletHistory1Inch } from "@/tools/getWalletHistory1Inch"
 import { timestampToReadable } from "@/tools/timestampToReadable"
 import { createOpenAI as createGroq } from "@ai-sdk/openai"
 import { generateText, streamText, tool } from "ai"
@@ -47,6 +49,8 @@ export const submitMessage = async (
         getWalletHistory1Inch,
         getChainId,
         getPortfolioValue1Inch,
+        getProtocolDetailByAddress1Inch,
+        getTokenDetailByAddress1Inch,
       },
       maxSteps: 1000,
       maxToolRoundtrips: 1000,

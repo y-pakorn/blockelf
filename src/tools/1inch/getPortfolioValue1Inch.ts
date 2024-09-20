@@ -15,7 +15,7 @@ import { env } from "@/env.mjs"
 
 export const getPortfolioValue1Inch = {
   description:
-    "Get the current value of the portfolio from the 1inch API, grouped by chains and addresses. Supported Chain names are Ethereum, BNB Chain, Polygon, Arbitrum, Gnosis, Optimism, Base",
+    "Get just only the current value of the portfolio, grouped by chains and addresses. Supported Chain names are Ethereum, BNB Chain, Polygon, Arbitrum, Gnosis, Optimism, Base",
   parameters: z.object({
     addresses: z
       .array(z.string())

@@ -5,7 +5,7 @@ import { env } from "@/env.mjs"
 
 export const getWalletHistory1Inch = {
   description:
-    "Get the transaction history from the wallet using 1inch API, and return important readable formatted data",
+    "Get the transaction history from the wallet, and return important readable formatted data",
   parameters: z.object({
     address: z
       .string()
@@ -13,10 +13,7 @@ export const getWalletHistory1Inch = {
         "Wallet address, e.g. '0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045'"
       ),
     chainId: z.string().describe("Chain ID, e.g. '1' for Ethereum mainnet"),
-    limit: z
-      .number()
-      .optional()
-      .describe("Amount of events to return, default is 100, max is 10000"),
+    limit: z.number().optional().describe("Amount of events to return"),
     tokenAddress: z.string().optional().describe("Token address used at event"),
     toTimestampMs: z.string().optional().describe("To time at milliseconds"),
     fromTimestampMs: z
@@ -49,7 +46,7 @@ export const getWalletHistory1Inch = {
       },
       params: {
         chainId,
-        limit,
+        limit: limit ?? 10,
         tokenAddress,
         toTimestampMs,
         fromTimestampMs,
