@@ -27,6 +27,7 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu"
+import { Separator } from "@/components/ui/separator"
 import { Skeleton } from "@/components/ui/skeleton"
 import { Textarea } from "@/components/ui/textarea"
 import { Toggle } from "@/components/ui/toggle"
@@ -156,30 +157,32 @@ const Chat = () => {
               {conversation.slice(1).map((message, index) => (
                 <Fragment key={index}>
                   {message.role === "user" ? (
-                    <div className="flex items-center gap-2">
-                      <MessageCircleQuestion className="size-6" />
-                      <h2 className="text-xl font-medium">
-                        Follow Up Question
-                      </h2>
-                    </div>
+                    <>
+                      <Separator />
+                      <h1 className="mb-2 text-2xl font-semibold">
+                        {message.content}
+                      </h1>
+                    </>
                   ) : (
                     <div className="flex items-center gap-2">
                       <MessageCircleMore className="size-6" />
                       <h2 className="text-xl font-medium">Answer</h2>
                     </div>
                   )}
-                  {message.role === "user" ? (
-                    <span>{message.content}</span>
-                  ) : message.content ? (
-                    <Markdown className="max-w-full">
-                      {message.content}
-                    </Markdown>
-                  ) : (
-                    <div className="space-y-2">
-                      <Skeleton className="h-8 w-1/2" />
-                      <Skeleton className="h-8 w-2/3" />
-                      <Skeleton className="h-8 w-full" />
-                    </div>
+                  {message.role === "assistant" && (
+                    <>
+                      {message.content ? (
+                        <Markdown className="max-w-full">
+                          {message.content}
+                        </Markdown>
+                      ) : (
+                        <div className="space-y-2">
+                          <Skeleton className="h-8 w-1/2" />
+                          <Skeleton className="h-8 w-2/3" />
+                          <Skeleton className="h-8 w-full" />
+                        </div>
+                      )}
+                    </>
                   )}
                 </Fragment>
               ))}
