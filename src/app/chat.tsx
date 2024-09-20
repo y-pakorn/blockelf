@@ -6,6 +6,7 @@ import { readStreamableValue } from "ai/rsc"
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import { Markdown } from "@/components/markdown"
 
 const Chat = () => {
   const [conversation, setConversation] = useState<Message[]>([])
@@ -18,8 +19,6 @@ const Chat = () => {
           e.preventDefault()
           const text = (e.target as any)[0].value
           if (!text) return
-
-          console.log("submitting message:", text)
 
           const { messages, newMessage } = await submitMessage([
             ...conversation,
@@ -54,11 +53,11 @@ const Chat = () => {
           </Button>
         </div>
       </form>
-      <div>
+      <div className="flex w-full flex-col gap-2">
         {conversation.map((message, index) => (
-          <div key={index}>
-            {message.role}: {message.content}
-          </div>
+          <Markdown key={index} className="max-w-full">
+            {message.content}
+          </Markdown>
         ))}
       </div>
     </>

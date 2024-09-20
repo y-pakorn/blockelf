@@ -10,11 +10,8 @@ import { Chat } from "./chat"
 
 export default function Home() {
   return (
-    <main className="flex h-screen items-center justify-center">
-      <div className="container flex max-w-[64rem] flex-col items-center gap-4 text-center">
-        <h1 className="text-4xl font-semibold">{siteConfig.name}</h1>
-        <Chat />
-      </div>
+    <main className="container flex min-h-screen flex-col items-center justify-center gap-4">
+      <Chat />
     </main>
   )
 }
