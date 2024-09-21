@@ -8,6 +8,8 @@ import type { Metadata, Viewport } from "next"
 
 import { siteConfig } from "@/config/site"
 import { cn } from "@/lib/utils"
+import { Toaster } from "@/components/ui/sonner"
+import { AppProvider } from "@/components/app-provider"
 import { Navbar } from "@/components/navbar"
 import { ThemeProvider } from "@/components/theme-provider"
 
@@ -75,12 +77,15 @@ export default function RootLayout({ children }: RootLayoutProps) {
           enableSystem
           disableTransitionOnChange
         >
-          <div className="flex min-h-screen">
-            <Navbar />
-            <div className="m-4 ml-0 flex flex-1 rounded-md bg-background">
-              {children}
+          <AppProvider>
+            <div className="flex min-h-screen">
+              <Navbar />
+              <div className="m-4 ml-0 flex flex-1 rounded-md bg-background">
+                {children}
+              </div>
             </div>
-          </div>
+          </AppProvider>
+          <Toaster />
         </ThemeProvider>
       </body>
     </html>

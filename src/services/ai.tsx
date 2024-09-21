@@ -27,6 +27,7 @@ export interface Message {
 
 export const submitMessage = async (
   messages: Message[],
+  systemPrompt: string,
   model: string = DEFAULT_MODEL,
   temperature?: number
 ) => {
@@ -85,29 +86,7 @@ export const submitMessage = async (
       //})
       const { textStream } = await streamText({
         model: isRedpill ? onchainRedpill(model) : openrouter(model),
-        system: `You are a blockchain on-chain analyser, return response to user's query as assistant role. 
-
-          First, you must think about the user's query and plan step by step of how you will answer the query and what information you additionally need to answer the query.
-          If the question is not clear, you need to ask user for more information.
-          Look for the tools that you can use to answer the query first, and then plan how you will use those tools to answer the query.
-          You can use the tools many times to get the information you need to answer the query.
-
-          Use must markdown to format the response. 
-          The data you gave out should be human readable and easy to understand in markdown format. 
-          Display object in markdown's table format.
-
-          Example 1:
-          User: What is the price of ETH?
-          You (Thinking): I need to use getPrice tool to get the price of ETH.
-          You (Thinking): I will use getPrice tool with the token name ETH.
-          You (Thinking): Then I will display the price in markdown format that fits the data the most.
-
-          Example 2:
-          User: What is going on with vitalik.eth lately?
-          You (Thinking): I need to use getWalletHistory tool to get the wallet history of vitalik.eth.
-          You (Thinking): The getWalletHistory tool requires the wallet address, so I need to use ensNameToAddress tool to get the wallet address of vitalik.eth.
-          You (Thinking): Then I will display the wallet history in markdown format that fits the data the most.
-        `,
+        system: systemPrompt,
         messages: messages,
         toolChoice: "required",
         tools,

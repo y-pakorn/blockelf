@@ -44,6 +44,7 @@ const Chat = () => {
     setModel,
     temperature,
     setTemperature,
+    systemPrompt,
   } = useAppStore()
 
   const [input, setInput] = useState("")
@@ -51,13 +52,17 @@ const Chat = () => {
 
   const continueConversation = useCallback(
     async (input: string, conversation: Message[]) => {
+      if (!systemPrompt) return
+
       const text = input.trim()
       if (!text) return
+
       setIsTyping(true)
 
       try {
         const { messages, newMessage } = await submitMessage(
           [...conversation, { role: "user", content: input.trim() }],
+          systemPrompt,
           model,
           temperature
         )
@@ -78,7 +83,7 @@ const Chat = () => {
         setIsTyping(false)
       }
     },
-    [model, temperature]
+    [model, temperature, systemPrompt]
   )
 
   return (
