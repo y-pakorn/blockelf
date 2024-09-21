@@ -266,7 +266,7 @@ const Chat = () => {
                           Tools
                         </NavigationMenuTrigger>
                         <NavigationMenuContent>
-                          <ul className="grid w-[400px] gap-2 ">
+                          <ul className="grid w-[400px] gap-2 p-2">
                             {AVAILABLE_TOOLS.map((tool) => (
                               <Toggle
                                 pressed={selectedTools.includes(tool.name)}

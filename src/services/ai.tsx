@@ -136,10 +136,6 @@ export const submitMessage = async (
       throw e
     } finally {
       stream.done()
-      stream.update({
-        type: "status",
-        status: "end",
-      })
     }
   })()
 
