@@ -24,4 +24,9 @@ export const AVAILABLE_TOOLS = [
     logo: "the-graph.png",
     description: "ENS governance data, delegate data, etc.",
   },
+  {
+    name: "Morph",
+    logo: "morph.jpeg",
+    description: "Morph chain stats, transactions, tokens, NFTs.",
+  },
 ]

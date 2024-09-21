@@ -270,16 +270,6 @@ const Chat = () => {
                           <ul className="grid w-[400px] gap-2 p-2">
                             {AVAILABLE_TOOLS.map((tool) => (
                               <Toggle
-                                pressed={selectedTools.includes(tool.name)}
-                                onClick={() => {
-                                  setSelectedTools(
-                                    selectedTools.includes(tool.name)
-                                      ? selectedTools.filter(
-                                          (id) => id !== tool.name
-                                        )
-                                      : [...selectedTools, tool.name]
-                                  )
-                                }}
                                 className="relative flex h-full items-start justify-start text-start"
                                 key={tool.name}
                               >
@@ -300,9 +290,12 @@ const Chat = () => {
                                     </p>
                                   </div>
                                 </div>
-                                {selectedTools.includes(tool.name) && (
-                                  <Check className="absolute right-2 top-1/2 size-4 -translate-y-1/2" />
-                                )}
+                                <Badge
+                                  className="absolute right-2 top-1/2 -translate-y-1/2"
+                                  variant="secondary"
+                                >
+                                  Auto Activated
+                                </Badge>
                               </Toggle>
                             ))}
                           </ul>

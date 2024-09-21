@@ -9,6 +9,7 @@ import { Cog, HomeIcon, Loader2, Search, SearchCode } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 
+import { ModeToggle } from "./mode-toggle"
 import { Button, buttonVariants } from "./ui/button"
 import {
   Dialog,
@@ -116,6 +117,7 @@ const Navbar = ({ className }: { className?: string }) => {
             </div>
           </DialogContent>
         </Dialog>
+        <ModeToggle />
       </TooltipProvider>
     </nav>
   )
