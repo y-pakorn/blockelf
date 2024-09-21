@@ -12,6 +12,7 @@ import { getProofOfReserve } from "@/tools/chainlink/getProofOfReserve"
 import { ensNameTools } from "@/tools/ens/name"
 import { ensSubgraphTools } from "@/tools/ens/subgraph"
 import { getChainId } from "@/tools/getChainId"
+import { getInternetData } from "@/tools/getInternetData"
 import { getLatestBlock } from "@/tools/getLatestBlock"
 import { nearAccountTools } from "@/tools/near/accounts"
 import { readableDateToTimestamp } from "@/tools/readableDateToTimestamp"
@@ -56,6 +57,7 @@ export const submitMessage = async (
         readableDateToTimestamp,
         getLatestBlock,
         getChainId,
+        getInternetData,
         // 1inch
         getWalletHistory,
         getPortfolioValue,
