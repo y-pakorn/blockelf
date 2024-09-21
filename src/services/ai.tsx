@@ -12,11 +12,11 @@ import { getProofOfReserve } from "@/tools/chainlink/getProofOfReserve"
 import { ensNameTools } from "@/tools/ens/name"
 import { ensSubgraphTools } from "@/tools/ens/subgraph"
 import { getChainId } from "@/tools/getChainId"
-import { getInternetData } from "@/tools/getInternetData"
 import { getLatestBlock } from "@/tools/getLatestBlock"
 import { nearAccountTools } from "@/tools/near/accounts"
 import { readableDateToTimestamp } from "@/tools/readableDateToTimestamp"
 import { timestampToReadable } from "@/tools/timestampToReadable"
+import { useAnalysisEngine } from "@/tools/useAnalysisEngine"
 import { Message } from "@/types"
 // import { Message } from "@/types"
 import { streamText } from "ai"
@@ -57,7 +57,7 @@ export const submitMessage = async (
         readableDateToTimestamp,
         getLatestBlock,
         getChainId,
-        getInternetData,
+        useAnalysisEngine,
         // 1inch
         getWalletHistory,
         getPortfolioValue,

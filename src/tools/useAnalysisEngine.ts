@@ -3,7 +3,7 @@ import { z } from "zod"
 
 import { openrouter } from "@/lib/ai_utils"
 
-export const getInternetData = {
+export const useAnalysisEngine = {
   description:
     "Fetch any data from the internet. Can use it whenever other tools are not helpful",
   parameters: z.object({
