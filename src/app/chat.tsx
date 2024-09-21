@@ -330,6 +330,10 @@ const Chat = () => {
                       Album,
                       "Analyze the trends of 10 latest ens governance proposals.",
                     ],
+                    [
+                      UserRound,
+                      "What's account status of muramasa.near, portfolio, and history?",
+                    ],
                   ] as const
                 ).map(([Icon, text]) => (
                   <div
@@ -337,7 +341,7 @@ const Chat = () => {
                     onClick={() => setInput(text)}
                     key={`model-${text}`}
                   >
-                    <Icon className="mr-2 size-6" />
+                    <Icon className="mr-2 size-4 flex-shrink-0" />
                     {text}
                   </div>
                 ))}
