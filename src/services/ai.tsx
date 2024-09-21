@@ -14,6 +14,7 @@ import { getChainId } from "@/tools/getChainId"
 import { getLatestBlock } from "@/tools/getLatestBlock"
 import { nearAccountTools } from "@/tools/near/accounts"
 import { timestampToReadable } from "@/tools/timestampToReadable"
+import { Message } from "@/types"
 // import { Message } from "@/types"
 import { streamText } from "ai"
 import { createStreamableValue } from "ai/rsc"
@@ -21,9 +22,15 @@ import { createStreamableValue } from "ai/rsc"
 import { AVAILABLE_MODELS, DEFAULT_MODEL } from "@/config/model"
 import { onchainRedpill, openrouter } from "@/lib/ai_utils"
 
-export interface Message {
-  role: "user" | "assistant"
-  content: string
+type StreamResponse = TextStreamResponse | StatusStreamResponse
+type StatusStreamResponse = {
+  type: "status"
+  status: "start" | "end"
+  label?: string
+}
+type TextStreamResponse = {
+  type: "text"
+  delta: string
 }
 
 export const submitMessage = async (
@@ -34,7 +41,7 @@ export const submitMessage = async (
 ) => {
   "use server"
 
-  const stream = createStreamableValue()
+  const stream = createStreamableValue<StreamResponse>()
 
   ;(async () => {
     try {
@@ -57,36 +64,8 @@ export const submitMessage = async (
         ...ensNameTools,
         ...nearAccountTools,
       }
-      //const paraphrasedQuery = await generateText({
-      //model: isRedpill ? onchainRedpill(model) : openrouter(model),
-      //system: `You are a helper of another blockchain on-chain analyser AI. You will receive user query and you need to paraphrase that query to be
-      //a better human-readable query that is more specific and should give more context to the AI.
-      //Here is the tools that you can utilize:
-      //${Object.entries(tools)
-      //.map(
-      //([toolName, tool]) =>
-      //`${toolName}: ${(tool as { description: string }).description}`
-      //)
-      //.join("\n")}
-      //===========================================
-      //Please only return the paraphrased query, no other text or markdown.
-      //Also be specific on the chains because we support multiple chains.
-      //For example, if user ask about portfolio, and don't specify the chain, you should ask user to specify the chain.
-      //Most of the time you won't need to ask users for more information, but if you think you need more information, then ask for it.
-      //YOU MUST NOT answer the user's query, you just paraphrase it to another AI.
-      //Your answer will be pass along to another AI, so If you don't follow the instruction, it will cause the AI to behave in unintended way.
-      //`,
-      //messages: messages,
-      //})
-      //console.log("paraphrasedQuery", paraphrasedQuery.text)
 
-      //messages.pop()
-
-      //messages.push({
-      //role: "user",
-      //content: paraphrasedQuery.text,
-      //})
-      const { textStream } = await streamText({
+      const { fullStream } = await streamText({
         model: isRedpill ? onchainRedpill(model) : openrouter(model),
         system: systemPrompt,
         messages: messages,
@@ -97,8 +76,26 @@ export const submitMessage = async (
         temperature,
       })
 
-      for await (const text of textStream) {
-        stream.update(text)
+      for await (const detail of fullStream) {
+        if (detail.type === "text-delta") {
+          stream.update({
+            delta: detail.textDelta,
+            type: "text",
+          })
+        }
+        if (detail.type === "tool-call") {
+          stream.update({
+            type: "status",
+            status: "start",
+            label: `Calling ${detail.toolName}`,
+          })
+        }
+        if (detail.type === "step-finish") {
+          stream.update({
+            type: "status",
+            status: "end",
+          })
+        }
       }
     } catch (e) {
       throw e
@@ -109,7 +106,7 @@ export const submitMessage = async (
 
   return {
     messages,
-    newMessage: stream.value,
+    stream: stream.value,
     error: null,
   }
 }

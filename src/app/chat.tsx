@@ -5,6 +5,7 @@ import { submitMessage } from "@/services/ai"
 import { useAppStore } from "@/stores/app-store"
 import { Message } from "@/types"
 import { readStreamableValue } from "ai/rsc"
+import _ from "lodash"
 import {
   Album,
   ArrowRight,
@@ -12,6 +13,8 @@ import {
   Check,
   Cuboid,
   IterationCw,
+  Loader,
+  Loader2,
   MessageCircleMore,
   Pencil,
   Pill,
@@ -30,6 +33,7 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu"
+import { ScrollArea } from "@/components/ui/scroll-area"
 import { Separator } from "@/components/ui/separator"
 import { Skeleton } from "@/components/ui/skeleton"
 import { Textarea } from "@/components/ui/textarea"
@@ -50,6 +54,13 @@ const Chat = () => {
   const [input, setInput] = useState("")
   const [isTyping, setIsTyping] = useState(false)
 
+  const [statuses, setStatuses] = useState<
+    {
+      label?: string
+      isThinking: boolean
+    }[]
+  >([])
+
   const continueConversation = useCallback(
     async (input: string, conversation: Message[]) => {
       if (!systemPrompt) return
@@ -58,6 +69,11 @@ const Chat = () => {
       if (!text) return
 
       setIsTyping(true)
+      setStatuses([
+        {
+          isThinking: true,
+        },
+      ])
 
       try {
         setConversation([
@@ -72,7 +88,7 @@ const Chat = () => {
           },
         ])
 
-        const { messages, newMessage } = await submitMessage(
+        const { messages, stream } = await submitMessage(
           [...conversation, { role: "user", content: input.trim() }],
           systemPrompt,
           model,
@@ -81,14 +97,42 @@ const Chat = () => {
 
         let textContent = ""
 
-        for await (const delta of readStreamableValue(newMessage)) {
-          textContent = `${textContent}${delta}`
+        for await (const detail of readStreamableValue(stream)) {
+          if (!detail) continue
+          if (detail.type === "text") {
+            textContent = `${textContent}${detail.delta}`
 
-          setConversation([
-            ...messages,
-            { role: "assistant", content: textContent },
-          ])
+            setConversation([
+              ...messages,
+              { role: "assistant", content: textContent },
+            ])
+          } else if (detail.type === "status") {
+            setStatuses((prev) => {
+              const next = [...prev]
+              next[next.length - 1].isThinking = false
+              if (detail.status === "start") {
+                if (next.length > 1 && next[next.length - 2]?.label) {
+                  next.pop()
+                }
+                next.push({
+                  label: detail.label,
+                  isThinking: true,
+                })
+              } else if (detail.status === "end") {
+                next[next.length - 1].isThinking = false
+                next.push({
+                  isThinking: true,
+                })
+              }
+              return next
+            })
+          }
         }
+        setStatuses((prev) => {
+          const next = [...prev]
+          next.pop()
+          return next
+        })
 
         if (!textContent) {
           setConversation([
@@ -231,7 +275,7 @@ const Chat = () => {
                       Cuboid,
                       "What is the latest block?, display essential details.",
                     ],
-                    [UserRound, "Analyze 10 latest activity of vitalik.eth"],
+                    [UserRound, "What's going on to vitalik.eth lately?"],
                     [
                       Album,
                       "Analyze the trends of 10 latest ens governance proposals.",
@@ -260,21 +304,35 @@ const Chat = () => {
             <div className="flex w-full flex-col gap-4">
               {conversation.slice(1).map((message, index) => (
                 <Fragment key={index}>
-                  {message.role === "user" ? (
+                  {message.role === "assistant" ? (
                     <>
-                      <Separator />
-                      <h1 className="mb-2 text-2xl font-bold">
-                        {message.content}
-                      </h1>
-                    </>
-                  ) : (
-                    <div className="flex items-center gap-2">
-                      <MessageCircleMore className="size-6" />
-                      <h2 className="text-xl font-semibold">Answer</h2>
-                    </div>
-                  )}
-                  {message.role === "assistant" && (
-                    <>
+                      {conversation.length - 2 === index && (
+                        <>
+                          <div className="flex items-center gap-2">
+                            <MessageCircleMore className="size-6" />
+                            <h2 className="text-xl font-semibold">Status</h2>
+                          </div>
+                          <div>
+                            {statuses.map((status, index) => (
+                              <div
+                                key={index}
+                                className="flex items-center gap-2 text-sm"
+                              >
+                                {status.isThinking ? (
+                                  <Loader2 className="size-4 animate-spin" />
+                                ) : (
+                                  <Check className="size-4" />
+                                )}
+                                {status.label || "Thinking"}
+                              </div>
+                            ))}
+                          </div>
+                        </>
+                      )}
+                      <div className="flex items-center gap-2">
+                        <MessageCircleMore className="size-6" />
+                        <h2 className="text-xl font-semibold">Answer</h2>
+                      </div>
                       {message.content ? (
                         <>
                           <Markdown className="max-w-full">
@@ -304,6 +362,13 @@ const Chat = () => {
                           <Skeleton className="h-8 w-full" />
                         </div>
                       )}
+                    </>
+                  ) : (
+                    <>
+                      <Separator />
+                      <h1 className="mb-2 text-2xl font-bold">
+                        {message.content}
+                      </h1>
                     </>
                   )}
                 </Fragment>
