@@ -16,7 +16,7 @@ export const ensNameTools = {
       name: z
         .string()
         .describe(
-          "The ens name the format is 'something.eth' only without anything else, e.g. 'vitalik.eth'"
+          "The ens name the format is 'something.eth' only without anything else, e.g. 'cucumber.eth'"
         ),
     }),
     execute: async ({ name }: { name: string }) => {

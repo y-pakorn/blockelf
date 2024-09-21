@@ -3,8 +3,10 @@
 import { getPortfolioDetails } from "@/tools/1inch/getPortfolioDetails"
 import { getPortfolioValue } from "@/tools/1inch/getPortfolioValue"
 import { getProtocolsByWallet } from "@/tools/1inch/getProtocolsByWallet"
+import { getTokenAddress } from "@/tools/1inch/getTokenAddress"
 import { getTokensByWallet } from "@/tools/1inch/getTokensByWallet"
 import { getWalletHistory } from "@/tools/1inch/getWalletHistory"
+import { getPrice } from "@/tools/chainlink/getPrice"
 import { getProofOfReserve } from "@/tools/chainlink/getProofOfReserve"
 import { ensNameTools } from "@/tools/ens/name"
 import { ensSubgraphTools } from "@/tools/ens/subgraph"
@@ -12,7 +14,7 @@ import { getChainId } from "@/tools/getChainId"
 import { getLatestBlock } from "@/tools/getLatestBlock"
 import { timestampToReadable } from "@/tools/timestampToReadable"
 // import { Message } from "@/types"
-import { streamText } from "ai"
+import { generateText, streamText } from "ai"
 import { createStreamableValue } from "ai/rsc"
 
 import { AVAILABLE_MODELS, DEFAULT_MODEL } from "@/config/model"
@@ -35,30 +37,65 @@ export const submitMessage = async (
     try {
       const isRedpill =
         AVAILABLE_MODELS.find((m) => m.id === model)?.isRedpill || false
+
+      const tools = {
+        timestampToReadable,
+        getLatestBlock,
+        getWalletHistory,
+        getChainId,
+        getPortfolioValue,
+        getProtocolsByWallet,
+        getTokensByWallet,
+        getProofOfReserve,
+        getPortfolioDetails,
+        getPrice,
+        getTokenAddress,
+        ...ensSubgraphTools,
+        ...ensNameTools,
+      }
+      const paraphrasedQuery = await generateText({
+        model: isRedpill ? onchainRedpill(model) : openrouter(model),
+        system: `You are a helper of another blockchain on-chain analyser AI. You will receive user query and you need to paraphrase that query to be
+        a better human-readable query that is more specific and should give more context to the AI.
+        Here is the tools that you can utilize:
+        ${Object.entries(tools)
+          .map(
+            ([toolName, tool]) =>
+              `${toolName}: ${(tool as { description: string }).description}`
+          )
+          .join("\n")}
+===========================================
+          Please only return the paraphrased query, no other text or markdown.
+          Also be specific on the chains because we support multiple chains.
+          For example, if user ask about portfolio, and don't specify the chain, you should ask user to specify the chain.
+          Most of the time you won't need to ask users for more information, but if you think you need more information, then ask for it.
+          YOU MUST NOT answer the user's query, you just paraphrase it to another AI.
+          Your answer will be pass along to another AI, so If you don't follow the instruction, it will cause the AI to behave in unintended way.
+          `,
+        messages: messages,
+      })
+      console.log("paraphrasedQuery", paraphrasedQuery.text)
+
+      messages.pop()
+
+      messages.push({
+        role: "user",
+        content: paraphrasedQuery.text,
+      })
       const { textStream } = await streamText({
         model: isRedpill ? onchainRedpill(model) : openrouter(model),
-        system: `You are a ethereum blockchain on-chain analyser, 
+        system: `You are a blockchain on-chain analyser, 
           return response to user's query as assistant role. 
           Use must markdown to format the response. 
           Display object in markdown's table format.
           If you came across any unix timestamp, you MUST convert it to human readable format using \`timestampToReadable\` tool.
-
+          The data you gave out should be human readable and easy to understand. 
+          You can use as many tools as you need and can use same tool multiple times if needed.
+          For example, if user ask about token price, you can use \`getPrice\` tool multiple times to get the price of multiple tokens.
         `,
-        messages,
+        messages: messages,
         toolChoice: "required",
-        tools: {
-          timestampToReadable,
-          getLatestBlock,
-          getWalletHistory,
-          getChainId,
-          getPortfolioValue,
-          getProtocolsByWallet,
-          getTokensByWallet,
-          getProofOfReserve,
-          getPortfolioDetails,
-          ...ensSubgraphTools,
-          ...ensNameTools,
-        },
+        tools,
         maxSteps: 1000,
         maxToolRoundtrips: 1000,
       })
@@ -76,5 +113,6 @@ export const submitMessage = async (
   return {
     messages,
     newMessage: stream.value,
+    error: null,
   }
 }

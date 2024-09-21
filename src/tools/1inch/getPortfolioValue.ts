@@ -52,7 +52,7 @@ export const getPortfolioValue = {
     try {
       const response = await axios.get(url, config)
       const end = Date.now() // End timing
-      console.log(`getPortfolioValue1Inch took ${end - start} ms`) // Log the time taken
+      console.log(`getPortfolioValue took ${end - start} ms`) // Log the time taken
       // logSchema(response.data)
       return {
         portfolioValue: convertBigIntToString(response.data.result),
