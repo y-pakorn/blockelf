@@ -5,6 +5,7 @@ import { create } from "zustand"
 
 import { DEFAULT_MODEL } from "@/config/model"
 import { DEFAULT_TEMPERATURE } from "@/config/temperature"
+import { AVAILABLE_TOOLS } from "@/config/tools"
 
 interface AppStore {
   model: string
@@ -17,6 +18,8 @@ interface AppStore {
   setSystemPrompt: (systemPrompt: string) => Promise<void>
   getSystemPrompt: (force?: boolean) => Promise<void>
   isLoadingSystemPrompt: boolean
+  selectedTools: string[]
+  setSelectedTools: (tools: string[]) => void
 }
 
 export const useAppStore = create<AppStore>((set, get) => ({
@@ -40,4 +43,6 @@ export const useAppStore = create<AppStore>((set, get) => ({
     const systemPrompt = await getSystemPrompt()
     set({ systemPrompt, isLoadingSystemPrompt: false })
   },
+  selectedTools: AVAILABLE_TOOLS.map((tool) => tool.name),
+  setSelectedTools: (tools) => set({ selectedTools: tools }),
 }))

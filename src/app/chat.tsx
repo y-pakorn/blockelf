@@ -23,6 +23,7 @@ import {
 
 import { AVAILABLE_MODELS } from "@/config/model"
 import { AVAILABLE_TEMPERATURES } from "@/config/temperature"
+import { AVAILABLE_TOOLS } from "@/config/tools"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -49,6 +50,8 @@ const Chat = () => {
     temperature,
     setTemperature,
     systemPrompt,
+    selectedTools,
+    setSelectedTools,
   } = useAppStore()
 
   const [input, setInput] = useState("")
@@ -250,6 +253,53 @@ const Chat = () => {
                                   {m.description}
                                 </p>
                                 {m.temperature === temperature && (
+                                  <Check className="absolute right-2 top-1/2 size-4 -translate-y-1/2" />
+                                )}
+                              </Toggle>
+                            ))}
+                          </ul>
+                        </NavigationMenuContent>
+                      </NavigationMenuItem>
+                      <NavigationMenuItem>
+                        <NavigationMenuTrigger className="rounded-full px-3">
+                          <Cuboid className="mr-2 size-4" />
+                          Tools
+                        </NavigationMenuTrigger>
+                        <NavigationMenuContent>
+                          <ul className="grid w-[400px] gap-2 ">
+                            {AVAILABLE_TOOLS.map((tool) => (
+                              <Toggle
+                                pressed={selectedTools.includes(tool.name)}
+                                onClick={() => {
+                                  setSelectedTools(
+                                    selectedTools.includes(tool.name)
+                                      ? selectedTools.filter(
+                                          (id) => id !== tool.name
+                                        )
+                                      : [...selectedTools, tool.name]
+                                  )
+                                }}
+                                className="relative flex h-full items-start justify-start text-start"
+                                key={tool.name}
+                              >
+                                <div className="flex items-center p-2">
+                                  {tool.logo && (
+                                    <img
+                                      src={tool.logo}
+                                      alt={`${tool.name} logo`}
+                                      className="mr-4 h-6 w-6 object-contain"
+                                    />
+                                  )}
+                                  <div>
+                                    <h3 className="text-base font-bold">
+                                      {tool.name}
+                                    </h3>
+                                    <p className="text-sm text-muted-foreground">
+                                      {tool.description}
+                                    </p>
+                                  </div>
+                                </div>
+                                {selectedTools.includes(tool.name) && (
                                   <Check className="absolute right-2 top-1/2 size-4 -translate-y-1/2" />
                                 )}
                               </Toggle>
