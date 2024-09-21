@@ -124,7 +124,8 @@ export const ensSubgraphTools = {
     },
   }),
   getENSDelegates: tool({
-    description: "Get the ENS (Ethereum Name Service) delegates",
+    description:
+      "Get the ENS (Ethereum Name Service) delegates, all or by address",
     parameters: z.object({
       address: z
         .string()

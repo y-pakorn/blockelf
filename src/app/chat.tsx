@@ -13,11 +13,13 @@ import {
   Cuboid,
   IterationCw,
   MessageCircleMore,
+  Pencil,
   Pill,
   UserRound,
 } from "lucide-react"
 
 import { AVAILABLE_MODELS } from "@/config/model"
+import { AVAILABLE_TEMPERATURES } from "@/config/temperature"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -40,6 +42,8 @@ const Chat = () => {
     model,
     setMessages: setConversation,
     setModel,
+    temperature,
+    setTemperature,
   } = useAppStore()
 
   const [input, setInput] = useState("")
@@ -54,7 +58,8 @@ const Chat = () => {
       try {
         const { messages, newMessage } = await submitMessage(
           [...conversation, { role: "user", content: input.trim() }],
-          model
+          model,
+          temperature
         )
 
         setConversation([...messages, { role: "assistant", content: "" }])
@@ -73,7 +78,7 @@ const Chat = () => {
         setIsTyping(false)
       }
     },
-    [model]
+    [model, temperature]
   )
 
   return (
@@ -145,6 +150,38 @@ const Chat = () => {
                                       <span className="font-bold">Redpill</span>
                                     </Badge>
                                   </div>
+                                )}
+                              </Toggle>
+                            ))}
+                          </ul>
+                        </NavigationMenuContent>
+                      </NavigationMenuItem>
+                      <NavigationMenuItem>
+                        <NavigationMenuTrigger className="rounded-full px-3">
+                          <Pencil className="mr-2 size-4" />
+                          {
+                            AVAILABLE_TEMPERATURES.find(
+                              (t) => t.temperature === temperature
+                            )?.label
+                          }
+                        </NavigationMenuTrigger>
+                        <NavigationMenuContent>
+                          <ul className="grid w-[400px] gap-2 p-2">
+                            {AVAILABLE_TEMPERATURES.map((m, i) => (
+                              <Toggle
+                                pressed={m.temperature === temperature}
+                                onClick={() => setTemperature(m.temperature)}
+                                className="relative flex h-full flex-col items-start justify-start p-2 text-start"
+                                key={i}
+                              >
+                                <h3 className="text-base font-bold">
+                                  {m.label}
+                                </h3>
+                                <p className="text-sm text-muted-foreground">
+                                  {m.description}
+                                </p>
+                                {m.temperature === temperature && (
+                                  <Check className="absolute right-2 top-1/2 size-4 -translate-y-1/2" />
                                 )}
                               </Toggle>
                             ))}
