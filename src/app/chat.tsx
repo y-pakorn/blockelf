@@ -13,10 +13,12 @@ import {
   Cuboid,
   IterationCw,
   MessageCircleMore,
+  Pill,
   UserRound,
 } from "lucide-react"
 
 import { AVAILABLE_MODELS } from "@/config/model"
+import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import {
@@ -125,7 +127,7 @@ const Chat = () => {
                                 className="relative flex h-full flex-col items-start justify-start p-2 text-start"
                                 key={m.id}
                               >
-                                <h3 className="text-lg font-semibold">
+                                <h3 className="text-base font-bold">
                                   {m.name}
                                 </h3>
                                 <h4 className="font-mono text-xs">{m.id}</h4>
@@ -134,6 +136,15 @@ const Chat = () => {
                                 </p>
                                 {m.id === model && (
                                   <Check className="absolute right-2 top-1/2 size-4 -translate-y-1/2" />
+                                )}
+                                {m.isRedpill && (
+                                  <div className="absolute right-0 top-0">
+                                    <Badge className="gap-1 px-1.5 py-0">
+                                      On-chain via{" "}
+                                      <Pill className="size-3 stroke-red-400 stroke-[3]" />{" "}
+                                      <span className="font-bold">Redpill</span>
+                                    </Badge>
+                                  </div>
                                 )}
                               </Toggle>
                             ))}

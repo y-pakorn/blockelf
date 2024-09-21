@@ -1,3 +1,5 @@
+import { LucideIcon } from "lucide-react"
+
 export type SiteConfig = {
   name: string
   author: string
@@ -16,4 +18,11 @@ export type SiteConfig = {
 export type Message = {
   role: "user" | "assistant"
   content: string
+}
+
+export type Model = {
+  id: string
+  name: string
+  description: string
+  isRedpill?: boolean
 }
