@@ -6,17 +6,15 @@ import { getProtocolsByWallet } from "@/tools/1inch/getProtocolsByWallet"
 import { getTokensByWallet } from "@/tools/1inch/getTokensByWallet"
 import { getWalletHistory } from "@/tools/1inch/getWalletHistory"
 import { getProofOfReserve } from "@/tools/chainlink/getProofOfReserve"
-import { getAddressFromName } from "@/tools/ens/getAddressFromName"
+import { ensNameTools } from "@/tools/ens/name"
 import { ensSubgraphTools } from "@/tools/ens/subgraph"
 import { getChainId } from "@/tools/getChainId"
 import { getLatestBlock } from "@/tools/getLatestBlock"
 import { timestampToReadable } from "@/tools/timestampToReadable"
 // import { Message } from "@/types"
-import { createOpenAI as createGroq } from "@ai-sdk/openai"
 import { streamText } from "ai"
 import { createStreamableValue } from "ai/rsc"
 
-import { env } from "@/env.mjs"
 import { DEFAULT_MODEL } from "@/config/model"
 import { onchainRedpill, openrouter, redpill } from "@/lib/ai_utils"
 
@@ -49,7 +47,6 @@ export const submitMessage = async (
         tools: {
           timestampToReadable,
           getLatestBlock,
-          getAddressFromName,
           getWalletHistory,
           getChainId,
           getPortfolioValue,
@@ -58,6 +55,7 @@ export const submitMessage = async (
           getProofOfReserve,
           getPortfolioDetails,
           ...ensSubgraphTools,
+          ...ensNameTools,
         },
         maxSteps: 1000,
         maxToolRoundtrips: 1000,
