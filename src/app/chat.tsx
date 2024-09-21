@@ -9,6 +9,7 @@ import {
   Bot,
   Check,
   Cuboid,
+  IterationCw,
   MessageCircleMore,
   UserRound,
 } from "lucide-react"
@@ -40,34 +41,36 @@ const Chat = () => {
   const [input, setInput] = useState("")
   const [isTyping, setIsTyping] = useState(false)
 
-  const continueConversation = useCallback(async () => {
-    const text = input.trim()
-    if (!text) return
-    setInput("")
-    setIsTyping(true)
+  const continueConversation = useCallback(
+    async (input: string) => {
+      const text = input.trim()
+      if (!text) return
+      setIsTyping(true)
 
-    try {
-      const { messages, newMessage } = await submitMessage(
-        [...conversation, { role: "user", content: input }],
-        model
-      )
+      try {
+        const { messages, newMessage } = await submitMessage(
+          [...conversation, { role: "user", content: input.trim() }],
+          model
+        )
 
-      setConversation([...messages, { role: "assistant", content: "" }])
+        setConversation([...messages, { role: "assistant", content: "" }])
 
-      let textContent = ""
+        let textContent = ""
 
-      for await (const delta of readStreamableValue(newMessage)) {
-        textContent = `${textContent}${delta}`
+        for await (const delta of readStreamableValue(newMessage)) {
+          textContent = `${textContent}${delta}`
 
-        setConversation([
-          ...messages,
-          { role: "assistant", content: textContent },
-        ])
+          setConversation([
+            ...messages,
+            { role: "assistant", content: textContent },
+          ])
+        }
+      } finally {
+        setIsTyping(false)
       }
-    } finally {
-      setIsTyping(false)
-    }
-  }, [conversation, model, input])
+    },
+    [model]
+  )
 
   return (
     <>
@@ -76,7 +79,8 @@ const Chat = () => {
           <form
             onSubmit={async (e) => {
               e.preventDefault()
-              continueConversation()
+              continueConversation(input)
+              setInput("")
             }}
           >
             <div className="flex w-[36rem] flex-col items-center gap-2">
@@ -193,9 +197,29 @@ const Chat = () => {
                   {message.role === "assistant" && (
                     <>
                       {message.content ? (
-                        <Markdown className="max-w-full">
-                          {message.content}
-                        </Markdown>
+                        <>
+                          <Markdown className="max-w-full">
+                            {message.content}
+                          </Markdown>
+                          <div className="flex items-center gap-2">
+                            <Button
+                              onClick={async () => {
+                                setConversation(
+                                  conversation.slice(0, index + 1)
+                                )
+                                continueConversation(
+                                  conversation[index].content
+                                )
+                              }}
+                              className="rounded-full"
+                              variant="outline"
+                              size="sm"
+                            >
+                              <IterationCw className="mr-2 size-3" />
+                              Retry
+                            </Button>
+                          </div>
+                        </>
                       ) : (
                         <div className="space-y-2">
                           <Skeleton className="h-8 w-1/2" />
@@ -212,7 +236,8 @@ const Chat = () => {
               <form
                 onSubmit={async (e) => {
                   e.preventDefault()
-                  continueConversation()
+                  continueConversation(input)
+                  setInput("")
                 }}
               >
                 <div className="flex items-center gap-2">
