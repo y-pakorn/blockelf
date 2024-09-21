@@ -194,7 +194,6 @@ export const ensSubgraphTools = {
           voteCount: delegate.numberVotes,
         }
       })
-      console.log(formatted)
       console.log("getENSDelegates took", _.now() - now, "ms")
       return {
         delegates: formatted,

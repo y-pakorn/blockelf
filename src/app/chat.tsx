@@ -24,6 +24,7 @@ import {
 import { AVAILABLE_MODELS } from "@/config/model"
 import { AVAILABLE_TEMPERATURES } from "@/config/temperature"
 import { AVAILABLE_TOOLS } from "@/config/tools"
+import { cn } from "@/lib/utils"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -334,10 +335,18 @@ const Chat = () => {
                       UserRound,
                       "What's account status of muramasa.near, portfolio, and history?",
                     ],
+                    [
+                      UserRound,
+                      "What's major nfts held by 0x77B46A19e1bDE4AB5B31268472dDdF01E8a8cd60 in Morph?",
+                      true,
+                    ],
                   ] as const
-                ).map(([Icon, text]) => (
+                ).map(([Icon, text, b]) => (
                   <div
-                    className="inline-flex cursor-pointer items-center rounded-md border p-2 text-sm transition-colors hover:bg-secondary"
+                    className={cn(
+                      "inline-flex cursor-pointer items-center rounded-md border p-2 text-sm transition-colors hover:bg-secondary",
+                      b ? "break-all" : "break-words"
+                    )}
                     onClick={() => setInput(text)}
                     key={`model-${text}`}
                   >

@@ -12,6 +12,7 @@ import { getProofOfReserve } from "@/tools/chainlink/getProofOfReserve"
 import { ensNameTools } from "@/tools/ens/name"
 import { ensSubgraphTools } from "@/tools/ens/subgraph"
 import { getChainId } from "@/tools/getChainId"
+import { morphTools } from "@/tools/morph"
 import { nearAccountTools } from "@/tools/near/accounts"
 import { readableDateToTimestamp } from "@/tools/readableDateToTimestamp"
 import { rpcTools } from "@/tools/rpc"
@@ -74,6 +75,8 @@ export const submitMessage = async (
         ...ensNameTools,
         // near
         ...nearAccountTools,
+        // morph,
+        ...morphTools,
         // rpc
         ...rpcTools,
       }
