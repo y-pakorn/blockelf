@@ -228,7 +228,7 @@ const Chat = () => {
         </div>
       ) : (
         <>
-          <div className="flex w-full max-w-[48rem] flex-1 flex-col gap-4 self-center">
+          <div className="flex w-full max-w-[52rem] flex-1 flex-col gap-4 self-center">
             <h1 className="mb-4 text-3xl font-bold">
               {conversation[0].content}
             </h1>
@@ -284,7 +284,7 @@ const Chat = () => {
                 </Fragment>
               ))}
             </div>
-            <div className="sticky bottom-4 mt-auto w-[32rem] self-center">
+            <div className="sticky bottom-4 mt-auto w-[40rem] self-center">
               <form
                 onSubmit={async (e) => {
                   e.preventDefault()
