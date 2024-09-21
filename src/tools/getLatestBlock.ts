@@ -69,6 +69,15 @@ export const getLatestBlock = {
     const end = Date.now() // End timing
     console.log(`getLatestBlock took ${end - start} ms`) // Log the time taken
 
-    return convertBigIntToString(block)
+    return convertBigIntToString({
+      ...block,
+      timestampReadable: new Date(
+        Number(block.timestamp) * 1000
+      ).toLocaleString(),
+      withdrawlCount: block.withdrawals?.length,
+      transactionCount: block.transactions?.length,
+      transactions: undefined,
+      withdrawals: undefined,
+    })
   },
 }
