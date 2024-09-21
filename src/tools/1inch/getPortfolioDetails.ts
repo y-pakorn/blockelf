@@ -4,9 +4,9 @@ import { z } from "zod"
 import { env } from "@/env.mjs"
 import { convertBigIntToString } from "@/lib/utils"
 
-export const getProtocolsByWallet = {
+export const getPortfolioDetails = {
   description:
-    "Get portfolio protocol details by address.  Supported Chain names are Ethereum, BNB Chain, Polygon, Arbitrum, Gnosis, Optimism, Base",
+    "Get the portfolio details, grouped by chains and addresses. Supported Chain names are Ethereum, BNB Chain, Polygon, Arbitrum, Gnosis, Optimism, Base",
   parameters: z.object({
     addresses: z
       .array(z.string())
@@ -36,7 +36,8 @@ export const getProtocolsByWallet = {
   }) => {
     const start = Date.now() // Start timing
 
-    const url = `https://api.1inch.dev/portfolio/portfolio/v4/overview/protocols/details`
+    const url_protocols = `https://api.1inch.dev/portfolio/portfolio/v4/overview/protocols/details`
+    const url_tokens = `https://api.1inch.dev/portfolio/portfolio/v4/overview/erc20/details`
 
     const config = {
       headers: {
@@ -54,10 +55,14 @@ export const getProtocolsByWallet = {
     }
 
     try {
-      const response = await axios.get(url, config)
+      const response_protocols = await axios.get(url_protocols, config)
+      const response_tokens = await axios.get(url_tokens, config)
       const end = Date.now() // End timing
       console.log(`getProtocolDetailByAddress1Inch took ${end - start} ms`) // Log the time taken
-      return convertBigIntToString(response.data)
+      return {
+        protocols: convertBigIntToString(response_protocols.data),
+        tokens: convertBigIntToString(response_tokens.data),
+      }
     } catch (error) {
       console.error(error)
       throw new Error("Failed to fetch protocol details from 1inch API")

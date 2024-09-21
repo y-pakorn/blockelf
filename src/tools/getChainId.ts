@@ -32,6 +32,9 @@ export const getChainId = {
     const end = Date.now() // End timing
     console.log(`getChainId took ${end - start} ms`) // Log the time taken
 
-    return chain.chainId
+    return {
+      chain_id: chain.chainId,
+      chain_name: chainName,
+    }
   },
 }

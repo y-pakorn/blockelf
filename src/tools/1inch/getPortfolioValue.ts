@@ -2,6 +2,7 @@ import axios from "axios"
 import { z } from "zod"
 
 import { env } from "@/env.mjs"
+import { convertBigIntToString } from "@/lib/utils"
 
 // const SUPPORTED_CHAINS = {
 //   Ethereum: { chainId: 1, iconName: "ethereum" },
@@ -52,7 +53,7 @@ export const getPortfolioValue = {
       const response = await axios.get(url, config)
       const end = Date.now() // End timing
       console.log(`getPortfolioValue1Inch took ${end - start} ms`) // Log the time taken
-      return response.data
+      return convertBigIntToString(response.data)
     } catch (error) {
       console.error(error)
       throw new Error("Failed to fetch portfolio value from 1inch API")

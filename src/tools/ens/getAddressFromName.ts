@@ -23,6 +23,8 @@ export const getAddressFromName = {
       name,
     })
     console.log("getEnsAddress took", _.now() - now, "ms")
-    return address
+    return {
+      wallet_address: address,
+    }
   },
 }

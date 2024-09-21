@@ -1,12 +1,12 @@
 "use server"
 
+import { getPortfolioDetails } from "@/tools/1inch/getPortfolioDetails"
 import { getPortfolioValue } from "@/tools/1inch/getPortfolioValue"
 import { getProtocolsByWallet } from "@/tools/1inch/getProtocolsByWallet"
 import { getTokensByWallet } from "@/tools/1inch/getTokensByWallet"
 import { getWalletHistory } from "@/tools/1inch/getWalletHistory"
-import { getLatestAnswer } from "@/tools/chainlink/getLatestAnswer"
 import { getProofOfReserve } from "@/tools/chainlink/getProofOfReserve"
-import { getAddressFromName } from "@/tools/getAddressFromName"
+import { getAddressFromName } from "@/tools/ens/getAddressFromName"
 import { getChainId } from "@/tools/getChainId"
 import { getLatestBlock } from "@/tools/getLatestBlock"
 import { timestampToReadable } from "@/tools/timestampToReadable"
@@ -53,6 +53,7 @@ export const submitMessage = async (
         getProtocolsByWallet,
         getTokensByWallet,
         getProofOfReserve,
+        getPortfolioDetails,
       },
       maxSteps: 1000,
       maxToolRoundtrips: 1000,
