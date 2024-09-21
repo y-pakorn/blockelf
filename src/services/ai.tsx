@@ -12,6 +12,7 @@ import { ensNameTools } from "@/tools/ens/name"
 import { ensSubgraphTools } from "@/tools/ens/subgraph"
 import { getChainId } from "@/tools/getChainId"
 import { getLatestBlock } from "@/tools/getLatestBlock"
+import { nearAccountTools } from "@/tools/near/accounts"
 import { timestampToReadable } from "@/tools/timestampToReadable"
 // import { Message } from "@/types"
 import { streamText } from "ai"
@@ -54,6 +55,7 @@ export const submitMessage = async (
         getTokenAddress,
         ...ensSubgraphTools,
         ...ensNameTools,
+        ...nearAccountTools,
       }
       //const paraphrasedQuery = await generateText({
       //model: isRedpill ? onchainRedpill(model) : openrouter(model),
