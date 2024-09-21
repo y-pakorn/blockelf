@@ -12,9 +12,11 @@ import { getChainId } from "@/tools/getChainId"
 import { getLatestBlock } from "@/tools/getLatestBlock"
 import { timestampToReadable } from "@/tools/timestampToReadable"
 // import { Message } from "@/types"
+import { createOpenAI as createGroq } from "@ai-sdk/openai"
 import { streamText } from "ai"
 import { createStreamableValue } from "ai/rsc"
 
+import { env } from "@/env.mjs"
 import { DEFAULT_MODEL } from "@/config/model"
 import { onchainRedpill, openrouter, redpill } from "@/lib/ai_utils"
 
@@ -35,12 +37,16 @@ export const submitMessage = async (
     try {
       const { textStream } = await streamText({
         //model: openrouter("google/gemini-pro-1.5-exp"),
-        model: openrouter(model),
+        model:
+          model === "google/gemini-flash-1.5"
+            ? openrouter(model)
+            : onchainRedpill(model),
         system: `You are a ethereum blockchain on-chain analyser, 
           return response to user's query as assistant role. 
           Use must markdown to format the response. 
           Display object in markdown's table format.
           If you came across any unix timestamp, you MUST convert it to human readable format using \`timestampToReadable\` tool.
+
         `,
         messages,
         toolChoice: "required",

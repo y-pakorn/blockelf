@@ -108,9 +108,9 @@ export const getProofOfReserve = {
   execute: async ({ assetInfo }: { assetInfo: string }) => {
     const start = Date.now() // Start timing
     const { text: address } = await generateText({
-      model: openrouter("gpt-3.5-turbo"),
+      // model: openrouter("gpt-3.5-turbo"),
       // model: redpill("gpt-3.5-turbo"),
-      // model: onchainRedpill("gpt-3.5-turbo"),
+      model: onchainRedpill("gpt-3.5-turbo"),
       // model: openrouter("google/gemini-flash-1.5"),
       prompt: `From the asset info, Only return the proof of reserve contract address
       Don't return anything else, just the address

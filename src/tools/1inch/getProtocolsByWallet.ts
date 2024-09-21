@@ -57,8 +57,10 @@ export const getProtocolsByWallet = {
       const response = await axios.get(url, config)
       const end = Date.now() // End timing
       console.log(`getProtocolsByWallet took ${end - start} ms`) // Log the time taken
-      logSchema(response.data)
-      return convertBigIntToString(response.data.result)
+      // logSchema(response.data)
+      return {
+        protocols: convertBigIntToString(response.data.result),
+      }
     } catch (error) {
       console.error(error)
       throw new Error("Failed to fetch protocol details from 1inch API")

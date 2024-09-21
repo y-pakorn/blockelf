@@ -68,8 +68,10 @@ export const getTokensByWallet = {
       const response = await axios.get(url, config)
       const end = Date.now() // End timing
       console.log(`getTokensByWallet took ${end - start} ms`) // Log the time taken
-      logSchema(response.data)
-      return convertBigIntToString(response.data.result)
+      // logSchema(response.data)
+      return {
+        tokens: convertBigIntToString(response.data.result),
+      }
     } catch (error) {
       console.error(error)
       throw new Error("Failed to fetch token details from 1inch API")

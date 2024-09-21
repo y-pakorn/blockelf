@@ -53,8 +53,10 @@ export const getPortfolioValue = {
       const response = await axios.get(url, config)
       const end = Date.now() // End timing
       console.log(`getPortfolioValue1Inch took ${end - start} ms`) // Log the time taken
-      logSchema(response.data)
-      return convertBigIntToString(response.data.result)
+      // logSchema(response.data)
+      return {
+        portfolioValue: convertBigIntToString(response.data.result),
+      }
     } catch (error) {
       console.error(error)
       throw new Error("Failed to fetch portfolio value from 1inch API")

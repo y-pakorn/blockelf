@@ -107,8 +107,10 @@ export const getWalletHistory = {
       console.log(`getWalletHistory took ${end - start} ms`)
       // logSchema(response.data)
       const res = formatResponse(response.data)
-      console.log("res", res)
-      return res
+      // console.log("res", res)
+      return {
+        history: res,
+      }
     } catch (error) {
       console.error(error)
       throw new Error("Failed to fetch wallet history from 1inch API")

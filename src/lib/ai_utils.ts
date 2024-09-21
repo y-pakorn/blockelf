@@ -16,8 +16,6 @@ export const redpill = createGroq({
 
 export const onchainRedpill = createGroq({
   baseURL:
-    "https://wapo-testnet.phala.network/ipfs/QmfPirCbhHc5nDqBh5oSjc9hVP8NbFGx6Z3t3bKJ3SywQd",
-  // "https://wapo-testnet.phala.network/ipfs/QmSvRgWgxnhno3kQKN9oWDqYsUD62jXKnYmMxt8oNCoLsp",
-
+    "https://wapo-testnet.phala.network/ipfs/QmPfBK6JQGBKaFvq8sWfxtE6HyWhucH8rYzpsvdWbDenGR?key=19f55f816b4ee8f6&path=",
   apiKey: env.REDPILL_API_KEY,
 })

@@ -59,8 +59,8 @@ export const getPortfolioDetails = {
       const response_tokens = await axios.get(url_tokens, config)
       const end = Date.now() // End timing
       console.log(`getPortfolioDetails took ${end - start} ms`) // Log the time taken
-      logSchema(response_protocols.data)
-      logSchema(response_tokens.data)
+      // logSchema(response_protocols.data)
+      // logSchema(response_tokens.data)
       return {
         protocols: convertBigIntToString(response_protocols.data.result),
         tokens: convertBigIntToString(response_tokens.data.result),
