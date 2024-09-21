@@ -60,14 +60,24 @@ const Chat = () => {
       setIsTyping(true)
 
       try {
+        setConversation([
+          ...conversation,
+          {
+            role: "user",
+            content: input.trim(),
+          },
+          {
+            role: "assistant",
+            content: "",
+          },
+        ])
+
         const { messages, newMessage } = await submitMessage(
           [...conversation, { role: "user", content: input.trim() }],
           systemPrompt,
           model,
           temperature
         )
-
-        setConversation([...messages, { role: "assistant", content: "" }])
 
         let textContent = ""
 
@@ -77,6 +87,16 @@ const Chat = () => {
           setConversation([
             ...messages,
             { role: "assistant", content: textContent },
+          ])
+        }
+
+        if (!textContent) {
+          setConversation([
+            ...messages,
+            {
+              role: "assistant",
+              content: "An error occurred while processing the request.",
+            },
           ])
         }
       } finally {
