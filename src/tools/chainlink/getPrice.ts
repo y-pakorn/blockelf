@@ -12,35 +12,35 @@ const priceInfo = {
       assetName: "Ethereum",
       base: "ETH",
       quote: "USD",
-      decimals: 18,
+      decimals: 8,
     },
     "stETH-USD": {
       address: "0xCfE54B5cD566aB89272946F602D76Ea879CAb4a8",
       assetName: "Lido Staked ETH",
       base: "ETH",
       quote: "USD",
-      decimals: 18,
+      decimals: 8,
     },
     "wstETH-USD": {
       address: "0x164b276057258d81941e97B0a900D4C7B358bCe0",
       assetName: "Wrapped Lido Staked ETH",
       base: "ETH",
       quote: "USD",
-      decimals: 18,
+      decimals: 8,
     },
     "USDC-USD": {
       address: "0x8fFfFfd4AfB6115b954Bd326cbe7B4BA576818f6",
       assetName: "Circle USD",
       base: "USDC",
       quote: "USD",
-      decimals: 6,
+      decimals: 8,
     },
     "USDT-USD": {
       address: "0x3E7d1eAB13ad0104d2750B8863b489D65364e32D",
       assetName: "Tether USD",
       base: "USDT",
       quote: "USD",
-      decimals: 6,
+      decimals: 8,
     },
     "BTC-USD": {
       address: "0xF4030086522a5bEEa4988F8cA5B36dbC97BeE88c",
@@ -54,14 +54,14 @@ const priceInfo = {
       assetName: "Bitcoin",
       base: "BTC",
       quote: "ETH",
-      decimals: 18,
+      decimals: 8,
     },
     "SOL-USD": {
       address: "0x4ffC43a60e009B551865A93d232E33Fce9f01507",
       assetName: "Solana",
       base: "SOL",
       quote: "USD",
-      decimals: 18,
+      decimals: 8,
     },
   },
 }
@@ -118,7 +118,7 @@ export const getPrice = {
       assetInfo: assetInfo,
       price: decimals
         ? parseInt(answer.toString()) / 10 ** decimals
-        : parseInt(answer.toString()) / 1e18,
+        : parseInt(answer.toString()) / 1e8,
       assetName: Object.values(priceInfo.Ethereum).find(
         (info) => info.address === address
       )?.assetName,

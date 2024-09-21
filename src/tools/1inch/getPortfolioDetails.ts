@@ -56,6 +56,10 @@ export const getPortfolioDetails = {
 
     try {
       const response_protocols = await axios.get(url_protocols, config)
+
+      // Add sleep to prevent rate limit
+      await new Promise((resolve) => setTimeout(resolve, 2000))
+
       const response_tokens = await axios.get(url_tokens, config)
       const end = Date.now() // End timing
       console.log(`getPortfolioDetails took ${end - start} ms`) // Log the time taken
