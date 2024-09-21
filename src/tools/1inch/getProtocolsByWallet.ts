@@ -2,7 +2,7 @@ import axios from "axios"
 import { z } from "zod"
 
 import { env } from "@/env.mjs"
-import { convertBigIntToString } from "@/lib/utils"
+import { convertBigIntToString, logSchema } from "@/lib/utils"
 
 export const getProtocolsByWallet = {
   description:
@@ -56,8 +56,9 @@ export const getProtocolsByWallet = {
     try {
       const response = await axios.get(url, config)
       const end = Date.now() // End timing
-      console.log(`getProtocolDetailByAddress1Inch took ${end - start} ms`) // Log the time taken
-      return convertBigIntToString(response.data)
+      console.log(`getProtocolsByWallet took ${end - start} ms`) // Log the time taken
+      logSchema(response.data)
+      return convertBigIntToString(response.data.result)
     } catch (error) {
       console.error(error)
       throw new Error("Failed to fetch protocol details from 1inch API")

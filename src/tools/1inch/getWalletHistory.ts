@@ -2,7 +2,51 @@ import axios from "axios"
 import { z } from "zod"
 
 import { env } from "@/env.mjs"
-import { convertBigIntToString } from "@/lib/utils"
+import dayjs from "@/lib/dayjs"
+import { convertBigIntToString, logSchema } from "@/lib/utils"
+
+function formatResponse(data: any) {
+  if (!data.items || !Array.isArray(data.items)) {
+    throw new Error("Invalid data format")
+  }
+
+  return data.items.map((item: any) => ({
+    transactionTimeReadable: new Date(item.timeMs).toLocaleString(),
+    transactionTimeRelative: dayjs(item.timeMs).fromNow(),
+    address: item.address,
+    type: item.type,
+    rating: item.rating,
+    direction: item.direction,
+    details: {
+      txHash: item.details.txHash,
+      chainId: item.details.chainId,
+      blockNumber: item.details.blockNumber,
+      readableBlockTime: new Date(
+        item.details.blockTimeSec * 1000
+      ).toLocaleString(),
+      blockTime: item.details.blockTimeSec,
+      status: item.details.status,
+      type: item.details.type,
+      tokenActions: item.details.tokenActions.map((action: any) => ({
+        chainId: action.chainId,
+        address: action.address,
+        standard: action.standard,
+        fromAddress: action.fromAddress,
+        toAddress: action.toAddress,
+        amount: action.amount,
+        direction: action.direction,
+      })),
+      fromAddress: item.details.fromAddress,
+      toAddress: item.details.toAddress,
+      orderInBlock: item.details.orderInBlock,
+      nonce: item.details.nonce,
+      feeInWei: item.details.feeInWei,
+      nativeTokenPriceToUsd: item.details.nativeTokenPriceToUsd,
+    },
+    id: item.id,
+    eventOrderInTransaction: item.eventOrderInTransaction,
+  }))
+}
 
 export const getWalletHistory = {
   description:
@@ -60,8 +104,11 @@ export const getWalletHistory = {
     try {
       const response = await axios.get(url, config)
       const end = Date.now() // End timing
-      console.log(`getWalletHistory1Inch took ${end - start} ms`) // Log the time taken
-      return convertBigIntToString(response.data)
+      console.log(`getWalletHistory took ${end - start} ms`)
+      // logSchema(response.data)
+      const res = formatResponse(response.data)
+      console.log("res", res)
+      return res
     } catch (error) {
       console.error(error)
       throw new Error("Failed to fetch wallet history from 1inch API")

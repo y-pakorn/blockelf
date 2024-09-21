@@ -18,7 +18,7 @@ import { createStreamableValue } from "ai/rsc"
 
 import { env } from "@/env.mjs"
 import { DEFAULT_MODEL } from "@/config/model"
-import { openrouter } from "@/lib/ai_utils"
+import { onchainRedpill, openrouter, redpill } from "@/lib/ai_utils"
 
 export interface Message {
   role: "user" | "assistant"

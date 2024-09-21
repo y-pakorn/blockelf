@@ -2,7 +2,7 @@ import axios from "axios"
 import { z } from "zod"
 
 import { env } from "@/env.mjs"
-import { convertBigIntToString } from "@/lib/utils"
+import { convertBigIntToString, logSchema } from "@/lib/utils"
 
 export const getPortfolioDetails = {
   description:
@@ -58,10 +58,12 @@ export const getPortfolioDetails = {
       const response_protocols = await axios.get(url_protocols, config)
       const response_tokens = await axios.get(url_tokens, config)
       const end = Date.now() // End timing
-      console.log(`getProtocolDetailByAddress1Inch took ${end - start} ms`) // Log the time taken
+      console.log(`getPortfolioDetails took ${end - start} ms`) // Log the time taken
+      logSchema(response_protocols.data)
+      logSchema(response_tokens.data)
       return {
-        protocols: convertBigIntToString(response_protocols.data),
-        tokens: convertBigIntToString(response_tokens.data),
+        protocols: convertBigIntToString(response_protocols.data.result),
+        tokens: convertBigIntToString(response_tokens.data.result),
       }
     } catch (error) {
       console.error(error)

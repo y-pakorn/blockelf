@@ -28,3 +28,22 @@ export const convertBigIntToString = (obj: any): any => {
 
   return obj
 }
+
+export function logSchema(data: any, indent = 0) {
+  const indentation = " ".repeat(indent)
+  if (Array.isArray(data)) {
+    console.log(`${indentation}Array of:`)
+    if (data.length > 0) {
+      logSchema(data[0], indent + 2)
+    }
+  } else if (typeof data === "object" && data !== null) {
+    for (const key in data) {
+      if (data.hasOwnProperty(key)) {
+        console.log(`${indentation}${key}: ${typeof data[key]}`)
+        logSchema(data[key], indent + 2)
+      }
+    }
+  } else {
+    console.log(`${indentation}${typeof data}`)
+  }
+}

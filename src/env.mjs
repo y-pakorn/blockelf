@@ -9,11 +9,13 @@ export const env = createEnv({
     OPENROUTER_API_KEY: z.string().min(1),
     ONEINCH_API_KEY: z.string().min(1),
     ENS_API_KEY: z.string().min(1),
+    REDPILL_API_KEY: z.string().min(1),
   },
   runtimeEnv: {
     NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL,
     OPENROUTER_API_KEY: process.env.OPENROUTER_API_KEY,
     ONEINCH_API_KEY: process.env.ONEINCH_API_KEY,
     ENS_API_KEY: process.env.ENS_API_KEY,
+    REDPILL_API_KEY: process.env.REDPILL_API_KEY,
   },
 })
