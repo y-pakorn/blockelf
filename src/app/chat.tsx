@@ -3,8 +3,10 @@
 import { Fragment, useCallback, useState } from "react"
 import { submitMessage } from "@/services/ai"
 import { useAppStore } from "@/stores/app-store"
+import { Message } from "@/types"
 import { readStreamableValue } from "ai/rsc"
 import {
+  Album,
   ArrowRight,
   Bot,
   Check,
@@ -42,7 +44,7 @@ const Chat = () => {
   const [isTyping, setIsTyping] = useState(false)
 
   const continueConversation = useCallback(
-    async (input: string) => {
+    async (input: string, conversation: Message[]) => {
       const text = input.trim()
       if (!text) return
       setIsTyping(true)
@@ -79,7 +81,7 @@ const Chat = () => {
           <form
             onSubmit={async (e) => {
               e.preventDefault()
-              continueConversation(input)
+              continueConversation(input, conversation)
               setInput("")
             }}
           >
@@ -157,6 +159,10 @@ const Chat = () => {
                       "What is the latest block?, display essential details.",
                     ],
                     [UserRound, "Analyze 10 latest activity of vitalik.eth"],
+                    [
+                      Album,
+                      "Analyze the trends of 10 latest ens governance proposals.",
+                    ],
                   ] as const
                 ).map(([Icon, text]) => (
                   <div
@@ -204,11 +210,9 @@ const Chat = () => {
                           <div className="flex items-center gap-2">
                             <Button
                               onClick={async () => {
-                                setConversation(
-                                  conversation.slice(0, index + 1)
-                                )
                                 continueConversation(
-                                  conversation[index].content
+                                  conversation[index].content,
+                                  conversation.slice(0, index)
                                 )
                               }}
                               className="rounded-full"
@@ -236,7 +240,7 @@ const Chat = () => {
               <form
                 onSubmit={async (e) => {
                   e.preventDefault()
-                  continueConversation(input)
+                  continueConversation(input, conversation)
                   setInput("")
                 }}
               >

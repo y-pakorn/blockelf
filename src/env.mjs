@@ -8,10 +8,12 @@ export const env = createEnv({
   server: {
     OPENROUTER_API_KEY: z.string().min(1),
     ONEINCH_API_KEY: z.string().min(1),
+    ENS_API_KEY: z.string().min(1),
   },
   runtimeEnv: {
     NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL,
     OPENROUTER_API_KEY: process.env.OPENROUTER_API_KEY,
     ONEINCH_API_KEY: process.env.ONEINCH_API_KEY,
+    ENS_API_KEY: process.env.ENS_API_KEY,
   },
 })

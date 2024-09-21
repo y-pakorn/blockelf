@@ -16,6 +16,7 @@ import {
 } from "viem/chains"
 import { z } from "zod"
 
+import dayjs from "@/lib/dayjs"
 import { convertBigIntToString } from "@/lib/utils"
 
 const chainConfigs = {
@@ -35,7 +36,7 @@ const chainConfigs = {
 
 export const getLatestBlock = {
   description:
-    "Get the latest block from the blockchain. Default chain is Ethereum. Supported Chain name are Arbitrum, Aurora, Avalanche, Base, Binance, ZkSync, Ethereum, Fantom, Gnosis, Klaytn, Optimism, Polygon",
+    "Get the block or latest from the blockchain. Default chain is Ethereum. Supported Chain name are Arbitrum, Aurora, Avalanche, Base, Binance, ZkSync, Ethereum, Fantom, Gnosis, Klaytn, Optimism, Polygon",
   parameters: z.object({
     chainName: z.string().describe("The chain name, e.g. 'Ethereum'"),
     blockNumber: z
@@ -74,6 +75,7 @@ export const getLatestBlock = {
       timestampReadable: new Date(
         Number(block.timestamp) * 1000
       ).toLocaleString(),
+      timestampRelative: dayjs(Number(block.timestamp) * 1000).fromNow(),
       withdrawlCount: block.withdrawals?.length,
       transactionCount: block.transactions?.length,
       transactions: undefined,

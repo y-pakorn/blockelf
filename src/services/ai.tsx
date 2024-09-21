@@ -7,6 +7,7 @@ import { getTokensByWallet } from "@/tools/1inch/getTokensByWallet"
 import { getWalletHistory } from "@/tools/1inch/getWalletHistory"
 import { getProofOfReserve } from "@/tools/chainlink/getProofOfReserve"
 import { getAddressFromName } from "@/tools/ens/getAddressFromName"
+import { ensSubgraphTools } from "@/tools/ens/subgraph"
 import { getChainId } from "@/tools/getChainId"
 import { getLatestBlock } from "@/tools/getLatestBlock"
 import { timestampToReadable } from "@/tools/timestampToReadable"
@@ -33,38 +34,43 @@ export const submitMessage = async (
   const stream = createStreamableValue()
 
   ;(async () => {
-    const { textStream } = await streamText({
-      //model: openrouter("google/gemini-pro-1.5-exp"),
-      model: openrouter(model),
-      system: `You are a ethereum blockchain on-chain analyser, 
-        return response to user's query as assistant role. 
-        Use must markdown to format the response. 
-        Display object in markdown's table format.
-        If you came across any unix timestamp, you MUST convert it to human readable format using \`timestampToReadable\` tool.
+    try {
+      const { textStream } = await streamText({
+        //model: openrouter("google/gemini-pro-1.5-exp"),
+        model: openrouter(model),
+        system: `You are a ethereum blockchain on-chain analyser, 
+          return response to user's query as assistant role. 
+          Use must markdown to format the response. 
+          Display object in markdown's table format.
+          If you came across any unix timestamp, you MUST convert it to human readable format using \`timestampToReadable\` tool.
         `,
-      messages,
-      toolChoice: "required",
-      tools: {
-        timestampToReadable,
-        getLatestBlock,
-        getAddressFromName,
-        getWalletHistory,
-        getChainId,
-        getPortfolioValue,
-        getProtocolsByWallet,
-        getTokensByWallet,
-        getProofOfReserve,
-        getPortfolioDetails,
-      },
-      maxSteps: 1000,
-      maxToolRoundtrips: 1000,
-    })
+        messages,
+        toolChoice: "required",
+        tools: {
+          timestampToReadable,
+          getLatestBlock,
+          getAddressFromName,
+          getWalletHistory,
+          getChainId,
+          getPortfolioValue,
+          getProtocolsByWallet,
+          getTokensByWallet,
+          getProofOfReserve,
+          getPortfolioDetails,
+          ...ensSubgraphTools,
+        },
+        maxSteps: 1000,
+        maxToolRoundtrips: 1000,
+      })
 
-    for await (const text of textStream) {
-      stream.update(text)
+      for await (const text of textStream) {
+        stream.update(text)
+      }
+    } catch (e) {
+      throw e
+    } finally {
+      stream.done()
     }
-
-    stream.done()
   })()
 
   return {
