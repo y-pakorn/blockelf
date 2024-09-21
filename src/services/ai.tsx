@@ -12,9 +12,9 @@ import { getProofOfReserve } from "@/tools/chainlink/getProofOfReserve"
 import { ensNameTools } from "@/tools/ens/name"
 import { ensSubgraphTools } from "@/tools/ens/subgraph"
 import { getChainId } from "@/tools/getChainId"
-import { getLatestBlock } from "@/tools/getLatestBlock"
 import { nearAccountTools } from "@/tools/near/accounts"
 import { readableDateToTimestamp } from "@/tools/readableDateToTimestamp"
+import { rpcTools } from "@/tools/rpc"
 import { timestampToReadable } from "@/tools/timestampToReadable"
 import { useAnalysisEngine } from "@/tools/useAnalysisEngine"
 import { Message } from "@/types"
@@ -55,7 +55,7 @@ export const submitMessage = async (
         // utils
         timestampToReadable,
         readableDateToTimestamp,
-        getLatestBlock,
+
         getChainId,
         useAnalysisEngine,
         // 1inch
@@ -74,6 +74,8 @@ export const submitMessage = async (
         ...ensNameTools,
         // near
         ...nearAccountTools,
+        // rpc
+        ...rpcTools,
       }
 
       const { fullStream } = await streamText({

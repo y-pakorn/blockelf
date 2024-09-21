@@ -13,6 +13,7 @@ const SUPPORTED_CHAINS = {
   Klaytn: { chainId: 8217, iconName: "klaytn" },
   Optimism: { chainId: 10, iconName: "optimism" },
   Polygon: { chainId: 137, iconName: "polygon" },
+  Morph: { chainId: 2810, iconName: "morph" },
 }
 
 export const getChainId = {
