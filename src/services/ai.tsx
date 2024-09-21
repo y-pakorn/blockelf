@@ -40,6 +40,7 @@ export const submitMessage = async (
         return response to user's query as assistant role. 
         Use must markdown to format the response. 
         Display object in markdown's table format.
+        If you came across any unix timestamp, you MUST convert it to human readable format using \`timestampToReadable\` tool.
         `,
       messages,
       toolChoice: "required",
