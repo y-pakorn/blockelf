@@ -19,6 +19,6 @@ export const timestampToReadable = tool({
   }),
   execute: async ({ timestamp, isMs }) => {
     console.log("timestampToReadable", timestamp, isMs)
-    return new Date(timestamp * (isMs ? 1 : 1000)).toUTCString()
+    return new Date(timestamp * (isMs ? 1 : 1000)).toLocaleString()
   },
 })
