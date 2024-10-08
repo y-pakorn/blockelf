@@ -320,10 +320,7 @@ const Chat = () => {
                       "What is the latest block?, display essential details.",
                     ],
                     [UserRound, "What's going on to vitalik.eth lately?"],
-                    [
-                      Album,
-                      "Analyze the trends of 10 latest ens governance proposals.",
-                    ],
+                    [Album, "Summarize the 5 latest ens governance proposals"],
                     [
                       UserRound,
                       "What's account status of muramasa.near, portfolio, and history?",

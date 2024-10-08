@@ -1,6 +1,6 @@
 import { tool } from "ai"
 import _ from "lodash"
-import { Address, createPublicClient, Hex, http } from "viem"
+import { Address, Chain, createPublicClient, Hex, http } from "viem"
 import {
   arbitrum,
   aurora,
@@ -28,7 +28,14 @@ const chainConfigs = {
   Base: base,
   Binance: bsc,
   ZkSync: zksync,
-  Ethereum: mainnet,
+  Ethereum: {
+    ...mainnet,
+    rpcUrls: {
+      default: {
+        http: ["https://1rpc.io/eth"],
+      },
+    },
+  },
   Fantom: fantom,
   Gnosis: gnosis,
   Klaytn: klaytn,
@@ -38,7 +45,7 @@ const chainConfigs = {
 }
 
 export const rpcTools = {
-  getBlock: tool({
+  getLatestBlock: tool({
     description:
       "Get the block or latest from the blockchain. Default chain is Ethereum. Supported Chain name are Arbitrum, Aurora, Avalanche, Base, Binance, ZkSync, Ethereum, Fantom, Gnosis, Klaytn, Optimism, Polygon, Morph",
     parameters: z.object({
@@ -64,7 +71,7 @@ export const rpcTools = {
 
       const client = createPublicClient({
         chain: chainConfig,
-        transport: http(chainConfig.rpcUrls.default.http[0]),
+        transport: http(),
       })
 
       const start = Date.now() // Start timing

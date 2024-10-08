@@ -91,19 +91,17 @@ const Navbar = ({ className }: { className?: string }) => {
                 className="h-72 w-full"
               />
               <div className="flex justify-end">
-                {
-                  //<Button
-                  //onClick={() => {
-                  //setSystemPrompt(tempSystemPrompt)
-                  //}}
-                  //disabled={isLoadingSystemPrompt}
-                  //>
-                  //{isLoadingSystemPrompt && (
-                  //<Loader2 className="mr-2 size-4 animate-spin" />
-                  //)}
-                  //Save
-                  //</Button>
-                }
+                <Button
+                  onClick={() => {
+                    setSystemPrompt(tempSystemPrompt)
+                  }}
+                  disabled={isLoadingSystemPrompt}
+                >
+                  {isLoadingSystemPrompt && (
+                    <Loader2 className="mr-2 size-4 animate-spin" />
+                  )}
+                  Save
+                </Button>
                 <Button
                   variant="outline"
                   onClick={() => {
