@@ -1,30 +1,14 @@
 "use server"
 
-import { getHistoricalPrice } from "@/tools/1inch/getHistoricalPrice"
-import { getPortfolioDetails } from "@/tools/1inch/getPortfolioDetails"
-import { getPortfolioValue } from "@/tools/1inch/getPortfolioValue"
-import { getProtocolsByWallet } from "@/tools/1inch/getProtocolsByWallet"
-import { getTokenAddress } from "@/tools/1inch/getTokenAddress"
-import { getTokensByWallet } from "@/tools/1inch/getTokensByWallet"
-import { getWalletHistory } from "@/tools/1inch/getWalletHistory"
-import { getPrice } from "@/tools/chainlink/getPrice"
-import { getProofOfReserve } from "@/tools/chainlink/getProofOfReserve"
-import { ensNameTools } from "@/tools/ens/name"
-import { ensSubgraphTools } from "@/tools/ens/subgraph"
-import { getChainId } from "@/tools/getChainId"
-import { morphTools } from "@/tools/morph"
-import { nearAccountTools } from "@/tools/near/accounts"
-import { readableDateToTimestamp } from "@/tools/readableDateToTimestamp"
-import { rpcTools } from "@/tools/rpc"
-import { timestampToReadable } from "@/tools/timestampToReadable"
-import { useAnalysisEngine } from "@/tools/useAnalysisEngine"
+import { nearAccountTools } from "@/tools/accounts"
 import { Message } from "@/types"
-// import { Message } from "@/types"
-import { streamText } from "ai"
+import { generateObject, generateText, streamText } from "ai"
 import { createStreamableValue } from "ai/rsc"
+import _ from "lodash"
+import { z } from "zod"
 
-import { AVAILABLE_MODELS, DEFAULT_MODEL } from "@/config/model"
-import { onchainRedpill, openrouter } from "@/lib/ai_utils"
+import { DEFAULT_MODEL } from "@/config/model"
+import { openrouter } from "@/lib/ai_utils"
 
 type StreamResponse = TextStreamResponse | StatusStreamResponse
 type StatusStreamResponse = {
@@ -39,7 +23,6 @@ type TextStreamResponse = {
 
 export const submitMessage = async (
   messages: Message[],
-  systemPrompt: string,
   model: string = DEFAULT_MODEL,
   temperature?: number
 ) => {
@@ -49,98 +32,172 @@ export const submitMessage = async (
 
   ;(async () => {
     try {
-      const isRedpill =
-        AVAILABLE_MODELS.find((m) => m.id === model)?.isRedpill || false
-
       const tools = {
-        // utils
-        timestampToReadable,
-        readableDateToTimestamp,
-
-        getChainId,
-        useAnalysisEngine,
-        // 1inch
-        getWalletHistory,
-        getPortfolioValue,
-        getProtocolsByWallet,
-        getTokensByWallet,
-        getPortfolioDetails,
-        getHistoricalPrice,
-        getTokenAddress,
-        // chainLink
-        getPrice,
-        getProofOfReserve,
-        // ens
-        ...ensSubgraphTools,
-        ...ensNameTools,
-        // near
         ...nearAccountTools,
-        // morph,
-        ...morphTools,
-        // rpc
-        ...rpcTools,
       }
 
-      const { fullStream } = await streamText({
-        model: isRedpill ? onchainRedpill(model) : openrouter(model),
-        system: systemPrompt,
-        // system: `
-        // You are a blockchain on-chain analyser with many tools integrated,
-        // return response to user's query as assistant role.
-        // YOU MUST use markdown to format the response.
-        // YOU MUST NEVER make up any information, you must only use the information provided by the tools.
-        // Display object in markdown's table format.
-        // If you came across any unix timestamp, you MUST convert it to human readable format using \`timestampToReadable\` tool.
-        // The data you gave out should be human readable and easy to understand.
-        // You should use as many tools as you need and can use same tool multiple times if needed.
-        // For example, if user ask about current token price, you can use \`getPrice\` tool multiple times to get the price of multiple tokens.
-        // If user ask about price in the past, you can use \`getHistoricalPrice\` tool to get the historical price of a token.
-        // For some tools that requires token address, you can use \`getTokenAddress\` tool first to get the token address.
+      const p = `
+Formulate plan to achieve "${_.last(messages)?.content}"
 
-        // Example of how you should think step by step:
-        // 1. User ask something
-        // 2. You should see the tools and think which tools you can use to get the data you need
-        // 3. If that tool requires input from other tools, you should use the other tools first to get the data you need
-        // 4. After you get the data you need, you should use the tool to get the data
-        // 5. Now that you have all the data, think about user's query and how to respond along with the data you got from the tools
-        // 6. Return the response to user
-        // `,
-        _internal: {
-          currentDate: () => {
-            return new Date()
-          },
-        },
-        messages: messages,
-        toolChoice: "required",
-        tools,
-        maxSteps: 1000,
-        maxToolRoundtrips: 1000,
+List all the steps you will take to achieve the goal.
+
+If provided tools are needed to achieve the goal, explicitly mention their usage in the step.
+
+Be detailed as possible in the steps, mention the expected result and the tools you will use to achieve it.
+
+You can use the following tools:
+
+${_.map(tools, (t, name) => `${name} ${(t as any).description}\n`)}
+
+If there are any data that is not available even after using the tools, resulting in a dead end, do not continue, directly mention the dead end and the reason for it.
+
+Do not add any unnecessary steps, only add steps that are necessary to achieve the goal.
+
+If any of the steps can be ran in parallel, put them in the same step number.
+
+PREVIOUS MESSAGES:
+<start>
+${_.map(
+  messages,
+  (m) => `
+${m.role}: ${m.content}
+  `
+)}
+<end>
+      `
+      const { object: steps } = await generateObject({
+        model: openrouter(model),
+        prompt: p,
+        mode: "json",
+        schema: z.array(
+          z.object({
+            step: z.number(),
+            title: z.string(),
+            description: z.string(),
+          })
+        ),
         temperature,
       })
 
-      for await (const detail of fullStream) {
-        if (detail.type === "text-delta") {
+      const results: {
+        step: number
+        title: string
+        description: string
+        result: string
+        data?: string
+      }[] = []
+
+      for (const step of steps) {
+        stream.update({
+          type: "status",
+          status: "start",
+          label: step.title,
+        })
+        const response = await generateText({
+          model: openrouter(model),
+          prompt: `
+You are trying to achieve "${_.last(messages)?.content}".
+
+These are previous steps and their results, THIS LIST ARE READ ONLY DO NOT INTERACT OR MODIFY:
+<start>
+${_.map(
+  results,
+  (r) => `
+Step ${r.step}: ${r.title}
+${r.description}
+Result: ${r.result}
+Data: ${r.data}
+`
+).join("\n")}
+<end>
+
+This is now step ${step.step}: ${step.title}
+${step.description}
+
+If this step expects a result from tool as step response, directly return the result as your result as text.
+
+Your result:
+          `,
+
+          tools,
+          toolChoice: "required",
+          maxSteps: 10,
+          temperature,
+        })
+        const toolsData = response.responseMessages
+          .filter((d) => d.role === "tool")
+          .map((d) => d.content)
+          .flat()
+          .map((d) => {
+            if (typeof d !== "string" && d.type === "tool-result") {
+              return d
+            }
+          })
+          .filter((d) => d !== undefined)
+        results.push({
+          ...step,
+          result: response.text,
+          data: JSON.stringify(toolsData, null, 4),
+        })
+        stream.update({
+          type: "status",
+          status: "end",
+        })
+      }
+
+      stream.update({
+        type: "status",
+        status: "start",
+        label: "Formulating final answer to the question",
+      })
+
+      const finalResult = await streamText({
+        model: openrouter(model),
+        prompt: `
+You are trying to achieve "${_.last(messages)?.content}".
+
+These are previous steps and their results, THIS LIST ARE READ ONLY DO NOT INTERACT OR MODIFY:
+<start>
+${_.map(
+  results,
+  (r) => `
+Step ${r.step}: ${r.title}
+${r.description}
+Result: ${r.result}
+Data: ${r.data}
+`
+).join("\n")}
+<end>
+
+Formulate the final answer to the question.
+The final answer should not truncate or miss any important information.
+
+YOU MUST use markdown to format the response.
+
+Display object in markdown's table format.
+The data you gave out should be human readable and easy to understand.
+
+DO NOT mention any tools or steps or previous step data in the final answer. The final answer is only thing the user will see.
+
+Your final answer:
+`,
+        temperature,
+      })
+
+      stream.update({
+        type: "status",
+        status: "end",
+      })
+
+      for await (const detail of finalResult.fullStream) {
+        if (detail.type === "text-delta")
           stream.update({
-            delta: detail.textDelta,
             type: "text",
+            delta: detail.textDelta,
           })
-        }
-        if (detail.type === "tool-call") {
-          stream.update({
-            type: "status",
-            status: "start",
-            label: `Calling ${detail.toolName}`,
-          })
-        }
-        if (detail.type === "step-finish") {
-          stream.update({
-            type: "status",
-            status: "end",
-          })
-        }
       }
     } catch (e) {
-      throw e
+      console.error(e)
     } finally {
       stream.done()
     }

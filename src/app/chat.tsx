@@ -7,13 +7,10 @@ import { Message } from "@/types"
 import { readStreamableValue } from "ai/rsc"
 import _ from "lodash"
 import {
-  Album,
   ArrowRight,
   Bot,
   Check,
-  Cuboid,
   IterationCw,
-  Loader,
   Loader2,
   MessageCircleMore,
   Pencil,
@@ -23,7 +20,6 @@ import {
 
 import { AVAILABLE_MODELS } from "@/config/model"
 import { AVAILABLE_TEMPERATURES } from "@/config/temperature"
-import { AVAILABLE_TOOLS } from "@/config/tools"
 import { cn } from "@/lib/utils"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -35,7 +31,6 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu"
-import { ScrollArea } from "@/components/ui/scroll-area"
 import { Separator } from "@/components/ui/separator"
 import { Skeleton } from "@/components/ui/skeleton"
 import { Textarea } from "@/components/ui/textarea"
@@ -50,9 +45,6 @@ const Chat = () => {
     setModel,
     temperature,
     setTemperature,
-    systemPrompt,
-    selectedTools,
-    setSelectedTools,
   } = useAppStore()
 
   const [input, setInput] = useState("")
@@ -67,8 +59,6 @@ const Chat = () => {
 
   const continueConversation = useCallback(
     async (input: string, conversation: Message[]) => {
-      if (!systemPrompt) return
-
       const text = input.trim()
       if (!text) return
 
@@ -94,7 +84,6 @@ const Chat = () => {
 
         const { messages, stream } = await submitMessage(
           [...conversation, { role: "user", content: input.trim() }],
-          systemPrompt,
           model,
           temperature
         )
@@ -151,7 +140,7 @@ const Chat = () => {
         setIsTyping(false)
       }
     },
-    [model, temperature, systemPrompt]
+    [model, temperature]
   )
 
   return (
@@ -261,46 +250,6 @@ const Chat = () => {
                           </ul>
                         </NavigationMenuContent>
                       </NavigationMenuItem>
-                      <NavigationMenuItem>
-                        <NavigationMenuTrigger className="rounded-full px-3">
-                          <Cuboid className="mr-2 size-4" />
-                          Tools
-                        </NavigationMenuTrigger>
-                        <NavigationMenuContent>
-                          <ul className="grid w-[400px] gap-2 p-2">
-                            {AVAILABLE_TOOLS.map((tool) => (
-                              <Toggle
-                                className="relative flex h-full items-start justify-start text-start"
-                                key={tool.name}
-                              >
-                                <div className="flex items-center p-2">
-                                  {tool.logo && (
-                                    <img
-                                      src={tool.logo}
-                                      alt={`${tool.name} logo`}
-                                      className="mr-4 h-6 w-6 object-contain"
-                                    />
-                                  )}
-                                  <div>
-                                    <h3 className="text-base font-bold">
-                                      {tool.name}
-                                    </h3>
-                                    <p className="text-sm text-muted-foreground">
-                                      {tool.description}
-                                    </p>
-                                  </div>
-                                </div>
-                                <Badge
-                                  className="absolute right-2 top-1/2 -translate-y-1/2"
-                                  variant="secondary"
-                                >
-                                  Auto Activated
-                                </Badge>
-                              </Toggle>
-                            ))}
-                          </ul>
-                        </NavigationMenuContent>
-                      </NavigationMenuItem>
                     </NavigationMenuList>
                   </NavigationMenu>
                   <Button
@@ -316,19 +265,9 @@ const Chat = () => {
                 {(
                   [
                     [
-                      Cuboid,
-                      "What is the latest block?, display essential details.",
-                    ],
-                    [UserRound, "What's going on to vitalik.eth lately?"],
-                    [Album, "Summarize the 5 latest ens governance proposals"],
-                    [
                       UserRound,
                       "What's account status of muramasa.near, portfolio, and history?",
-                    ],
-                    [
-                      UserRound,
-                      "What's major nfts held by 0x77B46A19e1bDE4AB5B31268472dDdF01E8a8cd60 in Morph?",
-                      true,
+                      false,
                     ],
                   ] as const
                 ).map(([Icon, text, b]) => (
