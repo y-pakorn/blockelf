@@ -69,15 +69,21 @@ ${m.role}: ${m.content}
         model: openrouter(model),
         prompt: p,
         mode: "json",
-        schema: z.array(
-          z.object({
-            step: z.number(),
-            title: z.string(),
-            description: z.string(),
-          })
-        ),
+        schema: z.object({
+          plan: z.array(
+            z.object({
+              step: z.number(),
+              title: z.string(),
+              description: z.string(),
+              reason: z.string(),
+            })
+          ),
+        }),
         temperature,
+        maxRetries: 5,
       })
+
+      console.log(steps)
 
       const results: {
         step: number
@@ -87,7 +93,7 @@ ${m.role}: ${m.content}
         data?: string
       }[] = []
 
-      for (const step of steps) {
+      for (const step of steps.plan) {
         stream.update({
           type: "status",
           status: "start",
