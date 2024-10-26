@@ -173,7 +173,7 @@ const Chat = () => {
                     }
                   }}
                   disabled={isTyping}
-                  placeholder="Ask anything about blockchain or ethereum!"
+                  placeholder="Ask anything about near!"
                   className="min-h-16 resize-none border-none bg-transparent p-2 text-base focus-visible:outline-none focus-visible:ring-transparent"
                 />
                 <div className="flex">
