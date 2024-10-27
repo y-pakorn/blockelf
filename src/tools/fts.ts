@@ -31,7 +31,15 @@ export const nearFTTools = {
       page: z.number().optional().default(1).describe("Page number"),
       perPage: z.number().optional().default(50).describe("Items per page"),
     }),
-    execute: async ({ cursor, page, perPage }: { cursor?: string; page?: number; perPage?: number }) => {
+    execute: async ({
+      cursor,
+      page,
+      perPage,
+    }: {
+      cursor?: string
+      page?: number
+      perPage?: number
+    }) => {
       const url = "https://api.nearblocks.io/v1/fts/txns"
       const config = {
         headers: {
@@ -92,7 +100,19 @@ export const nearFTTools = {
       page: z.number().optional().default(1).describe("Page number"),
       perPage: z.number().optional().default(50).describe("Items per page"),
     }),
-    execute: async ({ contract, account, cursor, page, perPage }: { contract: string; account?: string; cursor?: string; page?: number; perPage?: number }) => {
+    execute: async ({
+      contract,
+      account,
+      cursor,
+      page,
+      perPage,
+    }: {
+      contract: string
+      account?: string
+      cursor?: string
+      page?: number
+      perPage?: number
+    }) => {
       const url = `https://api.nearblocks.io/v1/fts/${contract}/txns`
       const config = {
         headers: {
@@ -117,7 +137,13 @@ export const nearFTTools = {
       contract: z.string().describe("Contract ID"),
       account: z.string().optional().describe("Affected account ID"),
     }),
-    execute: async ({ contract, account }: { contract: string; account?: string }) => {
+    execute: async ({
+      contract,
+      account,
+    }: {
+      contract: string
+      account?: string
+    }) => {
       const url = `https://api.nearblocks.io/v1/fts/${contract}/txns/count`
       const config = {
         headers: {
@@ -138,7 +164,15 @@ export const nearFTTools = {
       page: z.number().optional().default(1).describe("Page number"),
       perPage: z.number().optional().default(50).describe("Items per page"),
     }),
-    execute: async ({ contract, page, perPage }: { contract: string; page?: number; perPage?: number }) => {
+    execute: async ({
+      contract,
+      page,
+      perPage,
+    }: {
+      contract: string
+      page?: number
+      perPage?: number
+    }) => {
       const url = `https://api.nearblocks.io/v1/fts/${contract}/holders`
       const config = {
         headers: {
@@ -173,3 +207,4 @@ export const nearFTTools = {
     },
   }),
 }
+

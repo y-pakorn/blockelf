@@ -18,20 +18,24 @@ export const nearTxnTools = {
       cursor: z.string().optional().describe("Next page cursor"),
       page: z.number().optional().default(1).describe("Page number"),
       perPage: z.number().optional().default(50).describe("Items per page"),
-      order: z.enum(["desc", "asc"]).optional().default("desc").describe("Sort order"),
+      order: z
+        .enum(["desc", "asc"])
+        .optional()
+        .default("desc")
+        .describe("Sort order, must be 'desc' or 'asc'"),
     }),
     execute: async (params: {
-      block?: string;
-      from?: string;
-      to?: string;
-      action?: string;
-      method?: string;
-      afterDate?: string;
-      beforeDate?: string;
-      cursor?: string;
-      page?: number;
-      perPage?: number;
-      order?: "desc" | "asc";
+      block?: string
+      from?: string
+      to?: string
+      action?: string
+      method?: string
+      afterDate?: string
+      beforeDate?: string
+      cursor?: string
+      page?: number
+      perPage?: number
+      order?: "desc" | "asc"
     }) => {
       const url = "https://api.nearblocks.io/v1/txns"
       const config = {
@@ -63,13 +67,13 @@ export const nearTxnTools = {
       beforeDate: z.string().optional().describe("Date in YYYY-MM-DD format"),
     }),
     execute: async (params: {
-      block?: string;
-      from?: string;
-      to?: string;
-      action?: string;
-      method?: string;
-      afterDate?: string;
-      beforeDate?: string;
+      block?: string
+      from?: string
+      to?: string
+      action?: string
+      method?: string
+      afterDate?: string
+      beforeDate?: string
     }) => {
       const url = "https://api.nearblocks.io/v1/txns/count"
       const config = {
@@ -91,7 +95,11 @@ export const nearTxnTools = {
   getLatestTxns: tool({
     description: "Get the latest transactions",
     parameters: z.object({
-      limit: z.number().optional().default(10).describe("Number of transactions to return"),
+      limit: z
+        .number()
+        .optional()
+        .default(10)
+        .describe("Number of transactions to return"),
     }),
     execute: async ({ limit }: { limit?: number }) => {
       const url = "https://api.nearblocks.io/v1/txns/latest"
@@ -143,3 +151,4 @@ export const nearTxnTools = {
     },
   }),
 }
+

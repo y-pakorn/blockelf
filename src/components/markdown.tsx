@@ -32,6 +32,9 @@ const Markdown = ({
         className
       )}
       components={{
+        img: (props) => (
+          <img {...props} className="aspect-auto max-h-[150px] rounded-md" />
+        ),
         table: (props) => (
           <div className="my-0 rounded-md border">
             <Table {...props} className="my-0" />

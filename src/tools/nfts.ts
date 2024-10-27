@@ -11,13 +11,17 @@ export const nearNFTTools = {
       search: z.string().optional().describe("Search keyword"),
       page: z.number().optional().default(1).describe("Page number"),
       perPage: z.number().optional().default(50).describe("Items per page"),
-      order: z.enum(["desc", "asc"]).optional().default("desc").describe("Sort order"),
+      order: z
+        .enum(["desc", "asc"])
+        .optional()
+        .default("desc")
+        .describe("Sort order, must be 'desc' or 'asc'"),
     }),
     execute: async (params: {
-      search?: string;
-      page?: number;
-      perPage?: number;
-      order?: "desc" | "asc";
+      search?: string
+      page?: number
+      perPage?: number
+      order?: "desc" | "asc"
     }) => {
       const url = "https://api.nearblocks.io/v1/nfts"
       const config = {
@@ -62,9 +66,9 @@ export const nearNFTTools = {
       perPage: z.number().optional().default(25).describe("Items per page"),
     }),
     execute: async (params: {
-      cursor?: string;
-      page?: number;
-      perPage?: number;
+      cursor?: string
+      page?: number
+      perPage?: number
     }) => {
       const url = "https://api.nearblocks.io/v1/nfts/txns"
       const config = {
@@ -125,10 +129,10 @@ export const nearNFTTools = {
       perPage: z.number().optional().default(50).describe("Items per page"),
     }),
     execute: async (params: {
-      contract: string;
-      cursor?: string;
-      page?: number;
-      perPage?: number;
+      contract: string
+      cursor?: string
+      page?: number
+      perPage?: number
     }) => {
       const url = `https://api.nearblocks.io/v1/nfts/${params.contract}/txns`
       const config = {
@@ -173,9 +177,9 @@ export const nearNFTTools = {
       perPage: z.number().optional().default(50).describe("Items per page"),
     }),
     execute: async (params: {
-      contract: string;
-      page?: number;
-      perPage?: number;
+      contract: string
+      page?: number
+      perPage?: number
     }) => {
       const url = `https://api.nearblocks.io/v1/nfts/${params.contract}/holders`
       const config = {
@@ -220,10 +224,10 @@ export const nearNFTTools = {
       perPage: z.number().optional().default(50).describe("Items per page"),
     }),
     execute: async (params: {
-      contract: string;
-      token?: string;
-      page?: number;
-      perPage?: number;
+      contract: string
+      token?: string
+      page?: number
+      perPage?: number
     }) => {
       const url = `https://api.nearblocks.io/v1/nfts/${params.contract}/tokens`
       const config = {
@@ -248,7 +252,13 @@ export const nearNFTTools = {
       contract: z.string().describe("Contract ID"),
       token: z.string().optional().describe("Token ID"),
     }),
-    execute: async ({ contract, token }: { contract: string; token?: string }) => {
+    execute: async ({
+      contract,
+      token,
+    }: {
+      contract: string
+      token?: string
+    }) => {
       const url = `https://api.nearblocks.io/v1/nfts/${contract}/tokens/count`
       const config = {
         headers: {
@@ -268,7 +278,13 @@ export const nearNFTTools = {
       contract: z.string().describe("Contract ID"),
       token: z.string().describe("Token ID"),
     }),
-    execute: async ({ contract, token }: { contract: string; token: string }) => {
+    execute: async ({
+      contract,
+      token,
+    }: {
+      contract: string
+      token: string
+    }) => {
       const url = `https://api.nearblocks.io/v1/nfts/${contract}/tokens/${token}`
       const config = {
         headers: {
@@ -291,11 +307,11 @@ export const nearNFTTools = {
       perPage: z.number().optional().default(50).describe("Items per page"),
     }),
     execute: async (params: {
-      contract: string;
-      token: string;
-      cursor?: string;
-      page?: number;
-      perPage?: number;
+      contract: string
+      token: string
+      cursor?: string
+      page?: number
+      perPage?: number
     }) => {
       const url = `https://api.nearblocks.io/v1/nfts/${params.contract}/tokens/${params.token}/txns`
       const config = {
@@ -320,7 +336,13 @@ export const nearNFTTools = {
       contract: z.string().describe("Contract ID"),
       token: z.string().describe("Token ID"),
     }),
-    execute: async ({ contract, token }: { contract: string; token: string }) => {
+    execute: async ({
+      contract,
+      token,
+    }: {
+      contract: string
+      token: string
+    }) => {
       const url = `https://api.nearblocks.io/v1/nfts/${contract}/tokens/${token}/txns/count`
       const config = {
         headers: {
@@ -333,3 +355,4 @@ export const nearNFTTools = {
     },
   }),
 }
+

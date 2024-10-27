@@ -93,7 +93,7 @@ const Chat = () => {
         for await (const detail of readStreamableValue(stream)) {
           if (!detail) continue
           if (detail.type === "text") {
-            textContent = `${textContent}${detail.delta}`
+            textContent = detail.text || `${textContent}${detail.delta}`
 
             setConversation([
               ...messages,
