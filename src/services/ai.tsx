@@ -36,6 +36,23 @@ export const submitMessage = async (
         ...nearAccountTools,
       }
 
+      const toolsDescription = _.chain(tools)
+        .entries()
+        .map(
+          ([name, t], i) => `
+Tool ${i}: ${name}
+Description: ${(t as any).description}
+Parameters:
+${_.map(t.parameters.shape, (p, name) => `${name}: ${p.description}`).join(",\n")}
+        `
+        )
+        .join("\n")
+        .value()
+
+      const system = `
+You are NEAR Protocol's AI assistant and query resolver.
+      `
+
       const p = `
 Formulate plan to achieve "${_.last(messages)?.content}"
 
@@ -47,7 +64,7 @@ Be detailed as possible in the steps, mention the expected result and the tools 
 
 You can use the following tools:
 
-${_.map(tools, (t, name) => `${name} ${(t as any).description}\n`)}
+${toolsDescription}
 
 If there are any data that is not available even after using the tools, resulting in a dead end, do not continue, directly mention the dead end and the reason for it.
 
@@ -67,6 +84,7 @@ ${m.role}: ${m.content}
       `
       const { object: steps } = await generateObject({
         model: openrouter(model),
+        system,
         prompt: p,
         mode: "json",
         schema: z.object({
@@ -82,8 +100,6 @@ ${m.role}: ${m.content}
         temperature,
         maxRetries: 5,
       })
-
-      console.log(steps)
 
       const results: {
         step: number
@@ -101,6 +117,7 @@ ${m.role}: ${m.content}
         })
         const response = await generateText({
           model: openrouter(model),
+          system,
           prompt: `
 You are trying to achieve "${_.last(messages)?.content}".
 
@@ -159,6 +176,7 @@ Your result:
 
       const finalResult = await streamText({
         model: openrouter(model),
+        system,
         prompt: `
 You are trying to achieve "${_.last(messages)?.content}".
 
