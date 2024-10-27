@@ -84,6 +84,8 @@ Then iterate, if needed, use high level planning again.
 
 After enough high level planning, and data gathering. Give the final answer to the user.
 
+If there is no tool available to answer the query. Return an error message.
+
 Proceed without asking for more information.
 `
 
