@@ -1,0 +1,49 @@
+{
+  "/v1/stats": {
+    "get": {
+      "deprecated": false,
+      "summary": "Get stats",
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "success response"
+        }
+      },
+      "parameters": [],
+      "tags": ["Stats"]
+    }
+  },
+  "/v1/stats/price": {
+    "get": {
+      "deprecated": false,
+      "summary": "Get near price",
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "success response"
+        }
+      },
+      "parameters": [
+        {
+          "name": "date",
+          "in": "query",
+          "description": "date in yyyy-mm-dd format",
+          "required": false,
+          "deprecated": false,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "tags": ["Stats"]
+    }
+  }
+}

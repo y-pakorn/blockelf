@@ -1,0 +1,183 @@
+{
+  "/v1/search": {
+    "get": {
+      "deprecated": false,
+      "summary": "Search txn by hash, block by height / hash, account by id, receipt by id, tokens by hex address",
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "success response"
+        }
+      },
+      "parameters": [
+        {
+          "name": "keyword",
+          "in": "query",
+          "description": "txn hash / block height / account id / receipt id / hex address",
+          "required": true,
+          "deprecated": false,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "tags": ["Search"]
+    }
+  },
+  "/v1/search/txns": {
+    "get": {
+      "deprecated": false,
+      "summary": "Search txns by hash",
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "success response"
+        }
+      },
+      "parameters": [
+        {
+          "name": "keyword",
+          "in": "query",
+          "description": "txn hash",
+          "required": true,
+          "deprecated": false,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "tags": ["Search"]
+    }
+  },
+  "/v1/search/blocks": {
+    "get": {
+      "deprecated": false,
+      "summary": "Search blocks by hash / height",
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "success response"
+        }
+      },
+      "parameters": [
+        {
+          "name": "keyword",
+          "in": "query",
+          "description": "block height / hash",
+          "required": true,
+          "deprecated": false,
+          "schema": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "number"
+              }
+            ]
+          }
+        }
+      ],
+      "tags": ["Search"]
+    }
+  },
+  "/v1/search/accounts": {
+    "get": {
+      "deprecated": false,
+      "summary": "Search accounts by id",
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "success response"
+        }
+      },
+      "parameters": [
+        {
+          "name": "keyword",
+          "in": "query",
+          "description": "account id",
+          "required": true,
+          "deprecated": false,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "tags": ["Search"]
+    }
+  },
+  "/v1/search/receipts": {
+    "get": {
+      "deprecated": false,
+      "summary": "Search receipts by id",
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "success response"
+        }
+      },
+      "parameters": [
+        {
+          "name": "keyword",
+          "in": "query",
+          "description": "receipt id",
+          "required": true,
+          "deprecated": false,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "tags": ["Search"]
+    }
+  },
+  "/v1/search/tokens": {
+    "get": {
+      "deprecated": false,
+      "summary": "Search tokens by hex address",
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "success response"
+        }
+      },
+      "parameters": [
+        {
+          "name": "keyword",
+          "in": "query",
+          "description": "token hex address",
+          "required": true,
+          "deprecated": false,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "tags": ["Search"]
+    }
+  }
+}

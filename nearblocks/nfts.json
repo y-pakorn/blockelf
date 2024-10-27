@@ -1,0 +1,641 @@
+{
+  "/v1/nfts": {
+    "get": {
+      "deprecated": false,
+      "summary": "Get top nfts by pagination",
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "success response"
+        }
+      },
+      "parameters": [
+        {
+          "name": "search",
+          "in": "query",
+          "description": "search keyword",
+          "required": false,
+          "deprecated": false,
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "name": "page",
+          "in": "query",
+          "description": "",
+          "required": false,
+          "deprecated": false,
+          "schema": {
+            "type": "number",
+            "minimum": 1,
+            "maximum": 100,
+            "default": 1
+          }
+        },
+        {
+          "name": "per_page",
+          "in": "query",
+          "description": "",
+          "required": false,
+          "deprecated": false,
+          "schema": {
+            "type": "number",
+            "minimum": 1,
+            "maximum": 50,
+            "default": 50
+          }
+        },
+        {
+          "name": "order",
+          "in": "query",
+          "description": "",
+          "required": false,
+          "deprecated": false,
+          "schema": {
+            "type": "string",
+            "enum": ["desc", "asc"],
+            "default": "desc"
+          }
+        }
+      ],
+      "tags": ["NFTs"]
+    }
+  },
+  "/v1/nfts/count": {
+    "get": {
+      "deprecated": false,
+      "summary": "Get top nfts count",
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "success response"
+        }
+      },
+      "parameters": [
+        {
+          "name": "search",
+          "in": "query",
+          "description": "search keyword",
+          "required": false,
+          "deprecated": false,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "tags": ["NFTs"]
+    }
+  },
+  "/v1/nfts/txns": {
+    "get": {
+      "deprecated": false,
+      "summary": "Get nft txns by pagination",
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "success response"
+        }
+      },
+      "parameters": [
+        {
+          "name": "cursor",
+          "in": "query",
+          "description": "next page cursor, takes precedence over 'page' if provided",
+          "required": false,
+          "deprecated": false,
+          "schema": {
+            "type": "string",
+            "minLength": 36,
+            "maxLength": 36
+          }
+        },
+        {
+          "name": "page",
+          "in": "query",
+          "description": "",
+          "required": false,
+          "deprecated": false,
+          "schema": {
+            "type": "number",
+            "minimum": 1,
+            "maximum": 200,
+            "default": 1
+          }
+        },
+        {
+          "name": "per_page",
+          "in": "query",
+          "description": "Default: 25, each increment of 25 will count towards rate limit. eg. per page 50 will use 2 credits",
+          "required": false,
+          "deprecated": false,
+          "schema": {
+            "type": "number",
+            "minimum": 1,
+            "maximum": 250,
+            "default": 25
+          }
+        }
+      ],
+      "tags": ["NFTs"]
+    }
+  },
+  "/v1/nfts/txns/count": {
+    "get": {
+      "deprecated": false,
+      "summary": "Get estimated nft txns count",
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "success response"
+        }
+      },
+      "parameters": [],
+      "tags": ["NFTs"]
+    }
+  },
+  "/v1/nfts/{contract}": {
+    "get": {
+      "deprecated": false,
+      "summary": "Get nft info",
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "success response"
+        }
+      },
+      "parameters": [
+        {
+          "name": "contract",
+          "in": "path",
+          "description": "contract id",
+          "required": true,
+          "deprecated": false,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "tags": ["NFTs"]
+    }
+  },
+  "/v1/nfts/{contract}/txns": {
+    "get": {
+      "deprecated": false,
+      "summary": "Get nft txns by pagination",
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "success response"
+        }
+      },
+      "parameters": [
+        {
+          "name": "contract",
+          "in": "path",
+          "description": "contract id",
+          "required": true,
+          "deprecated": false,
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "name": "cursor",
+          "in": "query",
+          "description": "next page cursor, takes precedence over 'page' if provided",
+          "required": false,
+          "deprecated": false,
+          "schema": {
+            "type": "string",
+            "minLength": 36,
+            "maxLength": 36
+          }
+        },
+        {
+          "name": "page",
+          "in": "query",
+          "description": "",
+          "required": false,
+          "deprecated": false,
+          "schema": {
+            "type": "number",
+            "minimum": 1,
+            "maximum": 200,
+            "default": 1
+          }
+        },
+        {
+          "name": "per_page",
+          "in": "query",
+          "description": "Default: 25, each increment of 25 will count towards rate limit. eg. per page 50 will use 2 credits",
+          "required": false,
+          "deprecated": false,
+          "schema": {
+            "type": "number",
+            "minimum": 1,
+            "maximum": 250,
+            "default": 25
+          }
+        }
+      ],
+      "tags": ["NFTs"]
+    }
+  },
+  "/v1/nfts/{contract}/txns/count": {
+    "get": {
+      "deprecated": false,
+      "summary": "Get estimated nft txns count",
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "success response"
+        }
+      },
+      "parameters": [
+        {
+          "name": "contract",
+          "in": "path",
+          "description": "contract id",
+          "required": true,
+          "deprecated": false,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "tags": ["NFTs"]
+    }
+  },
+  "/v1/nfts/{contract}/holders": {
+    "get": {
+      "deprecated": false,
+      "summary": "Get nft holders by pagination",
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "success response"
+        }
+      },
+      "parameters": [
+        {
+          "name": "contract",
+          "in": "path",
+          "description": "contract id",
+          "required": true,
+          "deprecated": false,
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "name": "page",
+          "in": "query",
+          "description": "",
+          "required": false,
+          "deprecated": false,
+          "schema": {
+            "type": "number",
+            "minimum": 1,
+            "maximum": 200,
+            "default": 1
+          }
+        },
+        {
+          "name": "per_page",
+          "in": "query",
+          "description": "Default: 25, each increment of 25 will count towards rate limit. eg. per page 50 will use 2 credits",
+          "required": false,
+          "deprecated": false,
+          "schema": {
+            "type": "number",
+            "minimum": 1,
+            "maximum": 250,
+            "default": 25
+          }
+        }
+      ],
+      "tags": ["NFTs"]
+    }
+  },
+  "/v1/nfts/{contract}/holders/count": {
+    "get": {
+      "deprecated": false,
+      "summary": "Get estimated nft holders count",
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "success response"
+        }
+      },
+      "parameters": [
+        {
+          "name": "contract",
+          "in": "path",
+          "description": "contract id",
+          "required": true,
+          "deprecated": false,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "tags": ["NFTs"]
+    }
+  },
+  "/v1/nfts/{contract}/tokens": {
+    "get": {
+      "deprecated": false,
+      "summary": "Get nft tokens list by pagination",
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "success response"
+        }
+      },
+      "parameters": [
+        {
+          "name": "contract",
+          "in": "path",
+          "description": "contract id",
+          "required": true,
+          "deprecated": false,
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "name": "token",
+          "in": "query",
+          "description": "token id",
+          "required": false,
+          "deprecated": false,
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "name": "page",
+          "in": "query",
+          "description": "",
+          "required": false,
+          "deprecated": false,
+          "schema": {
+            "type": "number",
+            "minimum": 1,
+            "maximum": 200,
+            "default": 1
+          }
+        },
+        {
+          "name": "per_page",
+          "in": "query",
+          "description": "Default: 25, each increment of 25 will count towards rate limit. eg. per page 50 will use 2 credits",
+          "required": false,
+          "deprecated": false,
+          "schema": {
+            "type": "number",
+            "minimum": 1,
+            "maximum": 250,
+            "default": 25
+          }
+        }
+      ],
+      "tags": ["NFTs"]
+    }
+  },
+  "/v1/nfts/{contract}/tokens/count": {
+    "get": {
+      "deprecated": false,
+      "summary": "Get estimated nft tokens count",
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "success response"
+        }
+      },
+      "parameters": [
+        {
+          "name": "contract",
+          "in": "path",
+          "description": "contract id",
+          "required": true,
+          "deprecated": false,
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "name": "token",
+          "in": "query",
+          "description": "token id",
+          "required": false,
+          "deprecated": false,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "tags": ["NFTs"]
+    }
+  },
+  "/v1/nfts/{contract}/tokens/{token}": {
+    "get": {
+      "deprecated": false,
+      "summary": "Get nft token info",
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "success response"
+        }
+      },
+      "parameters": [
+        {
+          "name": "contract",
+          "in": "path",
+          "description": "contract id",
+          "required": true,
+          "deprecated": false,
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "name": "token",
+          "in": "query",
+          "description": "token id",
+          "required": false,
+          "deprecated": false,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "tags": ["NFTs"]
+    }
+  },
+  "/v1/nfts/{contract}/tokens/{token}/txns": {
+    "get": {
+      "deprecated": false,
+      "summary": "Get nft token txns by pagination",
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "success response"
+        }
+      },
+      "parameters": [
+        {
+          "name": "contract",
+          "in": "path",
+          "description": "contract id",
+          "required": true,
+          "deprecated": false,
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "name": "token",
+          "in": "query",
+          "description": "token id",
+          "required": false,
+          "deprecated": false,
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "name": "cursor",
+          "in": "query",
+          "description": "next page cursor, takes precedence over 'page' if provided",
+          "required": false,
+          "deprecated": false,
+          "schema": {
+            "type": "string",
+            "minLength": 36,
+            "maxLength": 36
+          }
+        },
+        {
+          "name": "page",
+          "in": "query",
+          "description": "",
+          "required": false,
+          "deprecated": false,
+          "schema": {
+            "type": "number",
+            "minimum": 1,
+            "maximum": 200,
+            "default": 1
+          }
+        },
+        {
+          "name": "per_page",
+          "in": "query",
+          "description": "Default: 25, each increment of 25 will count towards rate limit. eg. per page 50 will use 2 credits",
+          "required": false,
+          "deprecated": false,
+          "schema": {
+            "type": "number",
+            "minimum": 1,
+            "maximum": 250,
+            "default": 25
+          }
+        }
+      ],
+      "tags": ["NFTs"]
+    }
+  },
+  "/v1/nfts/{contract}/tokens/{token}/txns/count": {
+    "get": {
+      "deprecated": false,
+      "summary": "Get estimated nft token txns count",
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "success response"
+        }
+      },
+      "parameters": [
+        {
+          "name": "contract",
+          "in": "path",
+          "description": "contract id",
+          "required": true,
+          "deprecated": false,
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "name": "token",
+          "in": "query",
+          "description": "token id",
+          "required": false,
+          "deprecated": false,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "tags": ["NFTs"]
+    }
+  }
+}

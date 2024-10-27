@@ -1,0 +1,301 @@
+{
+  "/v1/dex": {
+    "get": {
+      "deprecated": false,
+      "summary": "Get top dex pairs by pagination",
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "success response"
+        }
+      },
+      "parameters": [
+        {
+          "name": "search",
+          "in": "query",
+          "description": "search keyword",
+          "required": false,
+          "deprecated": false,
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "name": "page",
+          "in": "query",
+          "description": "",
+          "required": false,
+          "deprecated": false,
+          "schema": {
+            "type": "number",
+            "minimum": 1,
+            "maximum": 100,
+            "default": 1
+          }
+        },
+        {
+          "name": "per_page",
+          "in": "query",
+          "description": "",
+          "required": false,
+          "deprecated": false,
+          "schema": {
+            "type": "number",
+            "minimum": 1,
+            "maximum": 50,
+            "default": 50
+          }
+        },
+        {
+          "name": "sort",
+          "in": "query",
+          "description": "",
+          "required": false,
+          "deprecated": false,
+          "schema": {
+            "type": "string",
+            "enum": ["volume", "txns", "makers"],
+            "default": "volume"
+          }
+        },
+        {
+          "name": "order",
+          "in": "query",
+          "description": "",
+          "required": false,
+          "deprecated": false,
+          "schema": {
+            "type": "string",
+            "enum": ["desc", "asc"],
+            "default": "desc"
+          }
+        }
+      ],
+      "tags": ["DEX"]
+    }
+  },
+  "/v1/dex/count": {
+    "get": {
+      "deprecated": false,
+      "summary": "Get top dex pairs count",
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "success response"
+        }
+      },
+      "parameters": [
+        {
+          "name": "search",
+          "in": "query",
+          "description": "search keyword",
+          "required": false,
+          "deprecated": false,
+          "schema": {
+            "type": "number"
+          }
+        }
+      ],
+      "tags": ["DEX"]
+    }
+  },
+  "/v1/dex/pairs/{pair}": {
+    "get": {
+      "deprecated": false,
+      "summary": "Get dex pair info",
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "success response"
+        }
+      },
+      "parameters": [
+        {
+          "name": "pair",
+          "in": "path",
+          "description": "pair id",
+          "required": true,
+          "deprecated": false,
+          "schema": {
+            "type": "number"
+          }
+        }
+      ],
+      "tags": ["DEX"]
+    }
+  },
+  "/v1/dex/pairs/{pair}/txns": {
+    "get": {
+      "deprecated": false,
+      "summary": "Get dex pair txns by pagination",
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "success response"
+        }
+      },
+      "parameters": [
+        {
+          "name": "pair",
+          "in": "path",
+          "description": "pair id",
+          "required": true,
+          "deprecated": false,
+          "schema": {
+            "type": "number"
+          }
+        },
+        {
+          "name": "a",
+          "in": "query",
+          "description": "maker account id",
+          "required": false,
+          "deprecated": false,
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "name": "cursor",
+          "in": "query",
+          "description": "next page cursor",
+          "required": false,
+          "deprecated": false,
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "name": "per_page",
+          "in": "query",
+          "description": "Default: 25, each increment of 25 will count towards rate limit. eg. per page 50 will use 2 credits",
+          "required": false,
+          "deprecated": false,
+          "schema": {
+            "type": "number",
+            "minimum": 1,
+            "maximum": 250,
+            "default": 25
+          }
+        }
+      ],
+      "tags": ["DEX"]
+    }
+  },
+  "/v1/dex/pairs/{pair}/txns/count": {
+    "get": {
+      "deprecated": false,
+      "summary": "Get dex pair txns count",
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "success response"
+        }
+      },
+      "parameters": [
+        {
+          "name": "pair",
+          "in": "path",
+          "description": "pair id",
+          "required": true,
+          "deprecated": false,
+          "schema": {
+            "type": "number"
+          }
+        },
+        {
+          "name": "a",
+          "in": "query",
+          "description": "maker account id",
+          "required": false,
+          "deprecated": false,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "tags": ["DEX"]
+    }
+  },
+  "/v1/dex/pairs/{pair}/charts": {
+    "get": {
+      "deprecated": false,
+      "summary": "Get dex pair chart data",
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "success response"
+        }
+      },
+      "parameters": [
+        {
+          "name": "pair",
+          "in": "path",
+          "description": "pair id",
+          "required": true,
+          "deprecated": false,
+          "schema": {
+            "type": "number"
+          }
+        },
+        {
+          "name": "interval",
+          "in": "query",
+          "description": "",
+          "required": true,
+          "deprecated": false,
+          "schema": {
+            "type": "string",
+            "enum": ["1m", "1h", "1d"],
+            "default": "1m"
+          }
+        },
+        {
+          "name": "to",
+          "in": "query",
+          "description": "end timestamp",
+          "required": true,
+          "deprecated": false,
+          "schema": {
+            "type": "number"
+          }
+        },
+        {
+          "name": "limit",
+          "in": "query",
+          "description": "no of rows",
+          "required": true,
+          "deprecated": false,
+          "schema": {
+            "type": "number"
+          }
+        }
+      ],
+      "tags": ["DEX"]
+    }
+  }
+}

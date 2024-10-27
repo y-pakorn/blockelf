@@ -1,0 +1,4247 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "NearBlocks",
+    "description": "<p>The Near Blocks Near Developer REST APIs are provided as a community service and without warranty, so please use what you need and no more. Source attribution via a link back or mention that your app is \"Powered by Nearblocks.io APIs\" is required except for personal/private usage. You can access the REST APIs using the cURL, or any HTTP client. We support GET requests only.</p><p>NearBlocks provides an API Pro plan which is a monthly subscription-based API service that provides higher rate limits for power users and commercial solutions. To upgrade to a paid API Plan, head over to the <a target=\"_blank\" rel=\"noreferrer nofollow noopener\" href=\"https://nearblocks.io/apis\"><code>APIs</code></a> page and select a plan  that suits your needs. Once payment has been made, you can create API keys to make requests to our end points.</p><p>You can pass the API key into a REST API call as <code>Authorization</code> header with the following format. Replace API_KEY with the key string of your API key. For example, to pass an API key for an Account API:</p><pre><code> curl -X GET -H \"Authorization: Bearer API_KEY\" \"https://api.nearblocks.io/v1/account/wrap.near\"</pre></code>",
+    "termsOfService": "",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://api.nearblocks.io",
+      "description": "Mainnet"
+    },
+    {
+      "url": "https://api-testnet.nearblocks.io",
+      "description": "Testnet"
+    }
+  ],
+  "security": [
+    {
+      "BearerAuth": []
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "BearerAuth": {
+        "scheme": "bearer",
+        "type": "http"
+      }
+    },
+    "schemas": {}
+  },
+  "paths": {
+    "/v1/account/{account}": {
+      "get": {
+        "deprecated": false,
+        "summary": "Get account info",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success response"
+          }
+        },
+        "parameters": [
+          {
+            "name": "account",
+            "in": "path",
+            "description": "account id",
+            "required": true,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "rpc",
+            "in": "query",
+            "description": "rpc url to use",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": ["Account"]
+      }
+    },
+    "/v1/account/{account}/contract": {
+      "get": {
+        "deprecated": false,
+        "summary": "Get contract info",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success response"
+          }
+        },
+        "parameters": [
+          {
+            "name": "account",
+            "in": "path",
+            "description": "account id",
+            "required": true,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "rpc",
+            "in": "query",
+            "description": "rpc url to use",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": ["Account"]
+      }
+    },
+    "/v1/account/{account}/contract/deployments": {
+      "get": {
+        "deprecated": false,
+        "summary": "Get contract deployment records (first & last)",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success response"
+          }
+        },
+        "parameters": [
+          {
+            "name": "account",
+            "in": "path",
+            "description": "account id",
+            "required": true,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": ["Account"]
+      }
+    },
+    "/v1/account/{account}/contract/parse": {
+      "get": {
+        "deprecated": false,
+        "summary": "Get parsed contract info",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success response"
+          }
+        },
+        "parameters": [
+          {
+            "name": "account",
+            "in": "path",
+            "description": "account id",
+            "required": true,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "rpc",
+            "in": "query",
+            "description": "rpc url to use",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": ["Account"]
+      }
+    },
+    "/v1/account/{account}/contract/{method}": {
+      "get": {
+        "deprecated": false,
+        "summary": "Get latest action args for contract method",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success response"
+          }
+        },
+        "parameters": [
+          {
+            "name": "account",
+            "in": "path",
+            "description": "account",
+            "required": true,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "method",
+            "in": "path",
+            "description": "method",
+            "required": true,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": ["Account"]
+      }
+    },
+    "/v1/account/{account}/inventory": {
+      "get": {
+        "deprecated": false,
+        "summary": "Get account ft/nft token inventory",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success response"
+          }
+        },
+        "parameters": [
+          {
+            "name": "account",
+            "in": "path",
+            "description": "account id",
+            "required": true,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": ["Account"]
+      }
+    },
+    "/v1/account/{account}/tokens": {
+      "get": {
+        "deprecated": false,
+        "summary": "Get possible ft/nft token contracts",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success response"
+          }
+        },
+        "parameters": [
+          {
+            "name": "account",
+            "in": "path",
+            "description": "account id",
+            "required": true,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": ["Account"]
+      }
+    },
+    "/v1/account/{account}/keys": {
+      "get": {
+        "deprecated": false,
+        "summary": "Get access keys by pagination",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success response"
+          }
+        },
+        "parameters": [
+          {
+            "name": "account",
+            "in": "path",
+            "description": "account id",
+            "required": true,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "number",
+              "minimum": 1,
+              "maximum": 200,
+              "default": 1
+            }
+          },
+          {
+            "name": "per_page",
+            "in": "query",
+            "description": "Default: 25, each increment of 25 will count towards rate limit. eg. per page 50 will use 2 credits",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "number",
+              "minimum": 1,
+              "maximum": 250,
+              "default": 25
+            }
+          },
+          {
+            "name": "order",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "string",
+              "enum": ["desc", "asc"],
+              "default": "desc"
+            }
+          }
+        ],
+        "tags": ["Account"]
+      }
+    },
+    "/v1/account/{account}/keys/count": {
+      "get": {
+        "deprecated": false,
+        "summary": "Get estimated access keys count",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success response"
+          }
+        },
+        "parameters": [
+          {
+            "name": "account",
+            "in": "path",
+            "description": "account id",
+            "required": true,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": ["Account"]
+      }
+    },
+    "/v1/account/{account}/txns": {
+      "get": {
+        "deprecated": false,
+        "summary": "Get account txns by pagination",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success response"
+          }
+        },
+        "parameters": [
+          {
+            "name": "account",
+            "in": "path",
+            "description": "account id",
+            "required": true,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "from",
+            "in": "query",
+            "description": "sender account id",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "to",
+            "in": "query",
+            "description": "receiver account id",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "action",
+            "in": "query",
+            "description": "action kind",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "method",
+            "in": "query",
+            "description": "function call method",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "after_date",
+            "in": "query",
+            "description": "date in YYYY-MM-DD format",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "before_date",
+            "in": "query",
+            "description": "date in YYYY-MM-DD format",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "description": "next page cursor, takes precedence over 'page' if provided",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "number",
+              "minimum": 1,
+              "maximum": 200,
+              "default": 1
+            }
+          },
+          {
+            "name": "per_page",
+            "in": "query",
+            "description": "Default: 25, each increment of 25 will count towards rate limit. eg. per page 50 will use 2 credits",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "number",
+              "minimum": 1,
+              "maximum": 250,
+              "default": 25
+            }
+          },
+          {
+            "name": "order",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "string",
+              "enum": ["desc", "asc"],
+              "default": "desc"
+            }
+          }
+        ],
+        "tags": ["Account"]
+      }
+    },
+    "/v1/account/{account}/txns/count": {
+      "get": {
+        "deprecated": false,
+        "summary": "Get estimated account txns count",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success response"
+          }
+        },
+        "parameters": [
+          {
+            "name": "account",
+            "in": "path",
+            "description": "account id",
+            "required": true,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "from",
+            "in": "query",
+            "description": "sender account id",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "to",
+            "in": "query",
+            "description": "receiver account id",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "action",
+            "in": "query",
+            "description": "action kind",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "method",
+            "in": "query",
+            "description": "function call method",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "after_date",
+            "in": "query",
+            "description": "date in YYYY-MM-DD format",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "before_date",
+            "in": "query",
+            "description": "date in YYYY-MM-DD format",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": ["Account"]
+      }
+    },
+    "/v1/account/{account}/txns-only": {
+      "get": {
+        "deprecated": false,
+        "summary": "Get account txns without receipts by pagination",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success response"
+          }
+        },
+        "parameters": [
+          {
+            "name": "account",
+            "in": "path",
+            "description": "account id",
+            "required": true,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "from",
+            "in": "query",
+            "description": "sender account id",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "to",
+            "in": "query",
+            "description": "receiver account id",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "after_date",
+            "in": "query",
+            "description": "date in YYYY-MM-DD format",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "before_date",
+            "in": "query",
+            "description": "date in YYYY-MM-DD format",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "description": "next page cursor, takes precedence over 'page' if provided",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "per_page",
+            "in": "query",
+            "description": "Default: 25, each increment of 25 will count towards rate limit. eg. per page 50 will use 2 credits",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "number",
+              "minimum": 1,
+              "maximum": 250,
+              "default": 25
+            }
+          },
+          {
+            "name": "order",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "string",
+              "enum": ["desc", "asc"],
+              "default": "desc"
+            }
+          }
+        ],
+        "tags": ["Account"]
+      }
+    },
+    "/v1/account/{account}/txns-only/count": {
+      "get": {
+        "deprecated": false,
+        "summary": "Get estimated account txns without receipts count",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success response"
+          }
+        },
+        "parameters": [
+          {
+            "name": "account",
+            "in": "path",
+            "description": "account id",
+            "required": true,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "from",
+            "in": "query",
+            "description": "sender account id",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "to",
+            "in": "query",
+            "description": "receiver account id",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "after_date",
+            "in": "query",
+            "description": "date in YYYY-MM-DD format",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "before_date",
+            "in": "query",
+            "description": "date in YYYY-MM-DD format",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": ["Account"]
+      }
+    },
+    "/v1/account/{account}/receipts": {
+      "get": {
+        "deprecated": false,
+        "summary": "Get account receipts by pagination",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success response"
+          }
+        },
+        "parameters": [
+          {
+            "name": "account",
+            "in": "path",
+            "description": "account id",
+            "required": true,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "from",
+            "in": "query",
+            "description": "sender account id",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "to",
+            "in": "query",
+            "description": "receiver account id",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "action",
+            "in": "query",
+            "description": "action kind",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "method",
+            "in": "query",
+            "description": "function call method",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "after_date",
+            "in": "query",
+            "description": "date in YYYY-MM-DD format",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "before_date",
+            "in": "query",
+            "description": "date in YYYY-MM-DD format",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "description": "next page cursor, takes precedence over 'page' if provided",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "per_page",
+            "in": "query",
+            "description": "Default: 25, each increment of 25 will count towards rate limit. eg. per page 50 will use 2 credits",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "number",
+              "minimum": 1,
+              "maximum": 250,
+              "default": 25
+            }
+          },
+          {
+            "name": "order",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "string",
+              "enum": ["desc", "asc"],
+              "default": "desc"
+            }
+          }
+        ],
+        "tags": ["Account"]
+      }
+    },
+    "/v1/account/{account}/receipts/count": {
+      "get": {
+        "deprecated": false,
+        "summary": "Get estimated account receipts count",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success response"
+          }
+        },
+        "parameters": [
+          {
+            "name": "account",
+            "in": "path",
+            "description": "account id",
+            "required": true,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "from",
+            "in": "query",
+            "description": "sender account id",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "to",
+            "in": "query",
+            "description": "receiver account id",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "action",
+            "in": "query",
+            "description": "action kind",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "method",
+            "in": "query",
+            "description": "function call method",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "after_date",
+            "in": "query",
+            "description": "date in YYYY-MM-DD format",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "before_date",
+            "in": "query",
+            "description": "date in YYYY-MM-DD format",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": ["Account"]
+      }
+    },
+    "/v1/account/{account}/ft-txns": {
+      "get": {
+        "deprecated": false,
+        "summary": "Get account token txns by pagination",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success response"
+          }
+        },
+        "parameters": [
+          {
+            "name": "account",
+            "in": "path",
+            "description": "account id",
+            "required": true,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "involved",
+            "in": "query",
+            "description": "involved account id",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "contract",
+            "in": "query",
+            "description": "contract account id",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "event",
+            "in": "query",
+            "description": "event kind",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "after_date",
+            "in": "query",
+            "description": "date in YYYY-MM-DD format",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "before_date",
+            "in": "query",
+            "description": "date in YYYY-MM-DD format",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "description": "next page cursor, takes precedence over 'page' if provided",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "string",
+              "minLength": 36,
+              "maxLength": 36
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "number",
+              "minimum": 1,
+              "maximum": 200,
+              "default": 1
+            }
+          },
+          {
+            "name": "per_page",
+            "in": "query",
+            "description": "Default: 25, each increment of 25 will count towards rate limit. eg. per page 50 will use 2 credits",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "number",
+              "minimum": 1,
+              "maximum": 250,
+              "default": 25
+            }
+          },
+          {
+            "name": "order",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "string",
+              "enum": ["desc", "asc"],
+              "default": "desc"
+            }
+          }
+        ],
+        "tags": ["Account"]
+      }
+    },
+    "/v1/account/{account}/ft-txns/count": {
+      "get": {
+        "deprecated": false,
+        "summary": "Get estimated account token txns count",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success response"
+          }
+        },
+        "parameters": [
+          {
+            "name": "account",
+            "in": "path",
+            "description": "account id",
+            "required": true,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "involved",
+            "in": "query",
+            "description": "involved account id",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "contract",
+            "in": "query",
+            "description": "contract account id",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "event",
+            "in": "query",
+            "description": "event kind",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "after_date",
+            "in": "query",
+            "description": "date in YYYY-MM-DD format",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "before_date",
+            "in": "query",
+            "description": "date in YYYY-MM-DD format",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": ["Account"]
+      }
+    },
+    "/v1/account/{account}/nft-txns": {
+      "get": {
+        "deprecated": false,
+        "summary": "Get account nft txns by pagination",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success response"
+          }
+        },
+        "parameters": [
+          {
+            "name": "account",
+            "in": "path",
+            "description": "account id",
+            "required": true,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "involved",
+            "in": "query",
+            "description": "involved account id",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "event",
+            "in": "query",
+            "description": "event kind",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "after_date",
+            "in": "query",
+            "description": "date in YYYY-MM-DD format",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "before_date",
+            "in": "query",
+            "description": "date in YYYY-MM-DD format",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "description": "next page cursor, takes precedence over 'page' if provided",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "string",
+              "minLength": 36,
+              "maxLength": 36
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "number",
+              "minimum": 1,
+              "maximum": 200,
+              "default": 1
+            }
+          },
+          {
+            "name": "per_page",
+            "in": "query",
+            "description": "Default: 25, each increment of 25 will count towards rate limit. eg. per page 50 will use 2 credits",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "number",
+              "minimum": 1,
+              "maximum": 250,
+              "default": 25
+            }
+          },
+          {
+            "name": "order",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "string",
+              "enum": ["desc", "asc"],
+              "default": "desc"
+            }
+          }
+        ],
+        "tags": ["Account"]
+      }
+    },
+    "/v1/account/{account}/nft-txns/count": {
+      "get": {
+        "deprecated": false,
+        "summary": "Get estimated account nft txns count",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success response"
+          }
+        },
+        "parameters": [
+          {
+            "name": "account",
+            "in": "path",
+            "description": "account id",
+            "required": true,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "involved",
+            "in": "query",
+            "description": "involved account id",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "event",
+            "in": "query",
+            "description": "event kind",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "after_date",
+            "in": "query",
+            "description": "date in YYYY-MM-DD format",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "before_date",
+            "in": "query",
+            "description": "date in YYYY-MM-DD format",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": ["Account"]
+      }
+    },
+    "/v1/account/{account}/stake-txns": {
+      "get": {
+        "deprecated": false,
+        "summary": "Get account stake txns by pagination",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success response"
+          }
+        },
+        "parameters": [
+          {
+            "name": "account",
+            "in": "path",
+            "description": "account id",
+            "required": true,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "from",
+            "in": "query",
+            "description": "sender account id",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "to",
+            "in": "query",
+            "description": "receiver account id",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "after_date",
+            "in": "query",
+            "description": "date in YYYY-MM-DD format",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "before_date",
+            "in": "query",
+            "description": "date in YYYY-MM-DD format",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "description": "next page cursor, takes precedence over 'page' if provided",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "number",
+              "minimum": 1,
+              "maximum": 200,
+              "default": 1
+            }
+          },
+          {
+            "name": "per_page",
+            "in": "query",
+            "description": "Default: 25, each increment of 25 will count towards rate limit. eg. per page 50 will use 2 credits",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "number",
+              "minimum": 1,
+              "maximum": 250,
+              "default": 25
+            }
+          },
+          {
+            "name": "order",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "string",
+              "enum": ["desc", "asc"],
+              "default": "desc"
+            }
+          }
+        ],
+        "tags": ["Account"]
+      }
+    },
+    "/v1/account/{account}/stake-txns/count": {
+      "get": {
+        "deprecated": false,
+        "summary": "Get estimated account stake txns count",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success response"
+          }
+        },
+        "parameters": [
+          {
+            "name": "account",
+            "in": "path",
+            "description": "account id",
+            "required": true,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "from",
+            "in": "query",
+            "description": "sender account id",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "to",
+            "in": "query",
+            "description": "receiver account id",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "after_date",
+            "in": "query",
+            "description": "date in YYYY-MM-DD format",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "before_date",
+            "in": "query",
+            "description": "date in YYYY-MM-DD format",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": ["Account"]
+      }
+    },
+    "/v1/account/{account}/activities": {
+      "get": {
+        "deprecated": false,
+        "summary": "Get account balance change activities by pagination",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success response"
+          }
+        },
+        "parameters": [
+          {
+            "name": "account",
+            "in": "path",
+            "description": "account id",
+            "required": true,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "description": "next page cursor, takes precedence over 'page' if provided",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "string",
+              "minLength": 36,
+              "maxLength": 36
+            }
+          },
+          {
+            "name": "per_page",
+            "in": "query",
+            "description": "Default: 25, each increment of 25 will count towards rate limit. eg. per page 50 will use 2 credits",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "number",
+              "minimum": 1,
+              "maximum": 250,
+              "default": 25
+            }
+          }
+        ],
+        "tags": ["Account"]
+      }
+    },
+    "/v1/account/{account}/activities/count": {
+      "get": {
+        "deprecated": false,
+        "summary": "Get estimated account balance change activities count",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success response"
+          }
+        },
+        "parameters": [
+          {
+            "name": "account",
+            "in": "path",
+            "description": "account id",
+            "required": true,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": ["Account"]
+      }
+    },
+    "/v1/blocks": {
+      "get": {
+        "deprecated": false,
+        "summary": "Get blocks by pagination",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success response"
+          }
+        },
+        "parameters": [
+          {
+            "name": "cursor",
+            "in": "query",
+            "description": "next page cursor, takes precedence over 'page' if provided",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "number",
+              "minimum": 1,
+              "maximum": 200,
+              "default": 1
+            }
+          },
+          {
+            "name": "per_page",
+            "in": "query",
+            "description": "Default: 25, each increment of 25 will count towards rate limit. eg. per page 50 will use 2 credits",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "number",
+              "minimum": 1,
+              "maximum": 250,
+              "default": 25
+            }
+          }
+        ],
+        "tags": ["Blocks"]
+      }
+    },
+    "/v1/blocks/count": {
+      "get": {
+        "deprecated": false,
+        "summary": "Get estimated total blocks count",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success response"
+          }
+        },
+        "parameters": [],
+        "tags": ["Blocks"]
+      }
+    },
+    "/v1/blocks/latest": {
+      "get": {
+        "deprecated": false,
+        "summary": "Get the latest blocks",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success response"
+          }
+        },
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "number",
+              "minimum": 1,
+              "maximum": 10,
+              "default": 10
+            }
+          }
+        ],
+        "tags": ["Blocks"]
+      }
+    },
+    "/v1/blocks/{hash}": {
+      "get": {
+        "deprecated": false,
+        "summary": "Get block info",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success response"
+          }
+        },
+        "parameters": [
+          {
+            "name": "hash",
+            "in": "path",
+            "description": "block hash",
+            "required": true,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": ["Blocks"]
+      }
+    },
+    "/v1/charts": {
+      "get": {
+        "deprecated": false,
+        "summary": "Get charts data",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success response"
+          }
+        },
+        "parameters": [],
+        "tags": ["Charts"]
+      }
+    },
+    "/v1/charts/latest": {
+      "get": {
+        "deprecated": false,
+        "summary": "Get latest charts data",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success response"
+          }
+        },
+        "parameters": [],
+        "tags": ["Charts"]
+      }
+    },
+    "/v1/charts/tps": {
+      "get": {
+        "deprecated": false,
+        "summary": "Get txns per second by shards chart data",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success response"
+          }
+        },
+        "parameters": [],
+        "tags": ["Charts"]
+      }
+    },
+    "/v1/dex": {
+      "get": {
+        "deprecated": false,
+        "summary": "Get top dex pairs by pagination",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success response"
+          }
+        },
+        "parameters": [
+          {
+            "name": "search",
+            "in": "query",
+            "description": "search keyword",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "number",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 1
+            }
+          },
+          {
+            "name": "per_page",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "number",
+              "minimum": 1,
+              "maximum": 50,
+              "default": 50
+            }
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "string",
+              "enum": ["volume", "txns", "makers"],
+              "default": "volume"
+            }
+          },
+          {
+            "name": "order",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "string",
+              "enum": ["desc", "asc"],
+              "default": "desc"
+            }
+          }
+        ],
+        "tags": ["DEX"]
+      }
+    },
+    "/v1/dex/count": {
+      "get": {
+        "deprecated": false,
+        "summary": "Get top dex pairs count",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success response"
+          }
+        },
+        "parameters": [
+          {
+            "name": "search",
+            "in": "query",
+            "description": "search keyword",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "tags": ["DEX"]
+      }
+    },
+    "/v1/dex/pairs/{pair}": {
+      "get": {
+        "deprecated": false,
+        "summary": "Get dex pair info",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success response"
+          }
+        },
+        "parameters": [
+          {
+            "name": "pair",
+            "in": "path",
+            "description": "pair id",
+            "required": true,
+            "deprecated": false,
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "tags": ["DEX"]
+      }
+    },
+    "/v1/dex/pairs/{pair}/txns": {
+      "get": {
+        "deprecated": false,
+        "summary": "Get dex pair txns by pagination",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success response"
+          }
+        },
+        "parameters": [
+          {
+            "name": "pair",
+            "in": "path",
+            "description": "pair id",
+            "required": true,
+            "deprecated": false,
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "a",
+            "in": "query",
+            "description": "maker account id",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "description": "next page cursor",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "per_page",
+            "in": "query",
+            "description": "Default: 25, each increment of 25 will count towards rate limit. eg. per page 50 will use 2 credits",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "number",
+              "minimum": 1,
+              "maximum": 250,
+              "default": 25
+            }
+          }
+        ],
+        "tags": ["DEX"]
+      }
+    },
+    "/v1/dex/pairs/{pair}/txns/count": {
+      "get": {
+        "deprecated": false,
+        "summary": "Get dex pair txns count",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success response"
+          }
+        },
+        "parameters": [
+          {
+            "name": "pair",
+            "in": "path",
+            "description": "pair id",
+            "required": true,
+            "deprecated": false,
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "a",
+            "in": "query",
+            "description": "maker account id",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": ["DEX"]
+      }
+    },
+    "/v1/dex/pairs/{pair}/charts": {
+      "get": {
+        "deprecated": false,
+        "summary": "Get dex pair chart data",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success response"
+          }
+        },
+        "parameters": [
+          {
+            "name": "pair",
+            "in": "path",
+            "description": "pair id",
+            "required": true,
+            "deprecated": false,
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "interval",
+            "in": "query",
+            "description": "",
+            "required": true,
+            "deprecated": false,
+            "schema": {
+              "type": "string",
+              "enum": ["1m", "1h", "1d"],
+              "default": "1m"
+            }
+          },
+          {
+            "name": "to",
+            "in": "query",
+            "description": "end timestamp",
+            "required": true,
+            "deprecated": false,
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "no of rows",
+            "required": true,
+            "deprecated": false,
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "tags": ["DEX"]
+      }
+    },
+    "/v1/fts": {
+      "get": {
+        "deprecated": false,
+        "summary": "Get top tokens by pagination",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success response"
+          }
+        },
+        "parameters": [
+          {
+            "name": "search",
+            "in": "query",
+            "description": "search keyword",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "number",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 1
+            }
+          },
+          {
+            "name": "per_page",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "number",
+              "minimum": 1,
+              "maximum": 50,
+              "default": 50
+            }
+          },
+          {
+            "name": "order",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "string",
+              "enum": ["desc", "asc"],
+              "default": "desc"
+            }
+          }
+        ],
+        "tags": ["FTs"]
+      }
+    },
+    "/v1/fts/count": {
+      "get": {
+        "deprecated": false,
+        "summary": "Get top tokens count",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success response"
+          }
+        },
+        "parameters": [
+          {
+            "name": "search",
+            "in": "query",
+            "description": "search keyword",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": ["FTs"]
+      }
+    },
+    "/v1/fts/txns": {
+      "get": {
+        "deprecated": false,
+        "summary": "Get token txns by pagination",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success response"
+          }
+        },
+        "parameters": [
+          {
+            "name": "cursor",
+            "in": "query",
+            "description": "next page cursor, takes precedence over 'page' if provided",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "string",
+              "minLength": 36,
+              "maxLength": 36
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "number",
+              "minimum": 1,
+              "maximum": 200,
+              "default": 1
+            }
+          },
+          {
+            "name": "per_page",
+            "in": "query",
+            "description": "Default: 25, each increment of 25 will count towards rate limit. eg. per page 50 will use 2 credits",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "number",
+              "minimum": 1,
+              "maximum": 250,
+              "default": 25
+            }
+          }
+        ],
+        "tags": ["FTs"]
+      }
+    },
+    "/v1/fts/txns/count": {
+      "get": {
+        "deprecated": false,
+        "summary": "Get estimated token txns count",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success response"
+          }
+        },
+        "parameters": [],
+        "tags": ["FTs"]
+      }
+    },
+    "/v1/fts/{contract}": {
+      "get": {
+        "deprecated": false,
+        "summary": "Get token info",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success response"
+          }
+        },
+        "parameters": [
+          {
+            "name": "contract",
+            "in": "path",
+            "description": "contract id",
+            "required": true,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": ["FTs"]
+      }
+    },
+    "/v1/fts/{contract}/txns": {
+      "get": {
+        "deprecated": false,
+        "summary": "Get token txns by pagination",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success response"
+          }
+        },
+        "parameters": [
+          {
+            "name": "contract",
+            "in": "path",
+            "description": "contract id",
+            "required": true,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "account",
+            "in": "query",
+            "description": "affected account id",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "description": "next page cursor, takes precedence over 'page' if provided",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "string",
+              "minLength": 36,
+              "maxLength": 36
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "number",
+              "minimum": 1,
+              "maximum": 200,
+              "default": 1
+            }
+          },
+          {
+            "name": "per_page",
+            "in": "query",
+            "description": "Default: 25, each increment of 25 will count towards rate limit. eg. per page 50 will use 2 credits",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "number",
+              "minimum": 1,
+              "maximum": 250,
+              "default": 25
+            }
+          }
+        ],
+        "tags": ["FTs"]
+      }
+    },
+    "/v1/fts/{contract}/txns/count": {
+      "get": {
+        "deprecated": false,
+        "summary": "Get estimated token txns count",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success response"
+          }
+        },
+        "parameters": [
+          {
+            "name": "contract",
+            "in": "path",
+            "description": "contract id",
+            "required": true,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "account",
+            "in": "query",
+            "description": "affected account id",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": ["FTs"]
+      }
+    },
+    "/v1/fts/{contract}/holders": {
+      "get": {
+        "deprecated": false,
+        "summary": "Get token holders by pagination",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success response"
+          }
+        },
+        "parameters": [
+          {
+            "name": "contract",
+            "in": "path",
+            "description": "contract id",
+            "required": true,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "number",
+              "minimum": 1,
+              "maximum": 200,
+              "default": 1
+            }
+          },
+          {
+            "name": "per_page",
+            "in": "query",
+            "description": "Default: 25, each increment of 25 will count towards rate limit. eg. per page 50 will use 2 credits",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "number",
+              "minimum": 1,
+              "maximum": 250,
+              "default": 25
+            }
+          }
+        ],
+        "tags": ["FTs"]
+      }
+    },
+    "/v1/fts/{contract}/holders/count": {
+      "get": {
+        "deprecated": false,
+        "summary": "Get estimated token holders count",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success response"
+          }
+        },
+        "parameters": [
+          {
+            "name": "contract",
+            "in": "path",
+            "description": "contract id",
+            "required": true,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": ["FTs"]
+      }
+    },
+    "/v1/keys/{key}": {
+      "get": {
+        "deprecated": false,
+        "summary": "Get access key info by public key",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success response"
+          }
+        },
+        "parameters": [
+          {
+            "name": "key",
+            "in": "path",
+            "description": "public key",
+            "required": true,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": ["Access Keys"]
+      }
+    },
+    "/v1/kitwallet/stakingPools": {
+      "get": {
+        "deprecated": false,
+        "summary": "Get all staking pools",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success response"
+          }
+        },
+        "parameters": [],
+        "tags": ["Kitwallet"]
+      }
+    },
+    "/v1/kitwallet/staking-deposits/{account}": {
+      "get": {
+        "deprecated": false,
+        "summary": "Get staking deposits for an account",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success response"
+          }
+        },
+        "parameters": [
+          {
+            "name": "account",
+            "in": "path",
+            "description": "account id",
+            "required": true,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": ["Kitwallet"]
+      }
+    },
+    "/v1/kitwallet/publicKey/{key}/accounts": {
+      "get": {
+        "deprecated": false,
+        "summary": "Get accounts by public key",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success response"
+          }
+        },
+        "parameters": [
+          {
+            "name": "key",
+            "in": "path",
+            "description": "public key",
+            "required": true,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": ["Kitwallet"]
+      }
+    },
+    "/v1/kitwallet/account/{account}/activities": {
+      "get": {
+        "deprecated": false,
+        "summary": "Get activities for an account",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success response"
+          }
+        },
+        "parameters": [
+          {
+            "name": "account",
+            "in": "path",
+            "description": "account id",
+            "required": true,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": ["Kitwallet"]
+      }
+    },
+    "/v1/kitwallet/account/{account}/callReceivers": {
+      "get": {
+        "deprecated": false,
+        "summary": "Get call receivers for an account",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success response"
+          }
+        },
+        "parameters": [
+          {
+            "name": "account",
+            "in": "path",
+            "description": "account id",
+            "required": true,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": ["Kitwallet"]
+      }
+    },
+    "/v1/kitwallet/account/{account}/likelyTokens": {
+      "get": {
+        "deprecated": false,
+        "summary": "Get likely tokens for an account",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success response"
+          }
+        },
+        "parameters": [
+          {
+            "name": "account",
+            "in": "path",
+            "description": "account id",
+            "required": true,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": ["Kitwallet"]
+      }
+    },
+    "/v1/kitwallet/account/{account}/likelyTokensFromBlock": {
+      "get": {
+        "deprecated": false,
+        "summary": "Get likely tokens for an account from block",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success response"
+          }
+        },
+        "parameters": [
+          {
+            "name": "account",
+            "in": "path",
+            "description": "account id",
+            "required": true,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fromBlockTimestamp",
+            "in": "query",
+            "description": "block timestamp",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": ["Kitwallet"]
+      }
+    },
+    "/v1/kitwallet/account/{account}/likelyNFTs": {
+      "get": {
+        "deprecated": false,
+        "summary": "Get likely nfts for an account",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success response"
+          }
+        },
+        "parameters": [
+          {
+            "name": "account",
+            "in": "path",
+            "description": "account id",
+            "required": true,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": ["Kitwallet"]
+      }
+    },
+    "/v1/kitwallet/account/{account}/likelyNFTsFromBlock": {
+      "get": {
+        "deprecated": false,
+        "summary": "Get likely nfts for an account from block",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success response"
+          }
+        },
+        "parameters": [
+          {
+            "name": "account",
+            "in": "path",
+            "description": "account id",
+            "required": true,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fromBlockTimestamp",
+            "in": "query",
+            "description": "block timestamp",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": ["Kitwallet"]
+      }
+    },
+    "/v1/legacy/total-supply": {
+      "get": {
+        "deprecated": false,
+        "summary": "Get total near supply",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success response"
+          }
+        },
+        "parameters": [
+          {
+            "name": "unit",
+            "in": "query",
+            "description": "Unit of Near supply. Choosing NEAR will result in a text-only response",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "string",
+              "enum": ["yoctonear", "near"],
+              "default": "yoctonear"
+            }
+          },
+          {
+            "name": "format",
+            "in": "query",
+            "description": "If 'coingecko', return { \"result\": value }",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "string",
+              "enum": ["coingecko"],
+              "default": null
+            }
+          }
+        ],
+        "tags": ["Legacy"]
+      }
+    },
+    "/v1/legacy/circulating-supply": {
+      "get": {
+        "deprecated": false,
+        "summary": "Get circulating near supply",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success response"
+          }
+        },
+        "parameters": [
+          {
+            "name": "unit",
+            "in": "query",
+            "description": "Unit of Near supply. Choosing NEAR will result in a text-only response",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "string",
+              "enum": ["yoctonear", "near"],
+              "default": "yoctonear"
+            }
+          },
+          {
+            "name": "format",
+            "in": "query",
+            "description": "If 'coingecko', return { \"result\": value }",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "string",
+              "enum": ["coingecko"],
+              "default": null
+            }
+          }
+        ],
+        "tags": ["Legacy"]
+      }
+    },
+    "/v1/legacy/fees": {
+      "get": {
+        "deprecated": false,
+        "summary": "Get tokens burnt per day",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success response"
+          }
+        },
+        "parameters": [
+          {
+            "name": "period",
+            "in": "query",
+            "description": "Data period",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "string",
+              "enum": ["day", "week"],
+              "default": "day"
+            }
+          }
+        ],
+        "tags": ["Legacy"]
+      }
+    },
+    "/v1/nfts": {
+      "get": {
+        "deprecated": false,
+        "summary": "Get top nfts by pagination",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success response"
+          }
+        },
+        "parameters": [
+          {
+            "name": "search",
+            "in": "query",
+            "description": "search keyword",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "number",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 1
+            }
+          },
+          {
+            "name": "per_page",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "number",
+              "minimum": 1,
+              "maximum": 50,
+              "default": 50
+            }
+          },
+          {
+            "name": "order",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "string",
+              "enum": ["desc", "asc"],
+              "default": "desc"
+            }
+          }
+        ],
+        "tags": ["NFTs"]
+      }
+    },
+    "/v1/nfts/count": {
+      "get": {
+        "deprecated": false,
+        "summary": "Get top nfts count",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success response"
+          }
+        },
+        "parameters": [
+          {
+            "name": "search",
+            "in": "query",
+            "description": "search keyword",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": ["NFTs"]
+      }
+    },
+    "/v1/nfts/txns": {
+      "get": {
+        "deprecated": false,
+        "summary": "Get nft txns by pagination",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success response"
+          }
+        },
+        "parameters": [
+          {
+            "name": "cursor",
+            "in": "query",
+            "description": "next page cursor, takes precedence over 'page' if provided",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "string",
+              "minLength": 36,
+              "maxLength": 36
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "number",
+              "minimum": 1,
+              "maximum": 200,
+              "default": 1
+            }
+          },
+          {
+            "name": "per_page",
+            "in": "query",
+            "description": "Default: 25, each increment of 25 will count towards rate limit. eg. per page 50 will use 2 credits",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "number",
+              "minimum": 1,
+              "maximum": 250,
+              "default": 25
+            }
+          }
+        ],
+        "tags": ["NFTs"]
+      }
+    },
+    "/v1/nfts/txns/count": {
+      "get": {
+        "deprecated": false,
+        "summary": "Get estimated nft txns count",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success response"
+          }
+        },
+        "parameters": [],
+        "tags": ["NFTs"]
+      }
+    },
+    "/v1/nfts/{contract}": {
+      "get": {
+        "deprecated": false,
+        "summary": "Get nft info",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success response"
+          }
+        },
+        "parameters": [
+          {
+            "name": "contract",
+            "in": "path",
+            "description": "contract id",
+            "required": true,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": ["NFTs"]
+      }
+    },
+    "/v1/nfts/{contract}/txns": {
+      "get": {
+        "deprecated": false,
+        "summary": "Get nft txns by pagination",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success response"
+          }
+        },
+        "parameters": [
+          {
+            "name": "contract",
+            "in": "path",
+            "description": "contract id",
+            "required": true,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "description": "next page cursor, takes precedence over 'page' if provided",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "string",
+              "minLength": 36,
+              "maxLength": 36
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "number",
+              "minimum": 1,
+              "maximum": 200,
+              "default": 1
+            }
+          },
+          {
+            "name": "per_page",
+            "in": "query",
+            "description": "Default: 25, each increment of 25 will count towards rate limit. eg. per page 50 will use 2 credits",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "number",
+              "minimum": 1,
+              "maximum": 250,
+              "default": 25
+            }
+          }
+        ],
+        "tags": ["NFTs"]
+      }
+    },
+    "/v1/nfts/{contract}/txns/count": {
+      "get": {
+        "deprecated": false,
+        "summary": "Get estimated nft txns count",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success response"
+          }
+        },
+        "parameters": [
+          {
+            "name": "contract",
+            "in": "path",
+            "description": "contract id",
+            "required": true,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": ["NFTs"]
+      }
+    },
+    "/v1/nfts/{contract}/holders": {
+      "get": {
+        "deprecated": false,
+        "summary": "Get nft holders by pagination",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success response"
+          }
+        },
+        "parameters": [
+          {
+            "name": "contract",
+            "in": "path",
+            "description": "contract id",
+            "required": true,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "number",
+              "minimum": 1,
+              "maximum": 200,
+              "default": 1
+            }
+          },
+          {
+            "name": "per_page",
+            "in": "query",
+            "description": "Default: 25, each increment of 25 will count towards rate limit. eg. per page 50 will use 2 credits",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "number",
+              "minimum": 1,
+              "maximum": 250,
+              "default": 25
+            }
+          }
+        ],
+        "tags": ["NFTs"]
+      }
+    },
+    "/v1/nfts/{contract}/holders/count": {
+      "get": {
+        "deprecated": false,
+        "summary": "Get estimated nft holders count",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success response"
+          }
+        },
+        "parameters": [
+          {
+            "name": "contract",
+            "in": "path",
+            "description": "contract id",
+            "required": true,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": ["NFTs"]
+      }
+    },
+    "/v1/nfts/{contract}/tokens": {
+      "get": {
+        "deprecated": false,
+        "summary": "Get nft tokens list by pagination",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success response"
+          }
+        },
+        "parameters": [
+          {
+            "name": "contract",
+            "in": "path",
+            "description": "contract id",
+            "required": true,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "token",
+            "in": "query",
+            "description": "token id",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "number",
+              "minimum": 1,
+              "maximum": 200,
+              "default": 1
+            }
+          },
+          {
+            "name": "per_page",
+            "in": "query",
+            "description": "Default: 25, each increment of 25 will count towards rate limit. eg. per page 50 will use 2 credits",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "number",
+              "minimum": 1,
+              "maximum": 250,
+              "default": 25
+            }
+          }
+        ],
+        "tags": ["NFTs"]
+      }
+    },
+    "/v1/nfts/{contract}/tokens/count": {
+      "get": {
+        "deprecated": false,
+        "summary": "Get estimated nft tokens count",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success response"
+          }
+        },
+        "parameters": [
+          {
+            "name": "contract",
+            "in": "path",
+            "description": "contract id",
+            "required": true,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "token",
+            "in": "query",
+            "description": "token id",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": ["NFTs"]
+      }
+    },
+    "/v1/nfts/{contract}/tokens/{token}": {
+      "get": {
+        "deprecated": false,
+        "summary": "Get nft token info",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success response"
+          }
+        },
+        "parameters": [
+          {
+            "name": "contract",
+            "in": "path",
+            "description": "contract id",
+            "required": true,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "token",
+            "in": "query",
+            "description": "token id",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": ["NFTs"]
+      }
+    },
+    "/v1/nfts/{contract}/tokens/{token}/txns": {
+      "get": {
+        "deprecated": false,
+        "summary": "Get nft token txns by pagination",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success response"
+          }
+        },
+        "parameters": [
+          {
+            "name": "contract",
+            "in": "path",
+            "description": "contract id",
+            "required": true,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "token",
+            "in": "query",
+            "description": "token id",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "description": "next page cursor, takes precedence over 'page' if provided",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "string",
+              "minLength": 36,
+              "maxLength": 36
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "number",
+              "minimum": 1,
+              "maximum": 200,
+              "default": 1
+            }
+          },
+          {
+            "name": "per_page",
+            "in": "query",
+            "description": "Default: 25, each increment of 25 will count towards rate limit. eg. per page 50 will use 2 credits",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "number",
+              "minimum": 1,
+              "maximum": 250,
+              "default": 25
+            }
+          }
+        ],
+        "tags": ["NFTs"]
+      }
+    },
+    "/v1/nfts/{contract}/tokens/{token}/txns/count": {
+      "get": {
+        "deprecated": false,
+        "summary": "Get estimated nft token txns count",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success response"
+          }
+        },
+        "parameters": [
+          {
+            "name": "contract",
+            "in": "path",
+            "description": "contract id",
+            "required": true,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "token",
+            "in": "query",
+            "description": "token id",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": ["NFTs"]
+      }
+    },
+    "/v1/search": {
+      "get": {
+        "deprecated": false,
+        "summary": "Search txn by hash, block by height / hash, account by id, receipt by id, tokens by hex address",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success response"
+          }
+        },
+        "parameters": [
+          {
+            "name": "keyword",
+            "in": "query",
+            "description": "txn hash / block height / account id / receipt id / hex address",
+            "required": true,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": ["Search"]
+      }
+    },
+    "/v1/search/txns": {
+      "get": {
+        "deprecated": false,
+        "summary": "Search txns by hash",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success response"
+          }
+        },
+        "parameters": [
+          {
+            "name": "keyword",
+            "in": "query",
+            "description": "txn hash",
+            "required": true,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": ["Search"]
+      }
+    },
+    "/v1/search/blocks": {
+      "get": {
+        "deprecated": false,
+        "summary": "Search blocks by hash / height",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success response"
+          }
+        },
+        "parameters": [
+          {
+            "name": "keyword",
+            "in": "query",
+            "description": "block height / hash",
+            "required": true,
+            "deprecated": false,
+            "schema": {
+              "oneOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "number"
+                }
+              ]
+            }
+          }
+        ],
+        "tags": ["Search"]
+      }
+    },
+    "/v1/search/accounts": {
+      "get": {
+        "deprecated": false,
+        "summary": "Search accounts by id",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success response"
+          }
+        },
+        "parameters": [
+          {
+            "name": "keyword",
+            "in": "query",
+            "description": "account id",
+            "required": true,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": ["Search"]
+      }
+    },
+    "/v1/search/receipts": {
+      "get": {
+        "deprecated": false,
+        "summary": "Search receipts by id",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success response"
+          }
+        },
+        "parameters": [
+          {
+            "name": "keyword",
+            "in": "query",
+            "description": "receipt id",
+            "required": true,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": ["Search"]
+      }
+    },
+    "/v1/search/tokens": {
+      "get": {
+        "deprecated": false,
+        "summary": "Search tokens by hex address",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success response"
+          }
+        },
+        "parameters": [
+          {
+            "name": "keyword",
+            "in": "query",
+            "description": "token hex address",
+            "required": true,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": ["Search"]
+      }
+    },
+    "/v1/stats": {
+      "get": {
+        "deprecated": false,
+        "summary": "Get stats",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success response"
+          }
+        },
+        "parameters": [],
+        "tags": ["Stats"]
+      }
+    },
+    "/v1/stats/price": {
+      "get": {
+        "deprecated": false,
+        "summary": "Get near price",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success response"
+          }
+        },
+        "parameters": [
+          {
+            "name": "date",
+            "in": "query",
+            "description": "date in yyyy-mm-dd format",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": ["Stats"]
+      }
+    },
+    "/v1/txns": {
+      "get": {
+        "deprecated": false,
+        "summary": "Get txns by pagination",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success response"
+          }
+        },
+        "parameters": [
+          {
+            "name": "block",
+            "in": "query",
+            "description": "block hash",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "from",
+            "in": "query",
+            "description": "sender account id",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "to",
+            "in": "query",
+            "description": "receiver account id",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "action",
+            "in": "query",
+            "description": "action kind",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "method",
+            "in": "query",
+            "description": "function call method",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "after_date",
+            "in": "query",
+            "description": "date in YYYY-MM-DD format",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "before_date",
+            "in": "query",
+            "description": "date in YYYY-MM-DD format",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "description": "next page cursor, takes precedence over 'page' if provided",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "number",
+              "minimum": 1,
+              "maximum": 200,
+              "default": 1
+            }
+          },
+          {
+            "name": "per_page",
+            "in": "query",
+            "description": "Default: 25, each increment of 25 will count towards rate limit. eg. per page 50 will use 2 credits",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "number",
+              "minimum": 1,
+              "maximum": 250,
+              "default": 25
+            }
+          },
+          {
+            "name": "order",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "string",
+              "enum": ["desc", "asc"],
+              "default": "desc"
+            }
+          }
+        ],
+        "tags": ["Txns"]
+      }
+    },
+    "/v1/txns/count": {
+      "get": {
+        "deprecated": false,
+        "summary": "Get estimated total txns count",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success response"
+          }
+        },
+        "parameters": [
+          {
+            "name": "block",
+            "in": "query",
+            "description": "block hash",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "from",
+            "in": "query",
+            "description": "sender account id",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "to",
+            "in": "query",
+            "description": "receiver account id",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "action",
+            "in": "query",
+            "description": "action kind",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "method",
+            "in": "query",
+            "description": "function call method",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "after_date",
+            "in": "query",
+            "description": "date in YYYY-MM-DD format",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "before_date",
+            "in": "query",
+            "description": "date in YYYY-MM-DD format",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": ["Txns"]
+      }
+    },
+    "/v1/txns/latest": {
+      "get": {
+        "deprecated": false,
+        "summary": "Get the latest txns",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success response"
+          }
+        },
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "number",
+              "minimum": 1,
+              "maximum": 10,
+              "default": 10
+            }
+          }
+        ],
+        "tags": ["Txns"]
+      }
+    },
+    "/v1/txns/{hash}": {
+      "get": {
+        "deprecated": false,
+        "summary": "Get txn info",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success response"
+          }
+        },
+        "parameters": [
+          {
+            "name": "hash",
+            "in": "path",
+            "description": "txn hash",
+            "required": true,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": ["Txns"]
+      }
+    },
+    "/v1/txns/{hash}/full": {
+      "get": {
+        "deprecated": false,
+        "summary": "Get txn info with receipts and execution outcomes",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success response"
+          }
+        },
+        "parameters": [
+          {
+            "name": "hash",
+            "in": "path",
+            "description": "txn hash",
+            "required": true,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": ["Txns"]
+      }
+    },
+    "/v1/validators": {
+      "get": {
+        "deprecated": false,
+        "summary": "Get validators",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success response"
+          }
+        },
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "number",
+              "minimum": 1,
+              "maximum": 200,
+              "default": 1
+            }
+          },
+          {
+            "name": "per_page",
+            "in": "query",
+            "description": "Default: 25, each increment of 25 will count towards rate limit. eg. per page 50 will use 2 credits",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "number",
+              "minimum": 1,
+              "maximum": 250,
+              "default": 25
+            }
+          },
+          {
+            "name": "rpc",
+            "in": "query",
+            "description": "rpc url to use",
+            "required": false,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": ["Validators"]
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Access Keys",
+      "description": ""
+    },
+    {
+      "name": "Account",
+      "description": ""
+    },
+    {
+      "name": "Blocks",
+      "description": ""
+    },
+    {
+      "name": "Charts",
+      "description": ""
+    },
+    {
+      "name": "DEX",
+      "description": ""
+    },
+    {
+      "name": "FTs",
+      "description": ""
+    },
+    {
+      "name": "Kitwallet",
+      "description": ""
+    },
+    {
+      "name": "Legacy",
+      "description": ""
+    },
+    {
+      "name": "NFTs",
+      "description": ""
+    },
+    {
+      "name": "Search",
+      "description": ""
+    },
+    {
+      "name": "Stats",
+      "description": ""
+    },
+    {
+      "name": "Txns",
+      "description": ""
+    },
+    {
+      "name": "Validators",
+      "description": ""
+    }
+  ],
+  "host": "api.nearblocks.io"
+}

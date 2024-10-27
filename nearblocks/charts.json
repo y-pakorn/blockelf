@@ -1,0 +1,56 @@
+{
+  "/v1/charts": {
+    "get": {
+      "deprecated": false,
+      "summary": "Get charts data",
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "success response"
+        }
+      },
+      "parameters": [],
+      "tags": ["Charts"]
+    }
+  },
+  "/v1/charts/latest": {
+    "get": {
+      "deprecated": false,
+      "summary": "Get latest charts data",
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "success response"
+        }
+      },
+      "parameters": [],
+      "tags": ["Charts"]
+    }
+  },
+  "/v1/charts/tps": {
+    "get": {
+      "deprecated": false,
+      "summary": "Get txns per second by shards chart data",
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "success response"
+        }
+      },
+      "parameters": [],
+      "tags": ["Charts"]
+    }
+  }
+}

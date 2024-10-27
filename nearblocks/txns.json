@@ -1,0 +1,318 @@
+{
+  "/v1/txns": {
+    "get": {
+      "deprecated": false,
+      "summary": "Get txns by pagination",
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "success response"
+        }
+      },
+      "parameters": [
+        {
+          "name": "block",
+          "in": "query",
+          "description": "block hash",
+          "required": false,
+          "deprecated": false,
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "name": "from",
+          "in": "query",
+          "description": "sender account id",
+          "required": false,
+          "deprecated": false,
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "name": "to",
+          "in": "query",
+          "description": "receiver account id",
+          "required": false,
+          "deprecated": false,
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "name": "action",
+          "in": "query",
+          "description": "action kind",
+          "required": false,
+          "deprecated": false,
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "name": "method",
+          "in": "query",
+          "description": "function call method",
+          "required": false,
+          "deprecated": false,
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "name": "after_date",
+          "in": "query",
+          "description": "date in YYYY-MM-DD format",
+          "required": false,
+          "deprecated": false,
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "name": "before_date",
+          "in": "query",
+          "description": "date in YYYY-MM-DD format",
+          "required": false,
+          "deprecated": false,
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "name": "cursor",
+          "in": "query",
+          "description": "next page cursor, takes precedence over 'page' if provided",
+          "required": false,
+          "deprecated": false,
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "name": "page",
+          "in": "query",
+          "description": "",
+          "required": false,
+          "deprecated": false,
+          "schema": {
+            "type": "number",
+            "minimum": 1,
+            "maximum": 200,
+            "default": 1
+          }
+        },
+        {
+          "name": "per_page",
+          "in": "query",
+          "description": "Default: 25, each increment of 25 will count towards rate limit. eg. per page 50 will use 2 credits",
+          "required": false,
+          "deprecated": false,
+          "schema": {
+            "type": "number",
+            "minimum": 1,
+            "maximum": 250,
+            "default": 25
+          }
+        },
+        {
+          "name": "order",
+          "in": "query",
+          "description": "",
+          "required": false,
+          "deprecated": false,
+          "schema": {
+            "type": "string",
+            "enum": ["desc", "asc"],
+            "default": "desc"
+          }
+        }
+      ],
+      "tags": ["Txns"]
+    }
+  },
+  "/v1/txns/count": {
+    "get": {
+      "deprecated": false,
+      "summary": "Get estimated total txns count",
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "success response"
+        }
+      },
+      "parameters": [
+        {
+          "name": "block",
+          "in": "query",
+          "description": "block hash",
+          "required": false,
+          "deprecated": false,
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "name": "from",
+          "in": "query",
+          "description": "sender account id",
+          "required": false,
+          "deprecated": false,
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "name": "to",
+          "in": "query",
+          "description": "receiver account id",
+          "required": false,
+          "deprecated": false,
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "name": "action",
+          "in": "query",
+          "description": "action kind",
+          "required": false,
+          "deprecated": false,
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "name": "method",
+          "in": "query",
+          "description": "function call method",
+          "required": false,
+          "deprecated": false,
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "name": "after_date",
+          "in": "query",
+          "description": "date in YYYY-MM-DD format",
+          "required": false,
+          "deprecated": false,
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "name": "before_date",
+          "in": "query",
+          "description": "date in YYYY-MM-DD format",
+          "required": false,
+          "deprecated": false,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "tags": ["Txns"]
+    }
+  },
+  "/v1/txns/latest": {
+    "get": {
+      "deprecated": false,
+      "summary": "Get the latest txns",
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "success response"
+        }
+      },
+      "parameters": [
+        {
+          "name": "limit",
+          "in": "query",
+          "description": "",
+          "required": false,
+          "deprecated": false,
+          "schema": {
+            "type": "number",
+            "minimum": 1,
+            "maximum": 10,
+            "default": 10
+          }
+        }
+      ],
+      "tags": ["Txns"]
+    }
+  },
+  "/v1/txns/{hash}": {
+    "get": {
+      "deprecated": false,
+      "summary": "Get txn info",
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "success response"
+        }
+      },
+      "parameters": [
+        {
+          "name": "hash",
+          "in": "path",
+          "description": "txn hash",
+          "required": true,
+          "deprecated": false,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "tags": ["Txns"]
+    }
+  },
+  "/v1/txns/{hash}/full": {
+    "get": {
+      "deprecated": false,
+      "summary": "Get txn info with receipts and execution outcomes",
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "success response"
+        }
+      },
+      "parameters": [
+        {
+          "name": "hash",
+          "in": "path",
+          "description": "txn hash",
+          "required": true,
+          "deprecated": false,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "tags": ["Txns"]
+    }
+  }
+}
