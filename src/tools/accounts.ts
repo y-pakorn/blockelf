@@ -9,7 +9,7 @@ export const nearAccountTools = {
   getAccountInfo: tool({
     description: "Get the account information from the NEAR blockchain",
     parameters: z.object({
-      account: z.string().describe("The NEAR account ID"),
+      account: z.string().describe("The NEAR account ID, e.g. 'alice.near'"),
     }),
     execute: async ({ account }) => {
       const url = `https://api.nearblocks.io/v1/account/${account}`
@@ -27,7 +27,7 @@ export const nearAccountTools = {
   getContractInfo: tool({
     description: "Get contract info for a NEAR account",
     parameters: z.object({
-      account: z.string().describe("The NEAR account ID"),
+      account: z.string().describe("The NEAR account ID, e.g. 'alice.near'"),
       rpc: z.string().optional().describe("RPC URL to use"),
     }),
     execute: async ({ account, rpc }: { account: string; rpc?: string }) => {
@@ -53,7 +53,7 @@ export const nearAccountTools = {
     description:
       "Get contract deployment records (first & last) for a NEAR account",
     parameters: z.object({
-      account: z.string().describe("The NEAR account ID"),
+      account: z.string().describe("The NEAR account ID, e.g. 'alice.near'"),
     }),
     execute: async ({ account }: { account: string }) => {
       const url = `https://api.nearblocks.io/v1/account/${account}/contract/deployments`
@@ -71,7 +71,8 @@ export const nearAccountTools = {
   getParsedContractInfo: tool({
     description: "Get parsed contract info for a NEAR account",
     parameters: z.object({
-      account: z.string().describe("The NEAR account ID"),
+      account: z.string().describe("The NEAR account ID, e.g. 'alice.near'"),
+
       rpc: z.string().optional().describe("RPC URL to use"),
     }),
     execute: async ({ account, rpc }: { account: string; rpc?: string }) => {
@@ -91,7 +92,8 @@ export const nearAccountTools = {
   getLatestActionArgs: tool({
     description: "Get latest action args for a contract method",
     parameters: z.object({
-      account: z.string().describe("The NEAR account ID"),
+      account: z.string().describe("The NEAR account ID, e.g. 'alice.near'"),
+
       method: z.string().describe("The contract method"),
     }),
     execute: async ({
@@ -116,7 +118,7 @@ export const nearAccountTools = {
   getAccountInventory: tool({
     description: "Get account FT/NFT token inventory",
     parameters: z.object({
-      account: z.string().describe("The NEAR account ID"),
+      account: z.string().describe("The NEAR account ID, e.g. 'alice.near'"),
     }),
     execute: async ({ account }: { account: string }) => {
       const url = `https://api.nearblocks.io/v1/account/${account}/inventory`
@@ -134,7 +136,7 @@ export const nearAccountTools = {
   getPossibleTokenContracts: tool({
     description: "Get possible FT/NFT token contracts for an account",
     parameters: z.object({
-      account: z.string().describe("The NEAR account ID"),
+      account: z.string().describe("The NEAR account ID, e.g. 'alice.near'"),
     }),
     execute: async ({ account }: { account: string }) => {
       const url = `https://api.nearblocks.io/v1/account/${account}/tokens`
@@ -152,7 +154,8 @@ export const nearAccountTools = {
   getAccessKeys: tool({
     description: "Get access keys for a NEAR account",
     parameters: z.object({
-      account: z.string().describe("The NEAR account ID"),
+      account: z.string().describe("The NEAR account ID, e.g. 'alice.near'"),
+
       page: z.number().optional().describe("Page number"),
       perPage: z.number().optional().describe("Items per page"),
       order: z
@@ -187,7 +190,7 @@ export const nearAccountTools = {
   getEstimatedAccessKeysCount: tool({
     description: "Get estimated access keys count for a NEAR account",
     parameters: z.object({
-      account: z.string().describe("The NEAR account ID"),
+      account: z.string().describe("The NEAR account ID, e.g. 'alice.near'"),
     }),
     execute: async ({ account }: { account: string }) => {
       const url = `https://api.nearblocks.io/v1/account/${account}/keys/count`
@@ -205,9 +208,15 @@ export const nearAccountTools = {
   getAccountTransactions: tool({
     description: "Get account transactions by pagination",
     parameters: z.object({
-      account: z.string().describe("The NEAR account ID"),
-      from: z.string().optional().describe("Sender account ID"),
-      to: z.string().optional().describe("Receiver account ID"),
+      account: z.string().describe("The NEAR account ID, e.g. 'alice.near'"),
+      from: z
+        .string()
+        .optional()
+        .describe("Sender account ID, e.g. 'bob.near'"),
+      to: z
+        .string()
+        .optional()
+        .describe("Receiver account ID, e.g. 'charlie.near'"),
       action: z.string().optional().describe("Action kind"),
       method: z.string().optional().describe("Function call method"),
       afterDate: z.string().optional().describe("Date in YYYY-MM-DD format"),
@@ -248,9 +257,15 @@ export const nearAccountTools = {
   getEstimatedAccountTransactionsCount: tool({
     description: "Get estimated account transactions count",
     parameters: z.object({
-      account: z.string().describe("The NEAR account ID"),
-      from: z.string().optional().describe("Sender account ID"),
-      to: z.string().optional().describe("Receiver account ID"),
+      account: z.string().describe("The NEAR account ID, e.g. 'alice.near'"),
+      from: z
+        .string()
+        .optional()
+        .describe("Sender account ID, e.g. 'bob.near'"),
+      to: z
+        .string()
+        .optional()
+        .describe("Receiver account ID, e.g. 'charlie.near'"),
       action: z.string().optional().describe("Action kind"),
       method: z.string().optional().describe("Function call method"),
       afterDate: z.string().optional().describe("Date in YYYY-MM-DD format"),
@@ -283,9 +298,15 @@ export const nearAccountTools = {
   getAccountTransactionsWithoutReceipts: tool({
     description: "Get account transactions without receipts by pagination",
     parameters: z.object({
-      account: z.string().describe("The NEAR account ID"),
-      from: z.string().optional().describe("Sender account ID"),
-      to: z.string().optional().describe("Receiver account ID"),
+      account: z.string().describe("The NEAR account ID, e.g. 'alice.near'"),
+      from: z
+        .string()
+        .optional()
+        .describe("Sender account ID, e.g. 'bob.near'"),
+      to: z
+        .string()
+        .optional()
+        .describe("Receiver account ID, e.g. 'charlie.near'"),
       afterDate: z.string().optional().describe("Date in YYYY-MM-DD format"),
       beforeDate: z.string().optional().describe("Date in YYYY-MM-DD format"),
       cursor: z.string().optional().describe("Next page cursor"),
@@ -323,9 +344,15 @@ export const nearAccountTools = {
   getEstimatedAccountTransactionsWithoutReceiptsCount: tool({
     description: "Get estimated account transactions without receipts count",
     parameters: z.object({
-      account: z.string().describe("The NEAR account ID"),
-      from: z.string().optional().describe("Sender account ID"),
-      to: z.string().optional().describe("Receiver account ID"),
+      account: z.string().describe("The NEAR account ID, e.g. 'alice.near'"),
+      from: z
+        .string()
+        .optional()
+        .describe("Sender account ID, e.g. 'bob.near'"),
+      to: z
+        .string()
+        .optional()
+        .describe("Receiver account ID, e.g. 'charlie.near'"),
       afterDate: z.string().optional().describe("Date in YYYY-MM-DD format"),
       beforeDate: z.string().optional().describe("Date in YYYY-MM-DD format"),
     }),
@@ -356,9 +383,15 @@ export const nearAccountTools = {
   getAccountReceipts: tool({
     description: "Get account receipts by pagination",
     parameters: z.object({
-      account: z.string().describe("The NEAR account ID"),
-      from: z.string().optional().describe("Sender account ID"),
-      to: z.string().optional().describe("Receiver account ID"),
+      account: z.string().describe("The NEAR account ID, e.g. 'alice.near'"),
+      from: z
+        .string()
+        .optional()
+        .describe("Sender account ID, e.g. 'bob.near'"),
+      to: z
+        .string()
+        .optional()
+        .describe("Receiver account ID, e.g. 'charlie.near'"),
       action: z.string().optional().describe("Action kind"),
       method: z.string().optional().describe("Function call method"),
       afterDate: z.string().optional().describe("Date in YYYY-MM-DD format"),
@@ -398,9 +431,15 @@ export const nearAccountTools = {
   getEstimatedAccountReceiptsCount: tool({
     description: "Get estimated account receipts count",
     parameters: z.object({
-      account: z.string().describe("The NEAR account ID"),
-      from: z.string().optional().describe("Sender account ID"),
-      to: z.string().optional().describe("Receiver account ID"),
+      account: z.string().describe("The NEAR account ID, e.g. 'alice.near'"),
+      from: z
+        .string()
+        .optional()
+        .describe("Sender account ID, e.g. 'bob.near'"),
+      to: z
+        .string()
+        .optional()
+        .describe("Receiver account ID, e.g. 'charlie.near'"),
       action: z.string().optional().describe("Action kind"),
       method: z.string().optional().describe("Function call method"),
       afterDate: z.string().optional().describe("Date in YYYY-MM-DD format"),
@@ -433,9 +472,15 @@ export const nearAccountTools = {
   getAccountTokenTransactions: tool({
     description: "Get account token transactions by pagination",
     parameters: z.object({
-      account: z.string().describe("The NEAR account ID"),
-      involved: z.string().optional().describe("Involved account ID"),
-      contract: z.string().optional().describe("Contract account ID"),
+      account: z.string().describe("The NEAR account ID, e.g. 'alice.near'"),
+      involved: z
+        .string()
+        .optional()
+        .describe("Involved account ID, e.g. 'v2.ref-finance.near'"),
+      contract: z
+        .string()
+        .optional()
+        .describe("Contract account ID, e.g. 'wrap.near'"),
       event: z.string().optional().describe("Event kind"),
       afterDate: z.string().optional().describe("Date in YYYY-MM-DD format"),
       beforeDate: z.string().optional().describe("Date in YYYY-MM-DD format"),
@@ -475,9 +520,15 @@ export const nearAccountTools = {
   getEstimatedAccountTokenTransactionsCount: tool({
     description: "Get estimated account token transactions count",
     parameters: z.object({
-      account: z.string().describe("The NEAR account ID"),
-      involved: z.string().optional().describe("Involved account ID"),
-      contract: z.string().optional().describe("Contract account ID"),
+      account: z.string().describe("The NEAR account ID, e.g. 'alice.near'"),
+      involved: z
+        .string()
+        .optional()
+        .describe("Involved account ID, e.g. 'v2.ref-finance.near'"),
+      contract: z
+        .string()
+        .optional()
+        .describe("Contract account ID, e.g. 'wrap.near'"),
       event: z.string().optional().describe("Event kind"),
       afterDate: z.string().optional().describe("Date in YYYY-MM-DD format"),
       beforeDate: z.string().optional().describe("Date in YYYY-MM-DD format"),
@@ -509,8 +560,11 @@ export const nearAccountTools = {
   getAccountNFTTransactions: tool({
     description: "Get account NFT transactions by pagination",
     parameters: z.object({
-      account: z.string().describe("The NEAR account ID"),
-      involved: z.string().optional().describe("Involved account ID"),
+      account: z.string().describe("The NEAR account ID, e.g. 'alice.near'"),
+      involved: z
+        .string()
+        .optional()
+        .describe("Involved account ID, e.g. 'v2.ref-finance.near'"),
       event: z.string().optional().describe("Event kind"),
       afterDate: z.string().optional().describe("Date in YYYY-MM-DD format"),
       beforeDate: z.string().optional().describe("Date in YYYY-MM-DD format"),
@@ -550,8 +604,11 @@ export const nearAccountTools = {
   getEstimatedAccountNFTTransactionsCount: tool({
     description: "Get estimated account NFT transactions count",
     parameters: z.object({
-      account: z.string().describe("The NEAR account ID"),
-      involved: z.string().optional().describe("Involved account ID"),
+      account: z.string().describe("The NEAR account ID, e.g. 'alice.near'"),
+      involved: z
+        .string()
+        .optional()
+        .describe("Involved account ID, e.g. 'v2.ref-finance.near'"),
       event: z.string().optional().describe("Event kind"),
       afterDate: z.string().optional().describe("Date in YYYY-MM-DD format"),
       beforeDate: z.string().optional().describe("Date in YYYY-MM-DD format"),
@@ -583,9 +640,15 @@ export const nearAccountTools = {
   getAccountStakeTransactions: tool({
     description: "Get account stake transactions by pagination",
     parameters: z.object({
-      account: z.string().describe("The NEAR account ID"),
-      from: z.string().optional().describe("Sender account ID"),
-      to: z.string().optional().describe("Receiver account ID"),
+      account: z.string().describe("The NEAR account ID, e.g. 'alice.near'"),
+      from: z
+        .string()
+        .optional()
+        .describe("Sender account ID, e.g. 'bob.near'"),
+      to: z
+        .string()
+        .optional()
+        .describe("Receiver account ID, e.g. 'charlie.near'"),
       afterDate: z.string().optional().describe("Date in YYYY-MM-DD format"),
       beforeDate: z.string().optional().describe("Date in YYYY-MM-DD format"),
       cursor: z.string().optional().describe("Next page cursor"),
@@ -624,9 +687,15 @@ export const nearAccountTools = {
   getEstimatedAccountStakeTransactionsCount: tool({
     description: "Get estimated account stake transactions count",
     parameters: z.object({
-      account: z.string().describe("The NEAR account ID"),
-      from: z.string().optional().describe("Sender account ID"),
-      to: z.string().optional().describe("Receiver account ID"),
+      account: z.string().describe("The NEAR account ID, e.g. 'alice.near'"),
+      from: z
+        .string()
+        .optional()
+        .describe("Sender account ID, e.g. 'bob.near'"),
+      to: z
+        .string()
+        .optional()
+        .describe("Receiver account ID, e.g. 'charlie.near'"),
       afterDate: z.string().optional().describe("Date in YYYY-MM-DD format"),
       beforeDate: z.string().optional().describe("Date in YYYY-MM-DD format"),
     }),
@@ -657,7 +726,7 @@ export const nearAccountTools = {
   getAccountBalanceChangeActivities: tool({
     description: "Get account balance change activities by pagination",
     parameters: z.object({
-      account: z.string().describe("The NEAR account ID"),
+      account: z.string().describe("The NEAR account ID, e.g. 'alice.near'"),
       cursor: z.string().optional().describe("Next page cursor"),
       perPage: z.number().optional().describe("Items per page"),
     }),
@@ -687,7 +756,7 @@ export const nearAccountTools = {
   getEstimatedAccountBalanceChangeActivitiesCount: tool({
     description: "Get estimated account balance change activities count",
     parameters: z.object({
-      account: z.string().describe("The NEAR account ID"),
+      account: z.string().describe("The NEAR account ID, e.g. 'alice.near'"),
     }),
     execute: async ({ account }: { account: string }) => {
       const url = `https://api.nearblocks.io/v1/account/${account}/activities/count`

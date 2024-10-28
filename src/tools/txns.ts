@@ -6,37 +6,47 @@ import { env } from "@/env.mjs"
 
 export const nearTxnTools = {
   getTxnsByPagination: tool({
-    description: "Get transactions by pagination",
+    description:
+      "Get latest transactions by pagination and filter, return list of full transaction data",
     parameters: z.object({
-      block: z.string().optional().describe("Block hash"),
-      from: z.string().optional().describe("Sender account ID"),
-      to: z.string().optional().describe("Receiver account ID"),
-      action: z.string().optional().describe("Action kind"),
+      block: z
+        .string()
+        .optional()
+        .describe(
+          "Block hash. If you want to get transaction in a specific block, you can specify the block hash in `block` parameter."
+        ),
+      from: z
+        .string()
+        .optional()
+        .describe("Sender account ID, e.g. `alice.near`"),
+      to: z
+        .string()
+        .optional()
+        .describe("Receiver account ID, e.g. `bob.near`"),
+      action: z
+        .string()
+        .optional()
+        .describe(
+          "Action kind: 'ADD_KEY' | 'CREATE_ACCOUNT' | 'DELETE_ACCOUNT' | 'DELETE_KEY' | 'DEPLOY_CONTRACT' | 'FUNCTION_CALL' | 'STAKE' | 'TRANSFER' | 'DELEGATE_ACTION'"
+        ),
       method: z.string().optional().describe("Function call method"),
       afterDate: z.string().optional().describe("Date in YYYY-MM-DD format"),
       beforeDate: z.string().optional().describe("Date in YYYY-MM-DD format"),
       cursor: z.string().optional().describe("Next page cursor"),
       page: z.number().optional().default(1).describe("Page number"),
-      perPage: z.number().optional().default(50).describe("Items per page"),
+      perPage: z
+        .number()
+        .max(25)
+        .optional()
+        .default(25)
+        .describe("Items per page, default 25, max 100"),
       order: z
         .enum(["desc", "asc"])
         .optional()
         .default("desc")
         .describe("Sort order, must be 'desc' or 'asc'"),
     }),
-    execute: async (params: {
-      block?: string
-      from?: string
-      to?: string
-      action?: string
-      method?: string
-      afterDate?: string
-      beforeDate?: string
-      cursor?: string
-      page?: number
-      perPage?: number
-      order?: "desc" | "asc"
-    }) => {
+    execute: async ({ afterDate, beforeDate, perPage, ...params }) => {
       const url = "https://api.nearblocks.io/v1/txns"
       const config = {
         headers: {
@@ -44,10 +54,10 @@ export const nearTxnTools = {
           accept: "*/*",
         },
         params: {
+          after_date: afterDate,
+          before_date: beforeDate,
+          per_page: perPage,
           ...params,
-          after_date: params.afterDate,
-          before_date: params.beforeDate,
-          per_page: params.perPage,
         },
       }
       const response = await axios.get(url, config)
@@ -92,29 +102,6 @@ export const nearTxnTools = {
     },
   }),
 
-  getLatestTxns: tool({
-    description: "Get the latest transactions",
-    parameters: z.object({
-      limit: z
-        .number()
-        .optional()
-        .default(10)
-        .describe("Number of transactions to return"),
-    }),
-    execute: async ({ limit }: { limit?: number }) => {
-      const url = "https://api.nearblocks.io/v1/txns/latest"
-      const config = {
-        headers: {
-          Authorization: `Bearer ${env.NEARBLOCKS_API_KEY}`,
-          accept: "*/*",
-        },
-        params: { limit },
-      }
-      const response = await axios.get(url, config)
-      return response.data
-    },
-  }),
-
   getTxnInfo: tool({
     description: "Get transaction info",
     parameters: z.object({
@@ -151,4 +138,3 @@ export const nearTxnTools = {
     },
   }),
 }
-

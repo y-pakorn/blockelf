@@ -53,6 +53,7 @@ const Chat = () => {
   const [statuses, setStatuses] = useState<
     {
       label?: string
+      sublabel?: string
       isThinking: boolean
     }[]
   >([])
@@ -109,6 +110,7 @@ const Chat = () => {
                 }
                 next.push({
                   label: detail.label,
+                  sublabel: detail.sublabel,
                   isThinking: true,
                 })
               } else if (detail.status === "end") {
@@ -304,18 +306,27 @@ const Chat = () => {
                             <MessageCircleMore className="size-6" />
                             <h2 className="text-xl font-semibold">Status</h2>
                           </div>
-                          <div>
+                          <div className="space-y-2">
                             {statuses.map((status, index) => (
                               <div
                                 key={index}
-                                className="flex items-center gap-2 text-sm"
+                                className="flex items-start gap-2 text-sm"
                               >
-                                {status.isThinking ? (
-                                  <Loader2 className="size-4 animate-spin" />
-                                ) : (
-                                  <Check className="size-4" />
-                                )}
-                                {status.label || "Thinking"}
+                                <div className="shrink-0 *:size-4">
+                                  {status.isThinking ? (
+                                    <Loader2 className="animate-spin" />
+                                  ) : (
+                                    <Check />
+                                  )}
+                                </div>
+                                <div>
+                                  {status.label || "Thinking"}
+                                  {status.sublabel && (
+                                    <div className="text-xs text-muted-foreground">
+                                      {status.sublabel}
+                                    </div>
+                                  )}
+                                </div>
                               </div>
                             ))}
                           </div>

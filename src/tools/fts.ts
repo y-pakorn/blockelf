@@ -5,6 +5,35 @@ import { z } from "zod"
 import { env } from "@/env.mjs"
 
 export const nearFTTools = {
+  getTopTokens: tool({
+    description: "Get top tokens by pagination",
+    parameters: z.object({
+      search: z.string().optional().describe("Search keyword"),
+      page: z.number().optional().default(1).describe("Page number"),
+      perPage: z.number().optional().default(50).describe("Items per page"),
+      order: z
+        .enum(["desc", "asc"])
+        .optional()
+        .default("desc")
+        .describe("Sort order, must be 'desc' or 'asc'"),
+    }),
+    execute: async ({ perPage, ...params }) => {
+      const url = "https://api.nearblocks.io/v1/fts"
+      const config = {
+        headers: {
+          Authorization: `Bearer ${env.NEARBLOCKS_API_KEY}`,
+          accept: "*/*",
+        },
+        params: {
+          per_page: perPage,
+          ...params,
+        },
+      }
+      const response = await axios.get(url, config)
+      return response.data
+    },
+  }),
+
   getTopTokensCount: tool({
     description: "Get top tokens count",
     parameters: z.object({
@@ -207,4 +236,3 @@ export const nearFTTools = {
     },
   }),
 }
-
