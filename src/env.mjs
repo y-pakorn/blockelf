@@ -11,7 +11,7 @@ export const env = createEnv({
     ENS_API_KEY: z.string().min(1),
     REDPILL_API_KEY: z.string().min(1),
     NEARBLOCKS_API_KEY: z.string().min(1),
-    PIKESPEAK_API_KEY: z.string(),
+    PIKESPEAK_API_KEY: z.string().min(1),
   },
   runtimeEnv: {
     NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL,
