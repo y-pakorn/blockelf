@@ -8,6 +8,7 @@ import { internetTools } from "@/tools/internet"
 import { nearNFTTools } from "@/tools/nfts"
 import { nearSearchTools } from "@/tools/search"
 import { nearTxnTools } from "@/tools/txns"
+import { nearNetworkTools } from "@/tools/networks"
 import { utilTools } from "@/tools/utils"
 import { Message } from "@/types"
 import { CoreMessage, streamObject } from "ai"
@@ -53,6 +54,7 @@ export const submitMessage = async (
         ...nearDEXTools,
         ...nearSearchTools,
         ...nearBlockTools,
+        ...nearNetworkTools,
       }
 
       const toolsDescription = _.chain(tools)
