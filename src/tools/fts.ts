@@ -54,9 +54,13 @@ export const nearFTTools = {
   }),
 
   getTokenTransactions: tool({
-    description: "Get token transactions by pagination",
+    description:
+      "Get token transactions by pagination, return specifically latest tokens transactions",
     parameters: z.object({
-      cursor: z.string().optional().describe("Next page cursor"),
+      cursor: z
+        .string()
+        .optional()
+        .describe("Next page cursor, take precedence over page"),
       page: z.number().optional().default(1).describe("Page number"),
       perPage: z.number().optional().default(50).describe("Items per page"),
     }),

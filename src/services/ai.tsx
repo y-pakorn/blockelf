@@ -71,6 +71,10 @@ You are NEAR Protocol's AI assistant and query resolver.
 
 NEAR Protocol Specific:
 - Token is aliased as "FT" (Fungible Token) and "NFT" (Non-Fungible Token). So if you see "ft_transfer" action it mean a transfer of fungible token.
+- Token can also mean NEAR token, which is the native token of NEAR Protocol.
+- But normally when we say token, it means fungible token. If user is talking about NEAR token, they will mention it as NEAR token.
+- Account ID is the unique identifier of an account in NEAR Protocol. It is also called as "address" in some context. Its a prefixed string with dot (.) separated parts. For example, "alice.near" is an account ID, "relay.tg" is an account ID, "0-relay.hot.tg" is also an account ID.
+-
 
 AVAILABLE TOOLS:
 <start>
@@ -98,6 +102,12 @@ Description: Execute the available tools
 
 You can take multiple action and steps.
 
+Normal thinking process would be (but not limited to):
+
+HIGH_LEVEL_PLANNING -> LOW_LEVEL_PLANNING -> EXECUTE -> LOW_LEVEL_PLANNING -> EXECUTE -> LOW_LEVEL_PLANNING -> FINAL_ANSWER
+
+You need LOW_LEVEL_PLANNING every time before EXECUTE and after all EXECUTE are done because you need to observe the data and reflect on the data. The next step might be different from what you planned earlier.
+
 Reflect on your action, observation and data gathered.
 
 You should be very precise with the data observation. For example, if you see object { transaction_hash: "0x1234"  } in the data, it means the transaction hash is "0x1234" and you cannot use that to query the block since it is not a block hash.
@@ -114,8 +124,8 @@ Proceed without asking for more information.
       const schema = z.object({
         TYPE: z.union([
           z.literal("HIGH_LEVEL_PLANNING"),
+          z.literal("LOW_LEVEL_PLANNING"),
           z.literal("EXECUTE"),
-          z.literal("BATCH_EXECUTE"),
           z.literal("FINAL_ANSWER"),
         ]),
         HIGH_LEVEL_PLANNING: z
@@ -128,18 +138,31 @@ Proceed without asking for more information.
             PLAN_REASONING: z.string(),
           })
           .optional(),
-        EXECUTE: z
+        LOW_LEVEL_PLANNING: z
           .object({
             NAME: z.string().describe("Label for the user to see."),
+            SITUATION_ANALYSIS: z.string(),
+            PLAN: z.string(),
+            PLAN_REASONING: z.string(),
             TASK: z.string(),
+            TASK_REASONING: z.string(),
+            CHANGE_INDICATOR_NEXT_STEP: z.string().nullable(),
+          })
+          .optional(),
+        EXECUTE: z
+          .object({
+            NAME: z
+              .string()
+              .describe(
+                `Label for the user to see., In format of "EXECUTE {TASK_TOOL}"`
+              ),
+            THOUGHT: z.string(),
             TASK_TOOL: z
               .string()
               .describe(
                 "A name of the tool to be called, can be one of the tools available."
               ),
             TASK_TOOL_PARAMETERS: z.record(z.any()),
-            TASK_TOOL_REASONING: z.string(),
-            SITUATION_ANALYSIS: z.string(),
           })
           .optional()
           .describe("Execute one of the tools available once using this step."),
@@ -224,12 +247,13 @@ DO NOT mention any tools or steps or previous step data in the final answer. The
         stream.update({
           type: "status",
           status: "start",
-          label: object.HIGH_LEVEL_PLANNING?.NAME || object.EXECUTE?.NAME,
-          //object.BATCH_EXECUTE?.NAME,
+          label:
+            object.HIGH_LEVEL_PLANNING?.NAME ||
+            object.LOW_LEVEL_PLANNING?.NAME ||
+            object.EXECUTE?.NAME,
           sublabel:
             object.HIGH_LEVEL_PLANNING?.OBSERVATION_REFLECTION ||
-            object.EXECUTE?.SITUATION_ANALYSIS,
-          //object.BATCH_EXECUTE?.SITUATION_ANALYSIS,
+            object.LOW_LEVEL_PLANNING?.SITUATION_ANALYSIS,
         })
 
         messages.push({

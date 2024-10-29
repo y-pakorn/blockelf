@@ -59,7 +59,8 @@ export const nearNFTTools = {
   }),
 
   getNFTTransactions: tool({
-    description: "Get NFT transactions by pagination",
+    description:
+      "Get NFT transactions by pagination, return specifically latest NFT transactions",
     parameters: z.object({
       cursor: z.string().optional().describe("Next page cursor"),
       page: z.number().optional().default(1).describe("Page number"),
@@ -355,4 +356,3 @@ export const nearNFTTools = {
     },
   }),
 }
-
