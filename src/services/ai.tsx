@@ -4,6 +4,7 @@ import { nearAccountTools } from "@/tools/accounts"
 import { nearBlockTools } from "@/tools/blocks"
 import { nearDEXTools } from "@/tools/dex"
 import { nearFTTools } from "@/tools/fts"
+import { internetTools } from "@/tools/internet"
 import { nearNFTTools } from "@/tools/nfts"
 import { nearSearchTools } from "@/tools/search"
 import { nearTxnTools } from "@/tools/txns"
@@ -44,6 +45,7 @@ export const submitMessage = async (
     try {
       const tools = {
         ...utilTools,
+        ...internetTools,
         ...nearAccountTools,
         ...nearNFTTools,
         ...nearTxnTools,
@@ -74,7 +76,7 @@ NEAR Protocol Specific:
 - Token can also mean NEAR token, which is the native token of NEAR Protocol.
 - But normally when we say token, it means fungible token. If user is talking about NEAR token, they will mention it as NEAR token.
 - Account ID is the unique identifier of an account in NEAR Protocol. It is also called as "address" in some context. Its a prefixed string with dot (.) separated parts. For example, "alice.near" is an account ID, "relay.tg" is an account ID, "0-relay.hot.tg" is also an account ID.
--
+- If user is talking about updates in general, it means updates in the social side or protocol side. If user is talking about updates in the blockchain side, they will mention it as on-chain, blockchain, or something similar.
 
 AVAILABLE TOOLS:
 <start>
@@ -106,6 +108,9 @@ Normal thinking process would be (but not limited to):
 
 HIGH_LEVEL_PLANNING -> LOW_LEVEL_PLANNING -> EXECUTE -> LOW_LEVEL_PLANNING -> EXECUTE -> LOW_LEVEL_PLANNING -> FINAL_ANSWER
 
+Or maybe in case of unexpected data or unexpected result:
+HIGH_LEVEL_PLANNING -> LOW_LEVEL_PLANNING -> EXECUTE -> HIGH_LEVEL_PLANNING -> LOW_LEVEL_PLANNING -> EXECUTE -> LOW_LEVEL_PLANNING -> FINAL_ANSWER
+
 You need LOW_LEVEL_PLANNING every time before EXECUTE and after all EXECUTE are done because you need to observe the data and reflect on the data. The next step might be different from what you planned earlier.
 
 Reflect on your action, observation and data gathered.
@@ -113,6 +118,8 @@ Reflect on your action, observation and data gathered.
 You should be very precise with the data observation. For example, if you see object { transaction_hash: "0x1234"  } in the data, it means the transaction hash is "0x1234" and you cannot use that to query the block since it is not a block hash.
 
 If the data gathered is not enough to answer the query in the first planning, observe the data and reflect on the data to plan the next steps.
+
+Don't forget that you has "searchInternet" tool. You can use the internet search tool to search the internet for the data. But try to use it after you are sure that other tools cannot give you the data.
 
 You can execute steps infinitely until you get the final answer.
 
