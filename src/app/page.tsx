@@ -9,6 +9,8 @@ import { Navbar } from "@/components/navbar"
 
 import { Chat } from "./chat"
 
+export const maxDuration = 60
+
 export default function Home() {
   return (
     <main className="container flex flex-1 flex-col gap-4 py-4">
