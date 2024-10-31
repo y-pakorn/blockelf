@@ -1,5 +1,7 @@
+import { possibleDataUrlToBlobUrl } from "@/services/blob"
 import { tool } from "ai"
 import axios from "axios"
+import _ from "lodash"
 import { z } from "zod"
 
 import { env } from "@/env.mjs"
@@ -35,7 +37,16 @@ export const nearNFTTools = {
         },
       }
       const response = await axios.get(url, config)
-      return response.data
+      const blobed = await Promise.all(
+        response.data.tokens.map(async (token: any) => ({
+          ...token,
+          icon: possibleDataUrlToBlobUrl(token.icon),
+        }))
+      )
+
+      return {
+        tokens: blobed,
+      }
     },
   }),
 
@@ -104,9 +115,9 @@ export const nearNFTTools = {
   }),
 
   getNFTInfo: tool({
-    description: "Get NFT info",
+    description: "Get NFT info for a specific nft contract",
     parameters: z.object({
-      contract: z.string().describe("Contract ID"),
+      contract: z.string().describe("Contract ID, 'mintbase.near' for example"),
     }),
     execute: async ({ contract }: { contract: string }) => {
       const url = `https://api.nearblocks.io/v1/nfts/${contract}`
@@ -117,7 +128,15 @@ export const nearNFTTools = {
         },
       }
       const response = await axios.get(url, config)
-      return response.data
+      const nft = response.data?.contracts?.[0]
+      return nft
+        ? {
+            ...nft,
+            icon: possibleDataUrlToBlobUrl(nft.icon),
+          }
+        : {
+            message: "NFT not found",
+          }
     },
   }),
 
@@ -274,7 +293,7 @@ export const nearNFTTools = {
   }),
 
   getNFTTokenInfo: tool({
-    description: "Get NFT token info",
+    description: "Get NFT token info for a specific token",
     parameters: z.object({
       contract: z.string().describe("Contract ID"),
       token: z.string().describe("Token ID"),

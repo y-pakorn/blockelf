@@ -1,3 +1,4 @@
+import { possibleDataUrlToBlobUrl } from "@/services/blob"
 import { tool } from "ai"
 import axios from "axios"
 import { z } from "zod"
@@ -30,7 +31,15 @@ export const nearFTTools = {
         },
       }
       const response = await axios.get(url, config)
-      return response.data
+      const blobed = await Promise.all(
+        response.data.tokens.map(async (token: any) => ({
+          ...token,
+          icon: await possibleDataUrlToBlobUrl(token.icon),
+        }))
+      )
+      return {
+        tokens: blobed,
+      }
     },
   }),
 
@@ -146,7 +155,15 @@ Return:
         },
       }
       const response = await axios.get(url, config)
-      return response.data
+      const token = response.data?.contracts?.[0]
+      return token
+        ? {
+            ...token,
+            icon: await possibleDataUrlToBlobUrl(token.icon),
+          }
+        : {
+            message: "Token not found",
+          }
     },
   }),
 

@@ -20,7 +20,10 @@ import { z } from "zod"
 import { DEFAULT_MODEL } from "@/config/model"
 import { openrouter } from "@/lib/ai_utils"
 
-type StreamResponse = TextStreamResponse | StatusStreamResponse
+type StreamResponse =
+  | TextStreamResponse
+  | StatusStreamResponse
+  | RawThoughtStreamResponse
 type StatusStreamResponse = {
   type: "status"
   status: "start" | "end"
@@ -31,6 +34,10 @@ type TextStreamResponse = {
   type: "text"
   delta?: string
   text?: string
+}
+type RawThoughtStreamResponse = {
+  type: "raw_thought"
+  thought: any
 }
 
 export const submitMessage = async (
@@ -123,9 +130,15 @@ Normal thinking process would be (but not limited to):
 
 You need LOW_LEVEL_PLANNING every time before EXECUTE/BATCH_EXECUTE and after all EXECUTE/BATCH_EXECUTE are done because you need to observe the data and reflect on the data. The next step might be different from what you planned earlier.
 
+DO NOT USE Batch Execute if the execution parameters are dependent of each other. For example, if you need to get the last 3 blocks and then get the transactions in the last 3 blocks, you cannot use Batch Execute because the second step is dependent on the first step. 
+
 PREFER USING TOOLS THAT RESULT IN DIRECT DATA.
 
+If direct data is not available, iterate and repeat the process until you get the final answer.
+
 Reflect on your action, observation and data gathered.
+
+PLAN and EXECUTE step by step. Don't rush to the final answer.
 
 You should be very precise with the data observation. For example, if you see object { transaction_hash: "0x1234"  } in the data, it means the transaction hash is "0x1234" and you cannot use that to query the block since it is not a block hash.
 
@@ -158,7 +171,12 @@ Proceed without asking for more information.
             MEMORY: z.string().nullable(),
             PLAN: z.string(),
             PLAN_REASONING: z.string(),
-            DATA_SCRATCHPAD: z.string().nullable(),
+            DATA_SCRATCHPAD: z
+              .string()
+              .nullable()
+              .describe(
+                "Temporary data storage for very complex data will persist until final answer is answered."
+              ),
           })
           .optional(),
         LOW_LEVEL_PLANNING: z
@@ -170,7 +188,12 @@ Proceed without asking for more information.
             TASK: z.string(),
             TASK_REASONING: z.string(),
             CHANGE_INDICATOR_NEXT_STEP: z.string().nullable(),
-            DATA_SCRATCHPAD: z.string().nullable(),
+            DATA_SCRATCHPAD: z
+              .string()
+              .nullable()
+              .describe(
+                "Temporary data storage for very complex data will persist until final answer is answered."
+              ),
           })
           .optional(),
         EXECUTE: z
@@ -221,9 +244,7 @@ The final answer should not truncate or miss any important information.
 YOU MUST use markdown to format the response.
 
 Display object in markdown's table format.
-Display icon/image in markdown's image format.
- - If the image is came in raw data, use inline HTML '<img src="{data}">'.
- - Else display the image using the URL "![{alt}]({url})".
+Display icon/image in markdown's image format using "![{alt}]({url})".
 
 The data you gave out should be human readable and easy to understand. And must be in the best UX for the user. For example, show image instead of a link to the image. Show table instead of a list of data. Show a graph instead of a table of data. Show a video instead of a link to the video.
 
@@ -264,7 +285,10 @@ DO NOT mention any tools or steps or previous step data in the final answer. The
 
         const object = await response.object
 
-        console.log(object)
+        stream.update({
+          type: "raw_thought",
+          thought: object,
+        })
 
         if (object.TYPE === "FINAL_ANSWER") break
 
@@ -293,7 +317,12 @@ DO NOT mention any tools or steps or previous step data in the final answer. The
               const tool = (tools as any)[toolName]
               const toolResponse = await tool.execute(task.TASK_TOOL_PARAMETERS)
 
-              console.log("Called", toolName, toolResponse)
+              //console.log(
+              //"Called",
+              //toolName,
+              //task.TASK_TOOL_PARAMETERS,
+              //toolResponse
+              //)
               messages.push({
                 role: "assistant",
                 content: `
@@ -312,7 +341,7 @@ TOOL_RESPONSE: ${JSON.stringify(toolResponse, null, 2)}`,
 
           const toolResponse = await tool.execute(parameters)
 
-          console.log("Called", toolName, toolResponse)
+          console.log("Called", toolName, parameters, toolResponse)
           messages.push({
             role: "assistant",
             content: `

@@ -56,6 +56,7 @@ const Chat = () => {
       isThinking: boolean
     }[]
   >([])
+  const [thoughts, setThoughts] = useState<any[]>([])
 
   const continueConversation = useCallback(
     async (input: string, conversation: Message[]) => {
@@ -68,6 +69,7 @@ const Chat = () => {
           isThinking: true,
         },
       ])
+      setThoughts([])
 
       try {
         setConversation([
@@ -120,6 +122,8 @@ const Chat = () => {
               }
               return next
             })
+          } else if (detail.type === "raw_thought") {
+            setThoughts((prev) => [...prev, detail.thought])
           }
         }
         setStatuses((prev) => {

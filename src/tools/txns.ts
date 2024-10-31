@@ -35,17 +35,23 @@ Return:
 }[]
 
 Return Transaction Data Definition:
+
 There might be multiple actions in a transaction
-If actions.action is "FUNCTION_CALL", method is the function name
-If actions.action is "TRANSFER", actions_agg.deposit is the amount, receiver_account_id is the receiver, signer_account_id is the sender for the NEAR token transfer
-If actions.action is "FUNCTION_CALL", and actions.method is "ft_transfer", then actions.args.receiver_id is the receiver, actions.args.amount is the amount, signer_account_id is the sender for the fungible token transfer
+
+If and only if actions.action is "FUNCTION_CALL", actions.method exists and is the function name.
+
+If actions.action is "FUNCTION_CALL", method is the function name.
+
+If actions.action is "TRANSFER", actions_agg.deposit is the amount, receiver_account_id is the receiver, signer_account_id is the sender for the NEAR token transfer.
+
+If actions.action is "FUNCTION_CALL", and actions.method is "ft_transfer", then actions.args.receiver_id is the receiver, actions.args.amount is the amount, signer_account_id is the sender for the fungible token transfer.
 `,
     parameters: z.object({
       block: z
         .string()
         .optional()
         .describe(
-          "Block hash. If you want to get transaction in a specific block, you can specify the block hash in `block` parameter."
+          "Block hash. Use if you want to get transaction in a specific block."
         ),
       from: z
         .string()
@@ -152,21 +158,21 @@ If actions.action is "FUNCTION_CALL", and actions.method is "ft_transfer", then 
     },
   }),
 
-  getTxnInfoWithReceiptsAndOutcomes: tool({
-    description: "Get transaction info with receipts and execution outcomes",
-    parameters: z.object({
-      hash: z.string().describe("Transaction hash"),
-    }),
-    execute: async ({ hash }: { hash: string }) => {
-      const url = `https://api.nearblocks.io/v1/txns/${hash}/full`
-      const config = {
-        headers: {
-          Authorization: `Bearer ${env.NEARBLOCKS_API_KEY}`,
-          accept: "*/*",
-        },
-      }
-      const response = await axios.get(url, config)
-      return response.data
-    },
-  }),
+  //getTxnInfoWithReceiptsAndOutcomes: tool({
+  //description: "Get transaction info with receipts and execution outcomes",
+  //parameters: z.object({
+  //hash: z.string().describe("Transaction hash"),
+  //}),
+  //execute: async ({ hash }: { hash: string }) => {
+  //const url = `https://api.nearblocks.io/v1/txns/${hash}/full`
+  //const config = {
+  //headers: {
+  //Authorization: `Bearer ${env.NEARBLOCKS_API_KEY}`,
+  //accept: "*/*",
+  //},
+  //}
+  //const response = await axios.get(url, config)
+  //return response.data
+  //},
+  //}),
 }

@@ -47,3 +47,20 @@ export function logSchema(data: any, indent = 0) {
     console.log(`${indentation}${typeof data}`)
   }
 }
+
+export function isValidHttpUrl(s: string) {
+  let url
+
+  try {
+    url = new URL(s)
+  } catch (_) {
+    return false
+  }
+
+  return url.protocol === "http:" || url.protocol === "https:"
+}
+
+export async function dataUrlToFile(dataUrl: string, fileName: string) {
+  const res: Response = await fetch(dataUrl)
+  return await res.blob()
+}
