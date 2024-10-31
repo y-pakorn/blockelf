@@ -1,14 +1,90 @@
 import { possibleDataUrlToBlobUrl } from "@/services/blob"
 import { tool } from "ai"
 import axios from "axios"
+import { BigNumber } from "bignumber.js"
 import _ from "lodash"
 import { z } from "zod"
 
 import { env } from "@/env.mjs"
 
 export const nearNFTTools = {
+  getNFTPrice: tool({
+    description: "Get NFT collection floor price, average price, and volume",
+    parameters: z.object({
+      contract: z.string().describe("Contract ID, e.g. 'mintbase.near'"),
+    }),
+    execute: async ({ contract }) => {
+      if (contract.includes("mintbase")) {
+        const mintbasePrice = await axios.post(
+          "https://graph.mintbase.xyz/",
+          {
+            query:
+              '\nquery v2_omnisite_getCombinedStoredData($id: String! ,$limit: Int, $offset: Int)  @cached(ttl: 120) {\n    \n    nft_contracts(where: {id: {_eq: $id}}) {\n      name\n      created_at\n      owner_id\n      is_mintbase\n    }\n\n    \n  mb_store_minters(limit: $limit, offset: $offset, where: {nft_contract_id: {_eq: $id}}) {\n      nft_contract_id\n      minter_id\n      nft_contracts {\n        owner_id\n      }\n  }\n\n    \n    uniqueThings: nft_tokens_aggregate( where: {nft_contracts: {id: {_eq: $id}}}) {\n      aggregate {\n        count\n      }\n    }\n\n    \n      uniqueOwners: nft_tokens_aggregate(distinct_on: owner, where: {nft_contracts: {id: {_eq: $id}}}) {\n        aggregate {\n          count\n        }\n      }\n    \n    \n    floorPrice: nft_listings(order_by: [{price: asc}, {created_at: desc}], where: {unlisted_at: {_is_null: true}, invalidated_at: {_is_null: true}, accepted_at: {_is_null: true}, nft_contract_id: {_eq: $id}}, limit: 10) {\n      price\n      created_at\n      nft_contract_id\n      currency\n    }\n\n    \n    averagePrice: nft_offers_aggregate(where:{ nft_contracts: { id: {_eq: $id}}, currency: {_eq: "near"}}) {\n      aggregate {\n        avg {\n          offer_price\n        }\n      }\n    }\n\n    \n  mb_store_minters_aggregate(where: {nft_contract_id: {_eq: $id}}) {\n    aggregate {\n      count\n    }\n  }\n\n    \nstoreEarned: nft_earnings_aggregate(where: {nft_contract_id: {_eq: $id}, _and: {approval_id: {_is_null: false}}, currency: {_eq: "near"}}) {\n  aggregate {\n    sum {\n      amount\n    }\n  }\n}\n\n  }\n',
+            variables: {
+              id: "yuplandshop.mintbase1.near",
+            },
+          },
+          {
+            headers: {
+              "mb-api-key": "anon",
+              "Content-Type": "application/json",
+            },
+          }
+        )
+
+        return {
+          averagePrice: new BigNumber(
+            mintbasePrice.data.data.averagePrice.aggregate.avg.offer_price ||
+              "0"
+          )
+            .shiftedBy(-24)
+            .toNumber(),
+          floorPrice: new BigNumber(
+            mintbasePrice.data.data.floorPrice[0]?.price || "0"
+          )
+            .shiftedBy(-24)
+            .toNumber(),
+          volume: new BigNumber(
+            mintbasePrice.data.data.storeEarned.aggregate.sum.amount || "0"
+          )
+            .shiftedBy(-24)
+            .toNumber(),
+        }
+      }
+      const parasPrice = await axios.get(
+        `https://api-v2-mainnet.paras.id/collections?collection_id=${contract}`
+      )
+      const result = parasPrice.data.results?.[0]
+
+      return {
+        averagePrice: new BigNumber(result?.avg_price || 0)
+          .shiftedBy(-24)
+          .toNumber(),
+        floorPrice: new BigNumber(result?.floor_price || 0)
+          .shiftedBy(-24)
+          .toNumber(),
+        volume: new BigNumber(result?.volume || 0).shiftedBy(-24).toNumber(),
+        averagePriceUSD: new BigNumber(result?.avg_price_usd || 0).toNumber(),
+        floorPriceUSD: new BigNumber(result?.floor_price_usd || 0).toNumber(),
+        volumeUSD: new BigNumber(result?.volume_usd || 0).toNumber(),
+      }
+    },
+  }),
   getTopNFTs: tool({
-    description: "Get top NFTs by pagination",
+    description: `Get top NFTs by pagination
+Return:
+{
+   "contract": ..., // Contract ID, e.g. "mintbase.near"
+   "name": ...,
+   "symbol": ...,
+   "icon": ...,
+   "base_uri": ...,
+   "reference": ...,
+   "tokens": ...,
+   "holders": ...,
+   "transfers_day": ... // Number of transfers in the last 24 hours
+}[]
+`,
     parameters: z.object({
       search: z.string().optional().describe("Search keyword"),
       page: z.number().optional().default(1).describe("Page number"),
@@ -115,7 +191,19 @@ export const nearNFTTools = {
   }),
 
   getNFTInfo: tool({
-    description: "Get NFT info for a specific nft contract",
+    description: `Get NFT info for a specific nft contract
+Return:
+{
+   "contract": ..., // Contract ID, e.g. "mintbase.near"
+   "name": ...,
+   "symbol": ...,
+   "icon": ...,
+   "base_uri": ...,
+   "reference": ...,
+   "tokens": ...,
+   "holders": ...,
+   "transfers_day": ... // Number of transfers in the last 24 hours
+}`,
     parameters: z.object({
       contract: z.string().describe("Contract ID, 'mintbase.near' for example"),
     }),
