@@ -1,5 +1,6 @@
 "use server"
 
+import { unstable_noStore } from "next/cache"
 import { nearAccountTools } from "@/tools/accounts"
 import { nearBlockTools } from "@/tools/blocks"
 import { nearDEXTools } from "@/tools/dex"
@@ -38,6 +39,7 @@ export const submitMessage = async (
   temperature?: number
 ) => {
   "use server"
+  unstable_noStore()
 
   const controller = new AbortController()
   const stream = createStreamableValue<StreamResponse>()
