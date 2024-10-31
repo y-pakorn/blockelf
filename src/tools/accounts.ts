@@ -27,8 +27,7 @@ export const nearAccountTools = {
 
   getAccountInfo: tool({
     description: `Get the account information from the NEAR blockchain
-
-RETURN:
+Return:
 {
   amount, // The amount of NEAR token in the account
   block_hashm // created block hash

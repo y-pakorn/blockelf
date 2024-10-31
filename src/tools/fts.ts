@@ -108,8 +108,7 @@ export const nearFTTools = {
 
   getTokenInfo: tool({
     description: `Get token info
-
-RETURN:
+Return:
 {
   "contract": ...,
   "name": ..,

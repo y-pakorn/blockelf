@@ -65,8 +65,12 @@ export const submitMessage = async (
           ([name, t], i) => `
 Tool ${i}: ${name}
 Description: ${(t as any).description}
-Parameters:
-${_.map(t.parameters.shape, (p, name) => `"${name}": ${(p as any)?.description}`).join(",\n")}
+${_.size(t.parameters.shape) === 0 ? "" : "Parameters:"}
+${_.map(t.parameters.shape, (p, name) => {
+  return `"${name}"${
+    (p as any).isOptional() ? "?" : ""
+  }: ${(p as any)?.description}`
+}).join(",\n")}
         `
         )
         .join("\n")
@@ -82,6 +86,7 @@ NEAR Protocol Specific:
 - Account ID is the unique identifier of an account in NEAR Protocol. It is also called as "address" in some context. Its a prefixed string with dot (.) separated parts. For example, "alice.near" is an account ID, "relay.tg" is an account ID, "0-relay.hot.tg" is also an account ID.
 - If user is talking about updates in general, it means updates in the social side or protocol side. If user is talking about updates in the blockchain side, they will mention it as on-chain, blockchain, or something similar.
 - If user is talking about portfolio value, don't forget to include NEAR token value in the portfolio value. If you can't find price for a certain token, just skip that token and calculate the portfolio value without that token.
+- NEAR token decimals is 24. So if you see a number like "1000000000000000000000000", it means "1 NEAR". Make sure to convert the NEAR token and other token to human readable format.
 
 AVAILABLE TOOLS:
 <start>

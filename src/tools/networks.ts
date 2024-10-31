@@ -7,7 +7,7 @@ import { env } from "@/env.mjs"
 export const nearNetworkTools = {
   getNearStats: tool({
     description: `Get NEAR and NEAR protocol stats
-RETURN:
+Return:
 {
    "id": ...,
    "total_supply": ...,
@@ -46,7 +46,11 @@ RETURN:
   getDailyTransactionCount: tool({
     description: "Get network number of transactions by day",
     parameters: z.object({
-      limit: z.number().optional().default(10),
+      limit: z
+        .number()
+        .optional()
+        .default(10)
+        .describe("Limit the number of days to return"),
     }),
     execute: async ({ limit }) => {
       const url = "https://api.pikespeak.ai/network/daily-tx-count"
@@ -141,4 +145,3 @@ RETURN:
     },
   }),
 }
-

@@ -7,8 +7,7 @@ import { env } from "@/env.mjs"
 export const nearTxnTools = {
   getTxnsByPagination: tool({
     description: `Get latest transactions by pagination and filter, return list of full transaction data with actions, and function call arguments.
-
-RETURN:
+Return:
 {
    "id": ...,
    "transaction_hash": ...,
@@ -35,7 +34,7 @@ RETURN:
    }
 }[]
 
-TRANSACTION DATA DEFINITION:
+Return Transaction Data Definition:
 There might be multiple actions in a transaction
 If actions.action is "FUNCTION_CALL", method is the function name
 If actions.action is "TRANSFER", actions_agg.deposit is the amount, receiver_account_id is the receiver, signer_account_id is the sender for the NEAR token transfer
