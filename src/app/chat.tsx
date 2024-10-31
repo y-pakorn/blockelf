@@ -10,7 +10,10 @@ import _ from "lodash"
 import {
   ArrowRight,
   Bot,
+  Box,
   Check,
+  Coins,
+  FileImage,
   IterationCw,
   Loader2,
   MessageCircleMore,
@@ -35,6 +38,17 @@ import { Skeleton } from "@/components/ui/skeleton"
 import { Textarea } from "@/components/ui/textarea"
 import { Toggle } from "@/components/ui/toggle"
 import { Markdown } from "@/components/markdown"
+
+const QUICK_ACTIONS = [
+  [Box, "What's the latest block?"],
+  [FileImage, "What's the hottest nfts around?"],
+  [
+    UserRound,
+    "What's account status of muramasa.near, portfolio, and history?",
+    false,
+  ],
+  [Coins, "What's the most transferred token in the last block?"],
+] as const
 
 const Chat = () => {
   const {
@@ -273,15 +287,7 @@ const Chat = () => {
                 </div>
               </div>
               <div className="grid grid-cols-2 gap-2">
-                {(
-                  [
-                    [
-                      UserRound,
-                      "What's account status of muramasa.near, portfolio, and history?",
-                      false,
-                    ],
-                  ] as const
-                ).map(([Icon, text, b]) => (
+                {QUICK_ACTIONS.map(([Icon, text, b]) => (
                   <div
                     className={cn(
                       "inline-flex cursor-pointer items-center rounded-md border p-2 text-sm transition-colors hover:bg-secondary",

@@ -285,10 +285,10 @@ DO NOT mention any tools or steps or previous step data in the final answer. The
 
         const object = await response.object
 
-        stream.update({
-          type: "raw_thought",
-          thought: object,
-        })
+        //stream.update({
+        //type: "raw_thought",
+        //thought: object,
+        //})
 
         if (object.TYPE === "FINAL_ANSWER") break
 
@@ -341,7 +341,7 @@ TOOL_RESPONSE: ${JSON.stringify(toolResponse, null, 2)}`,
 
           const toolResponse = await tool.execute(parameters)
 
-          console.log("Called", toolName, parameters, toolResponse)
+          //console.log("Called", toolName, parameters, toolResponse)
           messages.push({
             role: "assistant",
             content: `
