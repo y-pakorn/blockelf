@@ -1,6 +1,7 @@
 "use client"
 
 import { Fragment, useCallback, useState } from "react"
+import Image from "next/image"
 import { submitMessage } from "@/services/ai"
 import { useAppStore } from "@/stores/app-store"
 import { Message } from "@/types"
@@ -14,14 +15,12 @@ import {
   Loader2,
   MessageCircleMore,
   Pencil,
-  Pill,
   UserRound,
 } from "lucide-react"
 
 import { AVAILABLE_MODELS } from "@/config/model"
 import { AVAILABLE_TEMPERATURES } from "@/config/temperature"
 import { cn } from "@/lib/utils"
-import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import {
@@ -157,8 +156,23 @@ const Chat = () => {
             }}
           >
             <div className="flex w-[36rem] flex-col items-center gap-2">
-              <h1 className="mb-4 text-4xl font-bold">
-                On-chain Data Made Easy
+              <div className="inline-flex items-center gap-2 text-lg font-semibold">
+                <Image
+                  src="/logo.svg"
+                  alt="BlockElf logo"
+                  width={16}
+                  height={16}
+                />
+                BlockElf
+              </div>
+
+              <h1 className="mb-4 inline-flex items-center gap-2 text-center text-3xl font-bold">
+                <img
+                  src="https://cdn-icons-png.freepik.com/512/14446/14446201.png"
+                  alt="NEAR Protocol"
+                  className="size-8 rounded-full"
+                />
+                NEAR Protocol Data Made Easy
               </h1>
               <div className="w-full space-y-2 rounded-md border p-2">
                 <Textarea
@@ -205,15 +219,6 @@ const Chat = () => {
                                 </p>
                                 {m.id === model && (
                                   <Check className="absolute right-2 top-1/2 size-4 -translate-y-1/2" />
-                                )}
-                                {m.isRedpill && (
-                                  <div className="absolute right-0 top-0">
-                                    <Badge className="gap-1 px-1.5 py-0">
-                                      On-chain via{" "}
-                                      <Pill className="size-3 stroke-red-400 stroke-[3]" />{" "}
-                                      <span className="font-bold">Redpill</span>
-                                    </Badge>
-                                  </div>
                                 )}
                               </Toggle>
                             ))}

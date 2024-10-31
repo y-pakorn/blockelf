@@ -8,7 +8,7 @@ export const internetTools = {
     description:
       "Search the internet by query, similar to Google search but will return direct result data. Used for text-based search. Normally used for searching updates, news, or general information.",
     parameters: z.object({
-      query: z.string().describe("Search query"),
+      query: z.string().describe("Search query, be precise and clear."),
     }),
     execute: async ({ query }) => {
       const { text } = await generateText({

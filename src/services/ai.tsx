@@ -93,6 +93,8 @@ ${_.map(prevMessages.slice(0, -1), (m) => `${m.role}: ${m.content}`).join("\n")}
 
 CURRENT GOAL: Answer user query "${_.last(prevMessages)?.content}"
 
+User query context might be in the previous messages. You can use the previous messages to understand the context of the user query.
+
 DO STEP BY STEP
 
 Formulate a plan to answer the user query.
