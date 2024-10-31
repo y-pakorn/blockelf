@@ -118,6 +118,9 @@ Think about what you need to do through planning and reasoning. The answer may n
 Action: High level planning
 Description: Plan and reason the steps to answer the user query.
 
+Action: Low level planning
+Description: Plan, reason, reflect, and observe the steps to execute the tools.
+
 Action: Execute
 Description: Execute the available tools
 
