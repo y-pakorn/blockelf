@@ -6,8 +6,41 @@ import { env } from "@/env.mjs"
 
 export const nearTxnTools = {
   getTxnsByPagination: tool({
-    description:
-      "Get latest transactions by pagination and filter, return list of full transaction data",
+    description: `Get latest transactions by pagination and filter, return list of full transaction data with actions, and function call arguments.
+
+RETURN:
+{
+   "id": ...,
+   "transaction_hash": ...,
+   "included_in_block_hash": ...,
+   "block_timestamp": ...,
+   "signer_account_id": ...,
+   "receiver_account_id": ...,
+   "block": {
+     "block_height": ...
+   },
+   "actions": {
+       "action": ...,
+       "method": ...,
+       "args": ... 
+    }[],
+   "actions_agg": {
+     "deposit": ...
+   },
+   "outcomes": {
+     "status": ...
+   },
+   "outcomes_agg": {
+     "transaction_fee": ...
+   }
+}[]
+
+TRANSACTION DATA DEFINITION:
+There might be multiple actions in a transaction
+If actions.action is "FUNCTION_CALL", method is the function name
+If actions.action is "TRANSFER", actions_agg.deposit is the amount, receiver_account_id is the receiver, signer_account_id is the sender for the NEAR token transfer
+If actions.action is "FUNCTION_CALL", and actions.method is "ft_transfer", then actions.args.receiver_id is the receiver, actions.args.amount is the amount, signer_account_id is the sender for the fungible token transfer
+`,
     parameters: z.object({
       block: z
         .string()

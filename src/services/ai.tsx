@@ -112,15 +112,7 @@ You can take multiple action and steps.
 
 Normal thinking process would be (but not limited to):
 
-HIGH_LEVEL_PLANNING -> LOW_LEVEL_PLANNING -> EXECUTE -> LOW_LEVEL_PLANNING -> EXECUTE -> LOW_LEVEL_PLANNING -> FINAL_ANSWER
-
-Or maybe in case of unexpected data or unexpected result:
-HIGH_LEVEL_PLANNING -> LOW_LEVEL_PLANNING -> EXECUTE -> HIGH_LEVEL_PLANNING -> LOW_LEVEL_PLANNING -> EXECUTE -> LOW_LEVEL_PLANNING -> FINAL_ANSWER
-
-Or maybe you are certain that you can query the data simultaneously without relying on the previous data:
-HIGH_LEVEL_PLANNING -> LOW_LEVEL_PLANNING -> BATCH_EXECUTE ->  LOW_LEVEL_PLANNING -> FINAL_ANSWER
-
-You need LOW_LEVEL_PLANNING every time before EXECUTE and after all EXECUTE are done because you need to observe the data and reflect on the data. The next step might be different from what you planned earlier.
+You need LOW_LEVEL_PLANNING every time before EXECUTE/BATCH_EXECUTE and after all EXECUTE/BATCH_EXECUTE are done because you need to observe the data and reflect on the data. The next step might be different from what you planned earlier.
 
 PREFER USING TOOLS THAT RESULT IN DIRECT DATA.
 
@@ -128,11 +120,13 @@ Reflect on your action, observation and data gathered.
 
 You should be very precise with the data observation. For example, if you see object { transaction_hash: "0x1234"  } in the data, it means the transaction hash is "0x1234" and you cannot use that to query the block since it is not a block hash.
 
-If the data gathered is not enough to answer the query in the first planning, observe the data and reflect on the data to plan the next steps.
+If the data gathered is not enough to answer the query in the first planning, observe the data and reflect on the data to plan the next steps. You can plan and execute infinitely until you get the final answer. Correct the plan and reasoning based on the data you gathered.
 
 Don't forget that you has "searchInternet" tool. You can use the internet search tool to search the internet for the data. But try to use it after you are sure that other tools cannot give you the data.
 
 You can execute steps infinitely until you get the final answer.
+
+Always use HIGH_LEVEL_PLANNING before answering the final answer. This step is important to prepare, format, and reason the data to be given to the user.
 
 After you are absolutely sure that you get the final answer. Give the final answer to the user.
 
@@ -155,6 +149,7 @@ Proceed without asking for more information.
             MEMORY: z.string().nullable(),
             PLAN: z.string(),
             PLAN_REASONING: z.string(),
+            DATA_SCRATCHPAD: z.string().nullable(),
           })
           .optional(),
         LOW_LEVEL_PLANNING: z
@@ -166,6 +161,7 @@ Proceed without asking for more information.
             TASK: z.string(),
             TASK_REASONING: z.string(),
             CHANGE_INDICATOR_NEXT_STEP: z.string().nullable(),
+            DATA_SCRATCHPAD: z.string().nullable(),
           })
           .optional(),
         EXECUTE: z
@@ -187,7 +183,11 @@ Proceed without asking for more information.
           .describe("Execute one of the tools available once using this step."),
         BATCH_EXECUTE: z
           .object({
-            NAME: z.string().describe("Label for the user to see."),
+            NAME: z
+              .string()
+              .describe(
+                'Label for the user to see., In format of "BATCH_EXECUTE {TASKS.length} tasks"'
+              ),
             TASKS: z.array(
               z.object({
                 TASK_TOOL: z
@@ -287,7 +287,10 @@ DO NOT mention any tools or steps or previous step data in the final answer. The
               console.log("Called", toolName, toolResponse)
               messages.push({
                 role: "assistant",
-                content: `Tool response:\n${JSON.stringify(toolResponse, null, 2)}`,
+                content: `
+TOOL_NAME: ${toolName}
+TASK_TOOL_PARAMETERS: ${JSON.stringify(task.TASK_TOOL_PARAMETERS)}
+TOOL_RESPONSE: ${JSON.stringify(toolResponse, null, 2)}`,
               })
             })
           )
@@ -303,7 +306,10 @@ DO NOT mention any tools or steps or previous step data in the final answer. The
           console.log("Called", toolName, toolResponse)
           messages.push({
             role: "assistant",
-            content: `Tool response:\n${JSON.stringify(toolResponse, null, 2)}`,
+            content: `
+TOOL_NAME: ${toolName}
+TASK_TOOL_PARAMETERS: ${JSON.stringify(parameters)}
+TOOL_RESPONSE: ${JSON.stringify(toolResponse, null, 2)}`,
           })
         }
 

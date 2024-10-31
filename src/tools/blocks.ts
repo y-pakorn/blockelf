@@ -6,7 +6,8 @@ import { env } from "@/env.mjs"
 
 export const nearBlockTools = {
   getBlocks: tool({
-    description: "Get latest blocks by pagination",
+    description:
+      "Get latest blocks by pagination, return list of block data, including block hash, block height, block timestamp, and number of transactions in the block. This method does not return the transactions in the block.",
     parameters: z.object({
       page: z.number().optional().default(1).describe("Page number"),
       perPage: z.number().optional().default(50).describe("Items per page"),
