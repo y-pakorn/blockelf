@@ -14,6 +14,7 @@ import {
   Check,
   Coins,
   FileImage,
+  InfoIcon,
   IterationCw,
   Loader2,
   MessageCircleMore,
@@ -48,6 +49,14 @@ const QUICK_ACTIONS = [
     false,
   ],
   [Coins, "What's the most transferred token in the last block?"],
+  [
+    InfoIcon,
+    "What's the recent protcol updates, roadmap, and upcoming events?",
+  ],
+  [
+    Bot,
+    "What's the current gas fee, transaction speed, and network congestion",
+  ],
 ] as const
 
 const Chat = () => {
@@ -173,7 +182,7 @@ const Chat = () => {
               setInput("")
             }}
           >
-            <div className="flex w-[36rem] flex-col items-center gap-2">
+            <div className="flex w-full max-w-[48rem] flex-col items-center gap-2">
               <div className="inline-flex items-center gap-2 text-lg font-semibold">
                 <Image
                   src="/logo.svg"
@@ -207,7 +216,7 @@ const Chat = () => {
                     }
                   }}
                   disabled={isTyping}
-                  placeholder="Ask anything about near!"
+                  placeholder="Ask literally anything about near!"
                   className="min-h-16 resize-none border-none bg-transparent p-2 text-base focus-visible:outline-none focus-visible:ring-transparent"
                 />
                 <div className="flex">
