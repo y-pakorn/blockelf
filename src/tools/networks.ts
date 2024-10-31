@@ -5,6 +5,44 @@ import { z } from "zod"
 import { env } from "@/env.mjs"
 
 export const nearNetworkTools = {
+  getNearStats: tool({
+    description: `Get NEAR and NEAR protocol stats
+RETURN:
+{
+   "id": ...,
+   "total_supply": ...,
+   "circulating_supply": ...,
+   "avg_block_time": ...,
+   "gas_price": ...,
+   "nodes_online": ...,
+   "near_price": ...,
+   "near_btc_price": ...,
+   "market_cap": ...,
+   "volume": ...,
+   "high_24h": ...,
+   "high_all": ...,
+   "low_24h": ...,
+   "low_all": ...,
+   "change_24": ...,
+   "total_txns": ...,
+   "tps": ...
+}
+    `,
+
+    parameters: z.object({}),
+    execute: async () => {
+      const url = `https://api.nearblocks.io/v1/stats`
+      const config = {
+        headers: {
+          Authorization: `Bearer ${env.NEARBLOCKS_API_KEY}`,
+          accept: "*/*",
+        },
+      }
+      const response = await axios.get(url, config)
+      return response.data
+    },
+  }),
+
   getDailyTransactionCount: tool({
     description: "Get network number of transactions by day",
     parameters: z.object({
@@ -70,13 +108,26 @@ export const nearNetworkTools = {
       return response.data
     },
   }),
+
   getActiveAccounts: tool({
     description: "Get account transactions by day/week/month",
     parameters: z.object({
-      period: z.enum(["day", "week", "month"]).describe("Time period for active accounts"),
-      limit: z.number().int().positive().describe("Limit the number of days/weeks/months to return"),
+      period: z
+        .enum(["day", "week", "month"])
+        .describe("Time period for active accounts"),
+      limit: z
+        .number()
+        .int()
+        .positive()
+        .describe("Limit the number of days/weeks/months to return"),
     }),
-    execute: async ({ period, limit }: { period: "day" | "week" | "month", limit: number }) => {
+    execute: async ({
+      period,
+      limit,
+    }: {
+      period: "day" | "week" | "month"
+      limit: number
+    }) => {
       const url = "https://api.pikespeak.ai/network/active-accounts"
       const config = {
         headers: {
@@ -90,3 +141,4 @@ export const nearNetworkTools = {
     },
   }),
 }
+

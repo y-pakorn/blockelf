@@ -6,9 +6,14 @@ import { env } from "@/env.mjs"
 
 export const nearSearchTools = {
   search: tool({
-    description: "Search txn by hash, block by height / hash, account by id, receipt by id, tokens by hex address",
+    description:
+      "Search txn by hash, block by height / hash, account by id, receipt by id, tokens by hex address",
     parameters: z.object({
-      keyword: z.string().describe("txn hash / block height / account id / receipt id / hex address"),
+      keyword: z
+        .string()
+        .describe(
+          "txn hash / block height / account id / receipt id / hex address"
+        ),
     }),
     execute: async ({ keyword }: { keyword: string }) => {
       const url = "https://api.nearblocks.io/v1/search"
@@ -46,7 +51,9 @@ export const nearSearchTools = {
   searchBlocks: tool({
     description: "Search blocks by hash / height",
     parameters: z.object({
-      keyword: z.union([z.string(), z.number()]).describe("Block height / hash"),
+      keyword: z
+        .union([z.string(), z.number()])
+        .describe("Block height / hash"),
     }),
     execute: async ({ keyword }: { keyword: string | number }) => {
       const url = "https://api.nearblocks.io/v1/search/blocks"
@@ -119,3 +126,4 @@ export const nearSearchTools = {
     },
   }),
 }
+

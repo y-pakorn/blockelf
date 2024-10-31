@@ -5,10 +5,10 @@ import { nearBlockTools } from "@/tools/blocks"
 import { nearDEXTools } from "@/tools/dex"
 import { nearFTTools } from "@/tools/fts"
 import { internetTools } from "@/tools/internet"
+import { nearNetworkTools } from "@/tools/networks"
 import { nearNFTTools } from "@/tools/nfts"
 import { nearSearchTools } from "@/tools/search"
 import { nearTxnTools } from "@/tools/txns"
-import { nearNetworkTools } from "@/tools/networks"
 import { utilTools } from "@/tools/utils"
 import { Message } from "@/types"
 import { CoreMessage, streamObject } from "ai"
@@ -76,9 +76,10 @@ You are NEAR Protocol's AI assistant and query resolver.
 NEAR Protocol Specific:
 - Token is aliased as "FT" (Fungible Token) and "NFT" (Non-Fungible Token). So if you see "ft_transfer" action it mean a transfer of fungible token.
 - Token can also mean NEAR token, which is the native token of NEAR Protocol.
-- But normally when we say token, it means fungible token. If user is talking about NEAR token, they will mention it as NEAR token.
+- But normally when we say token, it means BOTH Near token and fungible token.
 - Account ID is the unique identifier of an account in NEAR Protocol. It is also called as "address" in some context. Its a prefixed string with dot (.) separated parts. For example, "alice.near" is an account ID, "relay.tg" is an account ID, "0-relay.hot.tg" is also an account ID.
 - If user is talking about updates in general, it means updates in the social side or protocol side. If user is talking about updates in the blockchain side, they will mention it as on-chain, blockchain, or something similar.
+- If user is talking about portfolio value, don't forget to include NEAR token value in the portfolio value. If you can't find price for a certain token, just skip that token and calculate the portfolio value without that token.
 
 AVAILABLE TOOLS:
 <start>
@@ -104,6 +105,9 @@ Description: Plan and reason the steps to answer the user query.
 Action: Execute
 Description: Execute the available tools
 
+Action: Batch Execute
+Description: Execute the available tools multiple times simultaneously, DO NOT EXECUTE THE SAME TOOL WITH SAME PARAMETERS.
+
 You can take multiple action and steps.
 
 Normal thinking process would be (but not limited to):
@@ -113,7 +117,12 @@ HIGH_LEVEL_PLANNING -> LOW_LEVEL_PLANNING -> EXECUTE -> LOW_LEVEL_PLANNING -> EX
 Or maybe in case of unexpected data or unexpected result:
 HIGH_LEVEL_PLANNING -> LOW_LEVEL_PLANNING -> EXECUTE -> HIGH_LEVEL_PLANNING -> LOW_LEVEL_PLANNING -> EXECUTE -> LOW_LEVEL_PLANNING -> FINAL_ANSWER
 
+Or maybe you are certain that you can query the data simultaneously without relying on the previous data:
+HIGH_LEVEL_PLANNING -> LOW_LEVEL_PLANNING -> BATCH_EXECUTE ->  LOW_LEVEL_PLANNING -> FINAL_ANSWER
+
 You need LOW_LEVEL_PLANNING every time before EXECUTE and after all EXECUTE are done because you need to observe the data and reflect on the data. The next step might be different from what you planned earlier.
+
+PREFER USING TOOLS THAT RESULT IN DIRECT DATA.
 
 Reflect on your action, observation and data gathered.
 
@@ -135,6 +144,7 @@ Proceed without asking for more information.
           z.literal("HIGH_LEVEL_PLANNING"),
           z.literal("LOW_LEVEL_PLANNING"),
           z.literal("EXECUTE"),
+          z.literal("BATCH_EXECUTE"),
           z.literal("FINAL_ANSWER"),
         ]),
         HIGH_LEVEL_PLANNING: z
@@ -175,26 +185,22 @@ Proceed without asking for more information.
           })
           .optional()
           .describe("Execute one of the tools available once using this step."),
-        //Action: Batch Execute
-        //Description: Execute the available tools multiple times simultaneously, DO NOT EXECUTE THE SAME TOOL WITH SAME PARAMETERS.
-        //BATCH_EXECUTE: z
-        //.object({
-        //NAME: z.string().describe("Label for the user to see."),
-        //TASKS: z.array(
-        //z.object({
-        //TASK: z.string(),
-        //TASK_TOOL: z
-        //.string()
-        //.describe(
-        //"A name of the tool to be called, can be one of the tools available."
-        //),
-        //TASK_TOOL_PARAMETERS: z.record(z.any()),
-        //TASK_TOOL_REASONING: z.string(),
-        //})
-        //),
-        //SITUATION_ANALYSIS: z.string(),
-        //})
-        //.optional(),
+        BATCH_EXECUTE: z
+          .object({
+            NAME: z.string().describe("Label for the user to see."),
+            TASKS: z.array(
+              z.object({
+                TASK_TOOL: z
+                  .string()
+                  .describe(
+                    "A name of the tool to be called, can be one of the tools available."
+                  ),
+                TASK_TOOL_PARAMETERS: z.record(z.any()),
+                THOUGHT: z.string(),
+              })
+            ),
+          })
+          .optional(),
         FINAL_ANSWER: z
           .string()
           .describe(
@@ -259,7 +265,8 @@ DO NOT mention any tools or steps or previous step data in the final answer. The
           label:
             object.HIGH_LEVEL_PLANNING?.NAME ||
             object.LOW_LEVEL_PLANNING?.NAME ||
-            object.EXECUTE?.NAME,
+            object.EXECUTE?.NAME ||
+            object.BATCH_EXECUTE?.NAME,
           sublabel:
             object.HIGH_LEVEL_PLANNING?.OBSERVATION_REFLECTION ||
             object.LOW_LEVEL_PLANNING?.SITUATION_ANALYSIS,
@@ -270,21 +277,21 @@ DO NOT mention any tools or steps or previous step data in the final answer. The
           content: JSON.stringify(object, null, 2),
         })
 
-        //if (object.TYPE === "BATCH_EXECUTE") {
-        //await Promise.all(
-        //object.BATCH_EXECUTE!.TASKS.map(async (task) => {
-        //const toolName = task.TASK_TOOL
-        //const tool = (tools as any)[toolName]
-        //const toolResponse = await tool.execute(task.TASK_TOOL_PARAMETERS)
+        if (object.TYPE === "BATCH_EXECUTE") {
+          await Promise.all(
+            object.BATCH_EXECUTE!.TASKS.map(async (task) => {
+              const toolName = task.TASK_TOOL
+              const tool = (tools as any)[toolName]
+              const toolResponse = await tool.execute(task.TASK_TOOL_PARAMETERS)
 
-        //console.log("Called", toolName, toolResponse)
-        //messages.push({
-        //role: "assistant",
-        //content: `Tool response:\n${JSON.stringify(toolResponse, null, 2)}`,
-        //})
-        //})
-        //)
-        //}
+              console.log("Called", toolName, toolResponse)
+              messages.push({
+                role: "assistant",
+                content: `Tool response:\n${JSON.stringify(toolResponse, null, 2)}`,
+              })
+            })
+          )
+        }
 
         if (object.TYPE === "EXECUTE") {
           const toolName = object.EXECUTE!.TASK_TOOL

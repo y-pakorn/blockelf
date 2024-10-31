@@ -107,7 +107,34 @@ export const nearFTTools = {
   }),
 
   getTokenInfo: tool({
-    description: "Get token info",
+    description: `Get token info
+
+RETURN:
+{
+  "contract": ...,
+  "name": ..,
+  "symbol": ...,
+  "decimals": ...,
+  "icon": ...,
+  "reference": ...,
+  "price": ...,
+  "change_24": ...,
+  "market_cap": ...,
+  "fully_diluted_market_cap": ...,
+  "total_supply": ...,
+  "volume_24h": ...,
+  "description": ...,
+  "twitter": ...,
+  "facebook": ...,
+  "telegram": ...,
+  "reddit": ...,
+  "website": ...,
+  "coingecko_id": ...,
+  "coinmarketcap_id": ...,
+  "livecoinwatch_id": ...,
+  "onchain_market_cap": ...
+}
+`,
     parameters: z.object({
       contract: z.string().describe("Contract ID"),
     }),
