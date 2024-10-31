@@ -45,7 +45,7 @@ const QUICK_ACTIONS = [
   [FileImage, "What's the hottest nfts around?"],
   [
     UserRound,
-    "What's account status of muramasa.near, portfolio, and history?",
+    "What's account status of alex.near, portfolio, and history?",
     false,
   ],
   [Coins, "What's the most transferred token in the last block?"],
